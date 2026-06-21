@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write   # necesario para que el bot pueda guardar state.json
 
+concurrency:
+  group: trifecta-bot-scan
+  cancel-in-progress: false   # si ya hay una corriendo, la siguiente espera en cola
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -32,5 +36,10 @@ jobs:
           git config user.name "trifecta-bot"
           git config user.email "bot@users.noreply.github.com"
           git add state.json
-          git diff --staged --quiet || git commit -m "Actualiza estado [skip ci]"
+          if git diff --staged --quiet; then
+            echo "Sin cambios en state.json"
+            exit 0
+          fi
+          git commit -m "Actualiza estado [skip ci]"
+          git pull --rebase --autostash origin main
           git push
