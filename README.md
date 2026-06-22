@@ -26,3 +26,4 @@ Despues de eso corre solo, cada 15 minutos, automaticamente.
 - `state.json` — recuerda la ultima señal de cada par (lo actualiza el bot)
 - `.github/workflows/trifecta-bot.yml` — el cron gratuito
 - `requirements.txt` — dependencia (solo `requests`)
+- 
