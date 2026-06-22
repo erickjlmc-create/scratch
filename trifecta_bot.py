@@ -63,7 +63,6 @@ def is_in_session():
 
 # ── DATOS (Bybit publico, sin API key) ───────────────────────────────
 def fetch_klines(symbol, interval, limit):
-    # Binance interval format: 15m, 4h, 1d
     interval_map = {"15": "15m", "240": "4h", "D": "1d"}
     binance_interval = interval_map.get(interval, interval + "m")
     r = requests.get(
@@ -76,8 +75,11 @@ def fetch_klines(symbol, interval, limit):
     except Exception:
         print(f"[DEBUG fetch_klines {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
         raise
+    print(f"[DEBUG {symbol} {interval}] tipo={type(d).__name__} contenido={str(d)[:150]}")
     if isinstance(d, dict) and d.get("code"):
         raise RuntimeError(d.get("msg"))
+    if not isinstance(d, list):
+        raise RuntimeError(f"Respuesta inesperada: {str(d)[:200]}")
     return [
         {"time": int(c[0]), "open": float(c[1]), "high": float(c[2]),
          "low": float(c[3]), "close": float(c[4]), "volume": float(c[5])}
