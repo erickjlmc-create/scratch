@@ -5,22 +5,22 @@
     "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
   "BNBUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bull"
   },
   "AVAXUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
   "LINKUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
