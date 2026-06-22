@@ -67,7 +67,11 @@ def fetch_klines(symbol, interval, limit):
         params={"category": "linear", "symbol": symbol, "interval": interval, "limit": limit},
         timeout=15,
     )
-    d = r.json()
+    try:
+        d = r.json()
+    except Exception:
+        print(f"[DEBUG fetch_klines {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
+        raise
     if d.get("retCode") != 0:
         raise RuntimeError(d.get("retMsg"))
     rows = list(reversed(d["result"]["list"]))
@@ -84,7 +88,11 @@ def fetch_ticker(symbol):
         params={"category": "linear", "symbol": symbol},
         timeout=15,
     )
-    return r.json()["result"]["list"][0]
+    try:
+        return r.json()["result"]["list"][0]
+    except Exception:
+        print(f"[DEBUG fetch_ticker {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
+        raise
 
 
 # ── INDICADORES (mismo algoritmo que el dashboard) ───────────────────
