@@ -1,18 +1,20 @@
 """
 Sistema Trifecta Pro v2 - Bot de notificaciones
-Replica EXACTAMENTE la logica de TrifectaPro_Dashboard_v2.html
+Replica la logica de TrifectaPro_Dashboard_v2.html
 (Supertrend + cruce EMA 9/21 + MFI, guardia StochRSI, filtros ADX/ATR/Volumen,
- contexto EMA50 4H, ventana de sesion NY) y avisa por ntfy.sh y/o Telegram
- cuando aparece una senal nueva (A++/A+/B) o cuando una senal valida queda
- bloqueada por sobreextension.
+ contexto EMA50 4H) y avisa por ntfy.sh y/o Telegram cuando aparece una senal
+ nueva (A++/A+/B), cuando una senal queda bloqueada, o cuando el Supertrend
+ cambia de color.
 
-Corre sin costo en GitHub Actions (cron). No requiere API key de Bybit:
-usa los mismos endpoints publicos que ya usa el dashboard.
+Corre gratis en GitHub Actions. Datos via yfinance (Yahoo Finance) — sin API key,
+sin restricciones geograficas desde servidores de EE.UU.
 """
 
 import os
 import json
 import requests
+import pandas as pd
+import yfinance as yf
 from datetime import datetime, timezone, timedelta
 
 # ── CONFIG (igual que CFG en el dashboard) ───────────────────────────
@@ -47,9 +49,20 @@ SESSION_END = 13
 # ventana 07:00-13:00 GT del manual. Por defecto corre 24/7.
 SESSION_ONLY = os.environ.get("SESSION_ONLY", "false").lower() == "true"
 
-BYBIT_BASE = "https://api.bybit.com/v5/market"
-BINANCE_BASE = "https://api.binance.com/api/v3"
+BYBIT_BASE = "https://api.bybit.com/v5/market"  # solo referencia, no se usa
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
+
+# Mapeo de simbolos → Yahoo Finance (sin restricciones geograficas)
+YF_SYMBOLS = {
+    "SOLUSDT":  "SOL-USD",
+    "ETHUSDT":  "ETH-USD",
+    "BNBUSDT":  "BNB-USD",
+    "AVAXUSDT": "AVAX-USD",
+    "LINKUSDT": "LINK-USD",
+    "DOTUSDT":  "DOT-USD",
+    "NEARUSDT": "NEAR-USD",
+    "ARBUSDT":  "ARB-USD",
+}
 
 
 # ── SESION ─────────────────────────────────────────────────────────
@@ -61,44 +74,40 @@ def is_in_session():
     return SESSION_START <= gt.hour < SESSION_END
 
 
-# ── DATOS (Bybit publico, sin API key) ───────────────────────────────
+# ── DATOS via yfinance (Yahoo Finance, sin geo-bloqueo) ──────────────
 def fetch_klines(symbol, interval, limit):
-    interval_map = {"15": "15m", "240": "4h", "D": "1d"}
-    binance_interval = interval_map.get(interval, interval + "m")
-    r = requests.get(
-        f"{BINANCE_BASE}/klines",
-        params={"symbol": symbol, "interval": binance_interval, "limit": limit},
-        timeout=15,
-    )
-    try:
-        d = r.json()
-    except Exception:
-        print(f"[DEBUG fetch_klines {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
-        raise
-    print(f"[DEBUG {symbol} {interval}] tipo={type(d).__name__} contenido={str(d)[:150]}")
-    if isinstance(d, dict) and d.get("code"):
-        raise RuntimeError(d.get("msg"))
-    if not isinstance(d, list):
-        raise RuntimeError(f"Respuesta inesperada: {str(d)[:200]}")
-    return [
-        {"time": int(c[0]), "open": float(c[1]), "high": float(c[2]),
-         "low": float(c[3]), "close": float(c[4]), "volume": float(c[5])}
-        for c in d
-    ]
+    yf_sym = YF_SYMBOLS[symbol]
+    if interval == "15":
+        yf_interval, period = "15m", "59d"
+    elif interval == "240":
+        yf_interval, period = "1h", "729d"   # Yahoo no tiene 4h; 1h es equivalente
+    else:
+        yf_interval, period = "1d", "2y"
+
+    df = yf.download(yf_sym, period=period, interval=yf_interval,
+                     progress=False, auto_adjust=True)
+
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.get_level_values(0)
+
+    df = df.tail(limit).copy()
+    candles = []
+    for ts, row in df.iterrows():
+        candles.append({
+            "time":   int(ts.timestamp() * 1000),
+            "open":   float(row["Open"]),
+            "high":   float(row["High"]),
+            "low":    float(row["Low"]),
+            "close":  float(row["Close"]),
+            "volume": float(row["Volume"]),
+        })
+    return candles
 
 
 def fetch_ticker(symbol):
-    r = requests.get(
-        f"{BINANCE_BASE}/ticker/price",
-        params={"symbol": symbol},
-        timeout=15,
-    )
-    try:
-        d = r.json()
-        return {"lastPrice": d["price"]}
-    except Exception:
-        print(f"[DEBUG fetch_ticker {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
-        raise
+    yf_sym = YF_SYMBOLS[symbol]
+    info = yf.Ticker(yf_sym).fast_info
+    return {"lastPrice": str(round(float(info.last_price), 6))}
 
 
 # ── INDICADORES (mismo algoritmo que el dashboard) ───────────────────
