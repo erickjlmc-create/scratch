@@ -48,6 +48,7 @@ SESSION_END = 13
 SESSION_ONLY = os.environ.get("SESSION_ONLY", "false").lower() == "true"
 
 BYBIT_BASE = "https://api.bybit.com/v5/market"
+BINANCE_BASE = "https://api.binance.com/api/v3"
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 
 
@@ -62,9 +63,12 @@ def is_in_session():
 
 # ── DATOS (Bybit publico, sin API key) ───────────────────────────────
 def fetch_klines(symbol, interval, limit):
+    # Binance interval format: 15m, 4h, 1d
+    interval_map = {"15": "15m", "240": "4h", "D": "1d"}
+    binance_interval = interval_map.get(interval, interval + "m")
     r = requests.get(
-        f"{BYBIT_BASE}/kline",
-        params={"category": "linear", "symbol": symbol, "interval": interval, "limit": limit},
+        f"{BINANCE_BASE}/klines",
+        params={"symbol": symbol, "interval": binance_interval, "limit": limit},
         timeout=15,
     )
     try:
@@ -72,24 +76,24 @@ def fetch_klines(symbol, interval, limit):
     except Exception:
         print(f"[DEBUG fetch_klines {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
         raise
-    if d.get("retCode") != 0:
-        raise RuntimeError(d.get("retMsg"))
-    rows = list(reversed(d["result"]["list"]))
+    if isinstance(d, dict) and d.get("code"):
+        raise RuntimeError(d.get("msg"))
     return [
         {"time": int(c[0]), "open": float(c[1]), "high": float(c[2]),
          "low": float(c[3]), "close": float(c[4]), "volume": float(c[5])}
-        for c in rows
+        for c in d
     ]
 
 
 def fetch_ticker(symbol):
     r = requests.get(
-        f"{BYBIT_BASE}/tickers",
-        params={"category": "linear", "symbol": symbol},
+        f"{BINANCE_BASE}/ticker/price",
+        params={"symbol": symbol},
         timeout=15,
     )
     try:
-        return r.json()["result"]["list"][0]
+        d = r.json()
+        return {"lastPrice": d["price"]}
     except Exception:
         print(f"[DEBUG fetch_ticker {symbol}] HTTP {r.status_code} — respuesta: {r.text[:300]}")
         raise
