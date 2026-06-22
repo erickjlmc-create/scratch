@@ -343,6 +343,7 @@ def analyze_pair(pair):
         "price": float(ticker["lastPrice"]),
         "bull_p": bull_p, "bear_p": bear_p,
         "k": round(k_val), "adx": round(adx_val),
+        "st_direction": "bull" if st_bull else "bear",
     }
 
 
@@ -409,8 +410,27 @@ def main():
             print(f"Error en {symbol}: {e}")
             continue
 
-        prev = state.get(symbol, {"grade": "none", "blocked": False})
+        prev = state.get(symbol, {"grade": "none", "blocked": False, "st_direction": None})
         grade = data["grade"]
+
+        # ── Alerta cambio de color Supertrend ──────────────────────────
+        st_now = data["st_direction"]
+        st_prev = prev.get("st_direction")
+        if st_prev is not None and st_now != st_prev:
+            if st_now == "bull":
+                notify(
+                    f"🟢 Supertrend VERDE · {pair['name']}",
+                    f"Supertrend cambio a ALCISTA en 15M · ${data['price']}",
+                    priority="high", tags="green_circle,chart_with_upwards_trend",
+                )
+            else:
+                notify(
+                    f"🔴 Supertrend ROJO · {pair['name']}",
+                    f"Supertrend cambio a BAJISTA en 15M · ${data['price']}",
+                    priority="high", tags="red_circle,chart_with_downwards_trend",
+                )
+            alerts_sent += 1
+            print(f"SUPERTREND FLIP: {pair['name']} → {st_now.upper()} · ${data['price']}")
 
         if grade not in ("none", "blocked") and grade != prev.get("grade"):
             title = f"{grade_label[grade]} {data['direction'].upper()} · {pair['name']}"
@@ -429,7 +449,7 @@ def main():
             )
             alerts_sent += 1
 
-        new_state[symbol] = {"grade": grade, "blocked": data["blocked"]}
+        new_state[symbol] = {"grade": grade, "blocked": data["blocked"], "st_direction": data["st_direction"]}
 
     save_state(new_state)
     print(f"Chequeo completo ({datetime.now(timezone.utc).isoformat()}). Alertas enviadas: {alerts_sent}")
