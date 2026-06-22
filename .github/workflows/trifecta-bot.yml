@@ -4,7 +4,7 @@ on:
   schedule:
     # Cada 15 min, 24/7, todos los dias
     - cron: '*/15 * * * *'
-  #workflow_dispatch: {}   # permite correrlo manualmente desde la pestaña Actions
+  workflow_dispatch: {}   # permite correrlo manualmente desde la pestaña Actions
 
 permissions:
   contents: write   # necesario para que el bot pueda guardar state.json
