@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ETHUSDT": {
@@ -30,7 +30,7 @@
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bear"
   },
