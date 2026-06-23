@@ -1,11 +1,11 @@
 {
   "SOLUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
   "ETHUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
@@ -20,6 +20,11 @@
     "st_direction": "bull"
   },
   "LINKUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "st_direction": "bull"
+  },
+  "DOTUSDT": {
     "grade": "none",
     "blocked": false,
     "st_direction": "bull"
