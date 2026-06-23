@@ -1,12 +1,12 @@
 {
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bear"
   },
   "ETHUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bear"
   },
   "BNBUSDT": {
@@ -15,13 +15,13 @@
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "B",
+    "grade": "App",
     "blocked": false,
     "st_direction": "bear"
   },
   "LINKUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bear"
   },
   "DOTUSDT": {
