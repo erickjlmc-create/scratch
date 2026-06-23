@@ -1,6 +1,6 @@
 {
   "SOLUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
@@ -30,8 +30,8 @@
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ARBUSDT": {
