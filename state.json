@@ -15,8 +15,8 @@
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "LINKUSDT": {
@@ -30,8 +30,8 @@
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ARBUSDT": {
