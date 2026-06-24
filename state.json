@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ETHUSDT": {
@@ -10,8 +10,8 @@
     "st_direction": "bear"
   },
   "BNBUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "AVAXUSDT": {
@@ -20,7 +20,7 @@
     "st_direction": "bear"
   },
   "LINKUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bear"
   },
@@ -30,8 +30,8 @@
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ARBUSDT": {
