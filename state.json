@@ -14,11 +14,6 @@
     "blocked": false,
     "st_direction": "bull"
   },
-  "AVAXUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "st_direction": "bull"
-  },
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
