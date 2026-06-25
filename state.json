@@ -7,7 +7,7 @@
   "ETHUSDT": {
     "grade": "B",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "BNBUSDT": {
     "grade": "B",
@@ -22,12 +22,12 @@
   "LINKUSDT": {
     "grade": "B",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "DOTUSDT": {
     "grade": "B",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "NEARUSDT": {
     "grade": "B",
