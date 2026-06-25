@@ -10,12 +10,12 @@
     "st_direction": "bear"
   },
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bear"
   },
