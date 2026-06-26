@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "st_direction": "bull"
   },
   "ETHUSDT": {
@@ -10,7 +10,7 @@
     "st_direction": "bull"
   },
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
