@@ -5,7 +5,7 @@
     "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
