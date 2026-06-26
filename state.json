@@ -1,6 +1,6 @@
 {
   "SOLUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
@@ -15,8 +15,8 @@
     "st_direction": "bull"
   },
   "AVAXUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bull"
   },
   "LINKUSDT": {
