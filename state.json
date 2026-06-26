@@ -1,4 +1,9 @@
 {
+  "SOLUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "st_direction": "bear"
+  },
   "ETHUSDT": {
     "grade": "none",
     "blocked": false,
