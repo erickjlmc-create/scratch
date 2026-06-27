@@ -5,7 +5,7 @@
     "st_direction": "bear"
   },
   "ETHUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
@@ -25,8 +25,8 @@
     "st_direction": "bear"
   },
   "DOTUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "st_direction": "bear"
   },
   "NEARUSDT": {
