@@ -2,7 +2,7 @@
   "SOLUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "ETHUSDT": {
     "grade": "none",
@@ -15,7 +15,7 @@
     "st_direction": "bull"
   },
   "AVAXUSDT": {
-    "grade": "App",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
