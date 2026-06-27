@@ -15,7 +15,7 @@
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bear"
   },
@@ -25,8 +25,8 @@
     "st_direction": "bear"
   },
   "DOTUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bear"
   },
   "NEARUSDT": {
