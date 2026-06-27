@@ -20,8 +20,8 @@
     "st_direction": "bull"
   },
   "LINKUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bull"
   },
   "DOTUSDT": {
