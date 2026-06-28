@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bull"
   },
   "ETHUSDT": {
@@ -17,7 +17,7 @@
   "AVAXUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "LINKUSDT": {
     "grade": "blocked",
