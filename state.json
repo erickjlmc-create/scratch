@@ -7,7 +7,7 @@
   "ETHUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "BNBUSDT": {
     "grade": "none",
@@ -17,22 +17,22 @@
   "AVAXUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "DOTUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "NEARUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "ARBUSDT": {
     "grade": "none",
