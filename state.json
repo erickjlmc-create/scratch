@@ -32,7 +32,7 @@
   "NEARUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "ARBUSDT": {
     "grade": "none",
