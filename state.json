@@ -15,7 +15,7 @@
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
