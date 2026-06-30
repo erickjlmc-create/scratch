@@ -5,13 +5,13 @@
     "st_direction": "bear"
   },
   "ETHUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "BNBUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "AVAXUSDT": {
@@ -20,18 +20,18 @@
     "st_direction": "bear"
   },
   "LINKUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "DOTUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bear"
   },
   "ARBUSDT": {
