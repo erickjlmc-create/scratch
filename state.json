@@ -15,8 +15,8 @@
     "st_direction": "bear"
   },
   "AVAXUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bull"
   },
   "LINKUSDT": {
