@@ -30,7 +30,7 @@
     "st_direction": "bull"
   },
   "NEARUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bear"
   },
