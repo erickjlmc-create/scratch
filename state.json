@@ -1,16 +1,11 @@
 {
-  "SOLUSDT": {
-    "grade": "B",
-    "blocked": false,
-    "st_direction": "bull"
-  },
   "ETHUSDT": {
     "grade": "B",
     "blocked": false,
     "st_direction": "bear"
   },
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "Ap",
     "blocked": false,
     "st_direction": "bull"
   },
