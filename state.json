@@ -1,6 +1,6 @@
 {
   "SOLUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
@@ -20,7 +20,7 @@
     "st_direction": "bull"
   },
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
