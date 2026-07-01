@@ -5,8 +5,8 @@
     "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "st_direction": "bull"
   },
   "BNBUSDT": {
@@ -20,7 +20,7 @@
     "st_direction": "bull"
   },
   "LINKUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
