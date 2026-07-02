@@ -5,12 +5,12 @@
     "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bull"
   },
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "App",
     "blocked": false,
     "st_direction": "bull"
   },
