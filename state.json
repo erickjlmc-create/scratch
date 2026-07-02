@@ -19,11 +19,6 @@
     "blocked": false,
     "st_direction": "bear"
   },
-  "LINKUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "st_direction": "bear"
-  },
   "DOTUSDT": {
     "grade": "none",
     "blocked": false,
@@ -32,7 +27,7 @@
   "NEARUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "ARBUSDT": {
     "grade": "none",
