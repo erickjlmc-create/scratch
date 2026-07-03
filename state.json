@@ -15,8 +15,8 @@
     "st_direction": "bull"
   },
   "AVAXUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bull"
   },
   "LINKUSDT": {
@@ -30,8 +30,8 @@
     "st_direction": "bull"
   },
   "NEARUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "st_direction": "bull"
   },
   "ARBUSDT": {
