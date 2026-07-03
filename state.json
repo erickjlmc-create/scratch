@@ -2,17 +2,17 @@
   "SOLUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
   "BNBUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "AVAXUSDT": {
     "grade": "none",
@@ -22,7 +22,7 @@
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "DOTUSDT": {
     "grade": "none",
