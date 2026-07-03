@@ -10,7 +10,7 @@
     "st_direction": "bull"
   },
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
@@ -20,12 +20,12 @@
     "st_direction": "bull"
   },
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
   "DOTUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
