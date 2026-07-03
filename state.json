@@ -15,7 +15,7 @@
     "st_direction": "bull"
   },
   "AVAXUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "st_direction": "bull"
   },
@@ -25,7 +25,7 @@
     "st_direction": "bull"
   },
   "DOTUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "st_direction": "bull"
   },
