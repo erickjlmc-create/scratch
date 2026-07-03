@@ -22,10 +22,10 @@
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "DOTUSDT": {
-    "grade": "none",
+    "grade": "App",
     "blocked": false,
     "st_direction": "bull"
   },
