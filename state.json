@@ -2,41 +2,49 @@
   "SOLUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "ETHUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bull"
   },
   "BNBUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "AVAXUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "DOTUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "NEARUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bear"
   },
   "ARBUSDT": {
     "grade": "none",
     "blocked": false,
+    "stc_warn": false,
     "st_direction": "bull"
   }
 }
