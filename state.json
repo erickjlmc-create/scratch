@@ -30,8 +30,8 @@
     "st_direction": "bear"
   },
   "DOTUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
