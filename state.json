@@ -1,22 +1,4 @@
 {
-  "SOLUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
-  "ETHUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
-  "BNBUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
   "AVAXUSDT": {
     "grade": "none",
     "blocked": false,
@@ -33,7 +15,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "NEARUSDT": {
     "grade": "none",
