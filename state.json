@@ -1,10 +1,4 @@
 {
-  "SOLUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
   "ETHUSDT": {
     "grade": "none",
     "blocked": false,
@@ -15,7 +9,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "AVAXUSDT": {
     "grade": "none",
