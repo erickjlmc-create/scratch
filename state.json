@@ -36,8 +36,8 @@
     "st_direction": "bear"
   },
   "NEARUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
