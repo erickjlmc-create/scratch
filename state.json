@@ -6,7 +6,7 @@
     "st_direction": "bull"
   },
   "ETHUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
