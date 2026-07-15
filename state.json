@@ -9,7 +9,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "BNBUSDT": {
     "grade": "none",
@@ -21,7 +21,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "LINKUSDT": {
     "grade": "none",
@@ -51,7 +51,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "INJUSDT": {
     "grade": "none",
