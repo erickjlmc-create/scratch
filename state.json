@@ -46,5 +46,29 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
+  },
+  "OPUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bull"
+  },
+  "INJUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear"
+  },
+  "WLDUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear"
+  },
+  "TIAUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bull"
   }
 }
