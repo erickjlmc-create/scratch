@@ -5,6 +5,12 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "ETHUSDT": {
+    "grade": "B",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bull"
+  },
   "BNBUSDT": {
     "grade": "none",
     "blocked": false,
@@ -48,7 +54,7 @@
     "st_direction": "bull"
   },
   "INJUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
