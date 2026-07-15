@@ -26,6 +26,11 @@ PAIRS = [
     {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
     {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
     {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
+    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
+    {"symbol": "OPUSDT",   "name": "OP/USDT"},
+    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
 ]
 
 CFG = {
@@ -42,8 +47,10 @@ CFG = {
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "SOLUSDT":"SOL-USD","ETHUSDT":"ETH-USD","BNBUSDT":"BNB-USD","AVAXUSDT":"AVAX-USD",
-    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD","NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
+    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
+    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
+    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
+    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
 }
 
 def get_session():
