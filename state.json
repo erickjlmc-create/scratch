@@ -54,8 +54,8 @@
     "st_direction": "bull"
   },
   "INJUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -66,7 +66,7 @@
     "st_direction": "bull"
   },
   "TIAUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
