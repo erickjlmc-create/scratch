@@ -64,13 +64,13 @@ def get_session():
     else:              return "dead2"
 
 SESSION_META={
-    "dead1":  {"operable":False,"caution":False,"label":"💀 ZONA MUERTA","risk":"NO OPERAR"},
-    "asia":   {"operable":False,"caution":True, "label":"🌏 ASIA PRECAUCION","risk":"50% riesgo"},
-    "london": {"operable":True, "caution":False,"label":"🇬🇧 APERTURA LONDRES","risk":"100% riesgo"},
-    "ny":     {"operable":True, "caution":False,"label":"🗽 NY PRIME","risk":"OPTIMO 100%"},
-    "ny_late":{"operable":True, "caution":False,"label":"🌆 NY TARDIO","risk":"60% riesgo"},
-    "post":   {"operable":False,"caution":True, "label":"⚠️ POST-NY","risk":"50% riesgo"},
-    "dead2":  {"operable":False,"caution":False,"label":"🤖 BOTS/MUERTA","risk":"NO OPERAR"},
+    "dead1":  {"operable":False,"caution":False,"label":"ZONA MUERTA","risk":"NO OPERAR"},
+    "asia":   {"operable":False,"caution":True, "label":"ASIA PRECAUCION","risk":"50% riesgo"},
+    "london": {"operable":True, "caution":False,"label":"APERTURA LONDRES","risk":"100% riesgo"},
+    "ny":     {"operable":True, "caution":False,"label":"NY PRIME","risk":"OPTIMO 100%"},
+    "ny_late":{"operable":True, "caution":False,"label":"NY TARDIO","risk":"60% riesgo"},
+    "post":   {"operable":False,"caution":True, "label":"POST-NY","risk":"50% riesgo"},
+    "dead2":  {"operable":False,"caution":False,"label":"BOTS/MUERTA","risk":"NO OPERAR"},
 }
 
 def fetch_klines(symbol,interval,limit):
@@ -391,24 +391,17 @@ def main():
         # 1. Supertrend flip — SIEMPRE notifica
         st_now=data["st_direction"]; st_prev=prev.get("st_direction")
         if st_prev is not None and st_now!=st_prev:
-            if st_now=="bull":
-                notify(
-                    f"🟢 Supertrend VERDE · {pair['name']}",
-                    f"📈 Supertrend cambio a ALCISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
-                    f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
-                    f"🕐 Sesion: {data['session_label']}",
-                    priority="high", tags="green_circle,chart_with_upwards_trend",
-                )
-            else:
-                notify(
-                    f"🔴 Supertrend ROJO · {pair['name']}",
-                    f"📉 Supertrend cambio a BAJISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
-                    f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
-                    f"🕐 Sesion: {data['session_label']}",
-                    priority="high", tags="red_circle,chart_with_downwards_trend",
-                )
+            icon="verde ALCISTA" if st_now=="bull" else "rojo BAJISTA"
+            tag ="green_circle,chart_with_upwards_trend" if st_now=="bull" else "red_circle,chart_with_downwards_trend"
+            emoji="ST VERDE" if st_now=="bull" else "ST ROJO"
+            notify(
+                f"{emoji} · {pair['name']}",
+                f"Supertrend cambio a {icon} en 15M\n"
+                f"Precio: ${data['price']} · STC: {data['stc']}\n"
+                f"EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
+                f"Sesion: {data['session_label']}",
+                priority="high", tags=tag,
+            )
             alerts_sent+=1
             print(f"ST FLIP: {pair['name']} -> {st_now.upper()} ${data['price']}")
 
@@ -416,29 +409,15 @@ def main():
         if grade in ("App","Ap","B","prec") and grade!=prev.get("grade"):
             p=max(data["bull_p"],data["bear_p"])
             pri="urgent" if grade=="App" else "high" if grade in ("Ap","prec") else "default"
-            if data["direction"]=="long":
-                dir_icon="📈"; dir_sym="LONG"
-                tag="rotating_light,chart_with_upwards_trend"
-            else:
-                dir_icon="📉"; dir_sym="SHORT"
-                tag="rotating_light,chart_with_downwards_trend"
-            grade_icons={"App":"🚨","Ap":"⭐","B":"✅","prec":"⚠️"}
-            sl_txt  = f"${data['sl']}"  if data['sl']  else "--"
-            tp1_txt = f"${data['tp1']}" if data['tp1'] else "--"
-            tp2_txt = f"${data['tp2']}" if data['tp2'] else "--"
-            tp3_txt = f"${data['tp3']}" if data['tp3'] else "--"
+            dir_sym="LONG" if data["direction"]=="long" else "SHORT"
+            tag="rotating_light,"+("chart_with_upwards_trend" if data["direction"]=="long" else "chart_with_downwards_trend")
             notify(
-                f"{grade_icons[grade]} {gl[grade]} {dir_icon} {dir_sym} · {pair['name']}",
-                f"🎯 {p}/3 pilares · STC:{data['stc']} · ADX:{data['adx']} · Chop:{data['chop']}\n"
-                f"📐 ATR%:{data['atr_pct']}% · WR:{data['wr']} · K:{data['k']}\n"
-                f"💰 Precio: ${data['price']}\n"
-                f"🛑 SL: {sl_txt}\n"
-                f"🎯 TP1: {tp1_txt} (1.5R · 40%)\n"
-                f"🎯 TP2: {tp2_txt} (2.5R · 35%)\n"
-                f"🏆 TP3: {tp3_txt} (4R · runner)\n"
-                f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
-                f"📊 EMA200 15M: ${data['ema200_15m']}\n"
-                f"🕐 {data['session_label']} · {data['session_risk']}",
+                f"{gl[grade]} {dir_sym} · {pair['name']}",
+                f"{p}/3 pilares · STC:{data['stc']} · ADX:{data['adx']} · Chop:{data['chop']}\n"
+                f"ATR%:{data['atr_pct']}% · WR:{data['wr']} · StochRSI K:{data['k']}\n"
+                f"Precio: ${data['price']}\n"
+                f"{fmt_levels(data)}\n"
+                f"Sesion: {data['session_label']} · {data['session_risk']}",
                 priority=pri, tags=tag,
             )
             alerts_sent+=1
@@ -447,11 +426,11 @@ def main():
         # 3. Bloqueado
         if data["blocked"] and not prev.get("blocked"):
             notify(
-                f"🔒 Bloqueado · {pair['name']}",
-                f"⚠️ Setup valido pero guardia activa\n"
-                f"📐 StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
-                f"📊 EMA200 4H: ${data['ema200_4h']} · Precio: ${data['price']}\n"
-                f"🕐 {data['session_label']}",
+                f"BLOQUEADO · {pair['name']}",
+                f"Setup valido pero guardia activa\n"
+                f"StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
+                f"EMA200 4H: ${data['ema200_4h']} · Precio: ${data['price']}\n"
+                f"Sesion: {data['session_label']}",
                 priority="low", tags="lock,warning",
             )
             alerts_sent+=1
@@ -459,10 +438,10 @@ def main():
         # 4. STC maduro
         if data["stc_warn"] and not prev.get("stc_warn"):
             notify(
-                f"⚡ STC Maduro · {pair['name']}",
-                f"⚠️ Senal activa pero STC en extremo ({data['stc']})\n"
-                f"📉 Posible agotamiento · Reducir tamano\n"
-                f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
+                f"STC MADURO · {pair['name']}",
+                f"Senal activa pero STC en extremo ({data['stc']})\n"
+                f"Posible agotamiento · Reducir tamano\n"
+                f"Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
                 priority="default", tags="warning",
             )
             alerts_sent+=1
