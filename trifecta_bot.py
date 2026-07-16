@@ -392,20 +392,30 @@ def main():
     state     = load_state()
     new_state = {}
     alerts_sent = 0
-    session_signals = []          # para resumen y confluencia
+    session_signals = []
+    expired_this_run = []         # para circuit breaker
     gl = {"App":"A++","Ap":"A+","B":"B","prec":"PRECAUCION"}
 
-    now_utc = datetime.now(timezone.utc)
-    gt_hour = (now_utc.hour - 6) % 24    # hora Guatemala
-    gt_min  = now_utc.minute
+    now_utc  = datetime.now(timezone.utc)
+    gt_hour  = (now_utc.hour - 6) % 24
+    gt_min   = now_utc.minute
+    today_str = now_utc.strftime("%Y-%m-%d")
+    weekday   = now_utc.weekday()   # 0=Lun … 6=Dom
 
-    # ── Resumen de apertura (07:00-07:14 GT) ────────────────────────
-    is_open_window  = (gt_hour == 7  and gt_min < 15)
-    # ── Resumen de cierre (13:30-13:44 GT) ──────────────────────────
-    is_close_window = (gt_hour == 13 and 30 <= gt_min < 45)
+    is_open_window    = (gt_hour == 7  and gt_min < 15)
+    is_close_window   = (gt_hour == 13 and 30 <= gt_min < 45)
+    is_weekly_window  = (weekday == 0  and gt_hour == 6 and 50 <= gt_min <= 59)
 
-    # ── Contador diario de trades ────────────────────────────────────
-    today_str   = now_utc.strftime("%Y-%m-%d")
+    # ── Calendario macro hardcodeado (YYYY-MM-DD HH UTC) ────────────
+    # Actualiza estas fechas cada mes con el calendario económico
+    MACRO_EVENTS = [
+        {"date":"2026-07-29","hour_utc":18,"name":"FOMC Decision"},
+        {"date":"2026-07-30","hour_utc":12,"name":"GDP Q2"},
+        {"date":"2026-08-01","hour_utc":12,"name":"NFP Julio"},
+        {"date":"2026-08-12","hour_utc":12,"name":"CPI Julio"},
+    ]
+
+    # ── Contador diario ──────────────────────────────────────────────
     trade_count = state.get("_trade_count", {})
     today_count = trade_count.get(today_str, 0)
     DAILY_LIMIT = 3
@@ -417,13 +427,65 @@ def main():
         new_state["_trade_count"] = trade_count
 
     def check_trade_limit():
-        """Devuelve True si aun hay margen para operar."""
         return today_count < DAILY_LIMIT
 
+    # ── Circuit breaker: señales caducadas consecutivas ──────────────
+    consecutive_expired = state.get("_consecutive_expired", 0)
+
+
+    # ── Aviso evento macro (15 min antes) ───────────────────────────
+    for ev in MACRO_EVENTS:
+        ev_dt = datetime.strptime(f"{ev['date']} {ev['hour_utc']:02d}:00",
+                                  "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+        mins_to_event = (ev_dt - now_utc).total_seconds() / 60
+        ev_key = f"_macro_{ev['date']}_{ev['hour_utc']}"
+        if 0 < mins_to_event <= 15 and not state.get(ev_key):
+            notify(
+                f"📅 EVENTO MACRO en {int(mins_to_event)} min",
+                f"⚠️ {ev['name']}\n"
+                f"🚫 No abrir nuevas posiciones\n"
+                f"🛡️ Si tienes trade abierto: mueve SL a breakeven\n"
+                f"🕐 Hora GT: {int(mins_to_event)} minutos",
+                priority="urgent", tags="calendar,warning",
+            )
+            new_state[ev_key] = True
+            alerts_sent += 1
+            print(f"MACRO: {ev['name']} en {int(mins_to_event)} min")
+        elif mins_to_event <= 0 and state.get(ev_key):
+            new_state[ev_key] = False   # resetear despues del evento
+
+    # ── Resumen semanal (Lunes 06:50 GT) ────────────────────────────
+    if is_weekly_window and not state.get("_weekly_sent"):
+        weekly_lines = []
+        for pair in PAIRS:
+            try:
+                d = analyze_pair(pair)
+                st  = "🟢" if d["st_direction"]=="bull" else "🔴"
+                e4h = "↑" if d["price"] > d["ema200_4h"] else "↓"
+                stc = "▲" if d["stc"] > 50 else "▼"
+                weekly_lines.append(
+                    f"{st} {pair['name']:<12} 4H:{e4h} STC:{stc}{d['stc']:>3} ADX:{d['adx']:>3}"
+                )
+            except Exception:
+                weekly_lines.append(f"❓ {pair['name']:<12} error")
+        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
+        notify(
+            f"📅 RESUMEN SEMANAL · {now_utc.strftime('%d %b %Y')}",
+            f"Vista 4H de los 13 pares\n"
+            f"{btc_str}\n\n"
+            + "\n".join(weekly_lines) +
+            f"\n\nSesion NY abre en 10 min · 07:00 GT",
+            priority="default", tags="calendar,chart_bar",
+        )
+        new_state["_weekly_sent"] = True
+        alerts_sent += 1
+    elif weekday != 0:
+        pass   # resetea el flag en dias que no son lunes
 
     btc = get_btc_context()
     btc_ok_long  = btc is None or btc["bull"]
     btc_ok_short = btc is None or not btc["bull"]
+
 
     def btc_line(direction):
         if btc is None: return ""
@@ -598,6 +660,7 @@ def main():
         # ── 3. Señal caducada ────────────────────────────────────────
         prev_grade = prev.get("grade","none")
         if prev_grade in ("App","Ap","B") and grade == "none":
+            expired_this_run.append(pair["name"])
             notify(
                 f"❌ Señal caducada · {pair['name']}",
                 f"La señal {gl[prev_grade]} ya no esta activa\n"
@@ -606,6 +669,22 @@ def main():
                 priority="low", tags="x,warning",
             )
             alerts_sent += 1
+
+        # ── 4. Volatilidad extrema (ATR percentile > 85) ─────────────
+        atr_key = f"_atr_extreme_{sym}"
+        if data["atr_pct"] >= 85 and not state.get(atr_key):
+            notify(
+                f"💥 Volatilidad extrema · {pair['name']}",
+                f"ATR percentile: {data['atr_pct']}% (umbral: 85%)\n"
+                f"⚠️ Movimiento inusual · Confirmar antes de entrar\n"
+                f"💰 Precio: ${data['price']} · ADX: {data['adx']}\n"
+                f"🕐 {data['session_label']}",
+                priority="default", tags="fire,warning",
+            )
+            new_state[atr_key] = True
+            alerts_sent += 1
+        elif data["atr_pct"] < 75:
+            new_state[atr_key] = False   # resetear cuando baje
 
         # ── 4. Bloqueado ─────────────────────────────────────────────
         if data["blocked"] and not prev.get("blocked"):
@@ -633,6 +712,39 @@ def main():
         new_state[sym] = {"grade":grade,"blocked":data["blocked"],
                           "stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
 
+    # ── Circuit breaker: 2 señales caducadas consecutivas ───────────
+    if expired_this_run:
+        consecutive_expired += len(expired_this_run)
+        new_state["_consecutive_expired"] = consecutive_expired
+        if consecutive_expired >= 2 and not state.get("_circuit_breaker_sent"):
+            notify(
+                "⛔ CIRCUIT BREAKER · Señales fallando",
+                f"{consecutive_expired} señales caducadas consecutivas\n"
+                f"📉 El mercado no esta respondiendo al sistema\n"
+                f"🛡️ Reduce tamaño al 50% o para por hoy\n"
+                f"🔄 Se resetea automaticamente manana",
+                priority="high", tags="stop_sign,warning",
+            )
+            new_state["_circuit_breaker_sent"] = True
+            alerts_sent += 1
+    else:
+        # si hubo señales activas sin caducar, resetear contador
+        active_now = any(
+            new_state.get(p["symbol"],{}).get("grade","none") in ("App","Ap","B")
+            for p in PAIRS
+        )
+        if active_now:
+            new_state["_consecutive_expired"] = 0
+        else:
+            new_state["_consecutive_expired"] = consecutive_expired
+
+    # Resetear circuit breaker al dia siguiente
+    cb_date = state.get("_circuit_breaker_date","")
+    if cb_date != today_str:
+        new_state["_circuit_breaker_sent"] = False
+        new_state["_circuit_breaker_date"] = today_str
+        new_state["_consecutive_expired"]  = 0
+
     # ── Confluencia multi-par (3+ pares misma direccion) ────────────
     active = [s for s in session_signals if s["grade"] in ("App","Ap","B")]
     longs  = [s for s in active if s["dir"]=="long"]
@@ -652,9 +764,25 @@ def main():
 
     # ── Resumen de cierre NY ─────────────────────────────────────────
     if is_close_window and not state.get("_close_sent"):
-        prev_signals = [(k,v) for k,v in state.items()
-                        if k not in ("_open_sent","_close_sent")
-                        and v.get("grade","none") not in ("none","blocked")]
+        # calcular mejor oportunidad de la sesion
+        best_pair_lines = []
+        for sig in session_signals:
+            sym_key = next((p["symbol"] for p in PAIRS if p["name"]==sig["pair"]), None)
+            if not sym_key: continue
+            try:
+                d = analyze_pair({"symbol":sym_key,"name":sig["pair"]})
+                entry = state.get(sym_key,{}).get("price", d["price"])
+                move_pct = ((d["price"]-entry)/entry*100) if sig["dir"]=="long" else ((entry-d["price"])/entry*100)
+                best_pair_lines.append((sig["pair"], sig["grade"], move_pct, d["price"]))
+            except Exception:
+                pass
+        best_str = ""
+        if best_pair_lines:
+            best = max(best_pair_lines, key=lambda x: x[2])
+            icon = "🏆" if best[2] > 0 else "📉"
+            best_str = (f"\n{icon} Mejor oportunidad: {best[0]} ({gl[best[1]]})\n"
+                        f"   Movimiento: {best[2]:+.2f}% · Precio actual: ${best[3]}")
+
         btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'})" if btc else ""
         notify(
             "📊 CIERRE SESION NY · Trifecta Pro",
@@ -665,8 +793,9 @@ def main():
                f"A+:{sum(1 for s in session_signals if s['grade']=='Ap')} · "
                f"B:{sum(1 for s in session_signals if s['grade']=='B')}\n"
                if session_signals else "  Ninguna\n")
-            + f"Pares activos al cierre: {len(prev_signals)}\n"
-            f"Proxima sesion: 07:00 GT manana",
+            + f"Trades ejecutados hoy: {today_count}/{DAILY_LIMIT}\n"
+            + best_str +
+            f"\nProxima sesion: 07:00 GT manana",
             priority="default", tags="chart_bar",
         )
         new_state["_close_sent"] = True
