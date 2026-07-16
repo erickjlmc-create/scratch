@@ -335,244 +335,69 @@ def analyze_pair(pair):
         "session":sess,"session_label":meta["label"],"session_risk":meta["risk"],
     }
 
-def calc_position(price, sl):
-    """Calculadora de posicion: capital $100, riesgo 1%."""
-    CAPITAL   = 100.0
-    RISK_PCT  = 0.01
-    risk_usd  = CAPITAL * RISK_PCT          # $1.00
-    dist      = abs(price - sl)
-    if dist == 0: return None
-    contracts = risk_usd / dist
-    pos_value = contracts * price
-    dist_pct  = (dist / price) * 100
-    return {
-        "risk_usd":  round(risk_usd, 2),
-        "dist":      round(dist, 4),
-        "dist_pct":  round(dist_pct, 2),
-        "contracts": round(contracts, 4),
-        "pos_value": round(pos_value, 2),
-        "margin_5x": round(pos_value / 5, 2),
-    }
-
-def get_btc_context():
-    """Evalua el estado actual de BTC para filtro de correlacion."""
+def load_state():
     try:
-        c = fetch_klines("BTCUSDT" if "BTCUSDT" in YF_SYMBOLS else "BTCUSDT_fake",
-                         "15", 50)
-    except Exception:
-        # BTC no esta en PAIRS, descargarlo directo
+        with open(STATE_FILE) as f: return json.load(f)
+    except: return {}
+
+def save_state(s):
+    with open(STATE_FILE,"w") as f: json.dump(s,f,indent=2)
+
+def notify(title,body,priority="default",tags="rotating_light"):
+    topic=os.environ.get("NTFY_TOPIC")
+    if topic:
         try:
-            df = yf.download("BTC-USD", period="5d", interval="15m",
-                             progress=False, auto_adjust=True)
-            if isinstance(df.columns, pd.MultiIndex):
-                df.columns = df.columns.get_level_values(0)
-            df = df.tail(50)
-            c = [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),
-                  "high":float(r["High"]),"low":float(r["Low"]),
-                  "close":float(r["Close"]),"volume":float(r["Volume"])}
-                 for ts,r in df.iterrows()]
-        except Exception as e:
-            print(f"BTC fetch error: {e}")
-            return None
-    if len(c) < 20: return None
-    closes = [x["close"] for x in c]
-    st_trend, _ = calc_supertrend(c, CFG["ST_PERIOD"], CFG["ST_FACTOR"])
-    bt = st_trend[-1]
-    chg1h = ((closes[-1] - closes[-4]) / closes[-4]) * 100 if len(closes) >= 4 else 0
-    e9  = ema(closes, 9)[-1] or closes[-1]
-    e21 = ema(closes, 21)[-1] or closes[-1]
-    strong = bt == 1 and e9 > e21 and chg1h > 0
-    weak   = bt == -1 or (bt == 1 and chg1h < -0.5)
-    return {
-        "bull": bt == 1, "strong": strong, "weak": weak,
-        "chg1h": round(chg1h, 2), "price": round(closes[-1], 2),
-    }
+            requests.post(f"https://ntfy.sh/{topic}",data=body.encode("utf-8"),
+                          headers={"Title":title,"Priority":priority,"Tags":tags},timeout=10)
+        except Exception as e: print("Error ntfy:",e)
+    bot=os.environ.get("TELEGRAM_BOT_TOKEN"); chat=os.environ.get("TELEGRAM_CHAT_ID")
+    if bot and chat:
+        try:
+            requests.post(f"https://api.telegram.org/bot{bot}/sendMessage",
+                          json={"chat_id":chat,"text":f"*{title}*\n{body}","parse_mode":"Markdown"},
+                          timeout=10)
+        except Exception as e: print("Error Telegram:",e)
+    if not topic and not (bot and chat):
+        print(f"[Sin canal] {title} | {body}")
 
 def main():
-    state     = load_state()
-    new_state = {}
-    alerts_sent = 0
-    session_signals = []
-    expired_this_run = []         # para circuit breaker
-    gl = {"App":"A++","Ap":"A+","B":"B","prec":"PRECAUCION"}
-
-    now_utc  = datetime.now(timezone.utc)
-    gt_hour  = (now_utc.hour - 6) % 24
-    gt_min   = now_utc.minute
-    today_str = now_utc.strftime("%Y-%m-%d")
-    weekday   = now_utc.weekday()   # 0=Lun … 6=Dom
-
-    is_open_window    = (gt_hour == 7  and gt_min < 15)
-    is_close_window   = (gt_hour == 13 and 30 <= gt_min < 45)
-    is_weekly_window  = (weekday == 0  and gt_hour == 6 and 50 <= gt_min <= 59)
-
-    # ── Calendario macro hardcodeado (YYYY-MM-DD HH UTC) ────────────
-    # Actualiza estas fechas cada mes con el calendario económico
-    MACRO_EVENTS = [
-        {"date":"2026-07-29","hour_utc":18,"name":"FOMC Decision"},
-        {"date":"2026-07-30","hour_utc":12,"name":"GDP Q2"},
-        {"date":"2026-08-01","hour_utc":12,"name":"NFP Julio"},
-        {"date":"2026-08-12","hour_utc":12,"name":"CPI Julio"},
-    ]
-
-    # ── Contador diario ──────────────────────────────────────────────
-    trade_count = state.get("_trade_count", {})
-    today_count = trade_count.get(today_str, 0)
-    DAILY_LIMIT = 3
-
-    def register_trade():
-        nonlocal today_count
-        today_count += 1
-        trade_count[today_str] = today_count
-        new_state["_trade_count"] = trade_count
-
-    def check_trade_limit():
-        return today_count < DAILY_LIMIT
-
-    # ── Circuit breaker: señales caducadas consecutivas ──────────────
-    consecutive_expired = state.get("_consecutive_expired", 0)
-
-
-    # ── Aviso evento macro (15 min antes) ───────────────────────────
-    for ev in MACRO_EVENTS:
-        ev_dt = datetime.strptime(f"{ev['date']} {ev['hour_utc']:02d}:00",
-                                  "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
-        mins_to_event = (ev_dt - now_utc).total_seconds() / 60
-        ev_key = f"_macro_{ev['date']}_{ev['hour_utc']}"
-        if 0 < mins_to_event <= 15 and not state.get(ev_key):
-            notify(
-                f"📅 EVENTO MACRO en {int(mins_to_event)} min",
-                f"⚠️ {ev['name']}\n"
-                f"🚫 No abrir nuevas posiciones\n"
-                f"🛡️ Si tienes trade abierto: mueve SL a breakeven\n"
-                f"🕐 Hora GT: {int(mins_to_event)} minutos",
-                priority="urgent", tags="calendar,warning",
-            )
-            new_state[ev_key] = True
-            alerts_sent += 1
-            print(f"MACRO: {ev['name']} en {int(mins_to_event)} min")
-        elif mins_to_event <= 0 and state.get(ev_key):
-            new_state[ev_key] = False   # resetear despues del evento
-
-    # ── Resumen semanal (Lunes 06:50 GT) ────────────────────────────
-    if is_weekly_window and not state.get("_weekly_sent"):
-        weekly_lines = []
-        for pair in PAIRS:
-            try:
-                d = analyze_pair(pair)
-                st  = "🟢" if d["st_direction"]=="bull" else "🔴"
-                e4h = "↑" if d["price"] > d["ema200_4h"] else "↓"
-                stc = "▲" if d["stc"] > 50 else "▼"
-                weekly_lines.append(
-                    f"{st} {pair['name']:<12} 4H:{e4h} STC:{stc}{d['stc']:>3} ADX:{d['adx']:>3}"
-                )
-            except Exception:
-                weekly_lines.append(f"❓ {pair['name']:<12} error")
-        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
-        notify(
-            f"📅 RESUMEN SEMANAL · {now_utc.strftime('%d %b %Y')}",
-            f"Vista 4H de los 13 pares\n"
-            f"{btc_str}\n\n"
-            + "\n".join(weekly_lines) +
-            f"\n\nSesion NY abre en 10 min · 07:00 GT",
-            priority="default", tags="calendar,chart_bar",
-        )
-        new_state["_weekly_sent"] = True
-        alerts_sent += 1
-    elif weekday != 0:
-        pass   # resetea el flag en dias que no son lunes
-
-    btc = get_btc_context()
-    btc_ok_long  = btc is None or btc["bull"]
-    btc_ok_short = btc is None or not btc["bull"]
-
-
-    def btc_line(direction):
-        if btc is None: return ""
-        if direction == "long" and btc["weak"]:
-            return f"⚠️ CONTEXTO BTC: Bajando {btc['chg1h']}% en 1H · Reducir tamano 60%\n"
-        if direction == "short" and btc["strong"]:
-            return f"⚠️ CONTEXTO BTC: Subiendo {btc['chg1h']}% en 1H · Reducir tamano 60%\n"
-        trend = "ALCISTA" if btc["bull"] else "BAJISTA"
-        return f"✅ BTC {trend} ({btc['chg1h']:+.1f}% 1H) · Alineado\n"
-
-    def checklist(grade, direction):
-        """Decision binaria segun el grade."""
-        if grade == "App":
-            return "📋 CHECKLIST: A++ → EJECUTAR DIRECTO"
-        if grade == "Ap":
-            return "📋 CHECKLIST: A+ → EJECUTAR (confirmar 1H alineado)"
-        if grade == "B":
-            return ("📋 CHECKLIST B → verificar:\n"
-                    "  1. Vela 15M cierra limpia\n"
-                    "  2. Volumen > promedio\n"
-                    "  3. No hay resistencia/soporte cercano")
-        if grade == "prec":
-            return "📋 CHECKLIST PREC → Solo con contexto muy claro · 50% tamano"
-        return ""
-
-    # ── RESUMEN APERTURA NY ──────────────────────────────────────────
-    if is_open_window and not state.get("_open_sent"):
-        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
-        # estado de todos los pares
-        lines = []
-        for pair in PAIRS:
-            try:
-                d = analyze_pair(pair)
-                st = "🟢" if d["st_direction"]=="bull" else "🔴"
-                e4h = "↑" if d["price"] > d["ema200_4h"] else "↓"
-                lines.append(f"{st} {pair['name']:<12} EMA200 4H:{e4h}  STC:{d['stc']:>3}")
-            except Exception:
-                lines.append(f"❓ {pair['name']:<12} error")
-        notify(
-            "📊 APERTURA SESION NY · Trifecta Pro",
-            f"🕖 07:00 GT · {now_utc.strftime('%a %d %b')}\n"
-            f"{btc_str}\n\n"
-            + "\n".join(lines),
-            priority="default", tags="chart_bar",
-        )
-        new_state["_open_sent"] = True
-        alerts_sent += 1
-    elif not is_open_window:
-        # resetear flag fuera de la ventana
-        pass
+    state=load_state(); new_state={}; alerts_sent=0
+    gl={"App":"A++","Ap":"A+","B":"B","prec":"PRECAUCION"}
 
     for pair in PAIRS:
-        sym = pair["symbol"]
-        try: data = analyze_pair(pair)
-        except Exception as e:
-            print(f"Error en {sym}: {e}"); continue
+        sym=pair["symbol"]
+        try: data=analyze_pair(pair)
+        except Exception as e: print(f"Error en {sym}: {e}"); continue
 
-        prev  = state.get(sym, {"grade":"none","blocked":False,
-                                "stc_warn":False,"st_direction":None})
-        grade = data["grade"]
+        prev=state.get(sym,{"grade":"none","blocked":False,"stc_warn":False,"st_direction":None})
+        grade=data["grade"]
 
-        # ── Calculadora de posicion ──────────────────────────────────
-        pos = None
-        if data["sl"] and data["price"]:
-            pos = calc_position(data["price"], data["sl"])
-
-        def pos_block():
-            if not pos: return ""
+        def fmt_levels(d):
+            sl  = f"${d['sl']}"  if d['sl']  else "--"
+            tp1 = f"${d['tp1']}" if d['tp1'] else "--"
+            tp2 = f"${d['tp2']}" if d['tp2'] else "--"
+            tp3 = f"${d['tp3']}" if d['tp3'] else "--"
             return (
-                f"💵 Capital: $100 · Riesgo 1% = ${pos['risk_usd']}\n"
-                f"📏 Distancia SL: ${pos['dist']} ({pos['dist_pct']}%)\n"
-                f"📦 Contratos: {pos['contracts']}\n"
-                f"💼 Valor posicion: ${pos['pos_value']} (margen 5x: ~${pos['margin_5x']})\n"
+                f"SL: {sl}\n"
+                f"TP1: {tp1} (1.5R · 40%)\n"
+                f"TP2: {tp2} (2.5R · 35%)\n"
+                f"TP3: {tp3} (4R · runner)\n"
+                f"---\n"
+                f"EMA200 4H: ${d['ema200_4h']}\n"
+                f"EMA50  4H: ${d['ema50_4h']}\n"
+                f"EMA200 15M: ${d['ema200_15m']}"
             )
 
-        # ── 1. Supertrend flip — SIEMPRE ────────────────────────────
-        st_now  = data["st_direction"]
-        st_prev = prev.get("st_direction")
-        if st_prev is not None and st_now != st_prev:
-            if st_now == "bull":
+        # 1. Supertrend flip — SIEMPRE notifica
+        st_now=data["st_direction"]; st_prev=prev.get("st_direction")
+        if st_prev is not None and st_now!=st_prev:
+            if st_now=="bull":
                 notify(
                     f"🟢 Supertrend VERDE · {pair['name']}",
                     f"📈 Supertrend cambio a ALCISTA en 15M\n"
                     f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
-                    f"{btc_line('long')}"
-                    f"🕐 {data['session_label']}",
+                    f"🕐 Sesion: {data['session_label']}",
                     priority="high", tags="green_circle,chart_with_upwards_trend",
                 )
             else:
@@ -581,112 +406,45 @@ def main():
                     f"📉 Supertrend cambio a BAJISTA en 15M\n"
                     f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
-                    f"{btc_line('short')}"
-                    f"🕐 {data['session_label']}",
+                    f"🕐 Sesion: {data['session_label']}",
                     priority="high", tags="red_circle,chart_with_downwards_trend",
                 )
-            alerts_sent += 1
+            alerts_sent+=1
             print(f"ST FLIP: {pair['name']} -> {st_now.upper()} ${data['price']}")
 
-        # ── 2. Señal nueva ───────────────────────────────────────────
-        if grade in ("App","Ap","B","prec") and grade != prev.get("grade"):
-            p   = max(data["bull_p"], data["bear_p"])
-            pri = "urgent" if grade=="App" else "high" if grade in ("Ap","prec") else "default"
-            if data["direction"] == "long":
+        # 2. Senal nueva
+        if grade in ("App","Ap","B","prec") and grade!=prev.get("grade"):
+            p=max(data["bull_p"],data["bear_p"])
+            pri="urgent" if grade=="App" else "high" if grade in ("Ap","prec") else "default"
+            if data["direction"]=="long":
                 dir_icon="📈"; dir_sym="LONG"
                 tag="rotating_light,chart_with_upwards_trend"
-                btc_aligned = btc_ok_long
             else:
                 dir_icon="📉"; dir_sym="SHORT"
                 tag="rotating_light,chart_with_downwards_trend"
-                btc_aligned = btc_ok_short
-
-            grade_icons = {"App":"🚨","Ap":"⭐","B":"✅","prec":"⚠️"}
+            grade_icons={"App":"🚨","Ap":"⭐","B":"✅","prec":"⚠️"}
             sl_txt  = f"${data['sl']}"  if data['sl']  else "--"
             tp1_txt = f"${data['tp1']}" if data['tp1'] else "--"
             tp2_txt = f"${data['tp2']}" if data['tp2'] else "--"
             tp3_txt = f"${data['tp3']}" if data['tp3'] else "--"
-
-            # advertencia si BTC no alineado
-            btc_warn = ""
-            if not btc_aligned and btc:
-                trend_btc = "cayendo" if data["direction"]=="long" else "subiendo"
-                btc_warn = f"⚠️ BTC {trend_btc} {btc['chg1h']:+.1f}% · Senal valida pero reducir 60%\n"
-
-            # contador de trades del dia
-            register_trade()
-            trades_restantes = DAILY_LIMIT - today_count
-            if trades_restantes > 0:
-                counter_line = f"📊 Trade #{today_count}/{DAILY_LIMIT} hoy · Quedan {trades_restantes}\n"
-            else:
-                counter_line = f"🚫 Trade #{today_count}/{DAILY_LIMIT} · LIMITE DIARIO ALCANZADO\n"
-
             notify(
                 f"{grade_icons[grade]} {gl[grade]} {dir_icon} {dir_sym} · {pair['name']}",
                 f"🎯 {p}/3 pilares · STC:{data['stc']} · ADX:{data['adx']} · Chop:{data['chop']}\n"
                 f"📐 ATR%:{data['atr_pct']}% · WR:{data['wr']} · K:{data['k']}\n"
                 f"💰 Precio: ${data['price']}\n"
-                f"🛑 SL: {sl_txt} (Supertrend)\n"
+                f"🛑 SL: {sl_txt}\n"
                 f"🎯 TP1: {tp1_txt} (1.5R · 40%)\n"
                 f"🎯 TP2: {tp2_txt} (2.5R · 35%)\n"
                 f"🏆 TP3: {tp3_txt} (4R · runner)\n"
-                f"─────────────────\n"
-                f"{pos_block()}"
-                f"─────────────────\n"
                 f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
                 f"📊 EMA200 15M: ${data['ema200_15m']}\n"
-                f"─────────────────\n"
-                f"{btc_warn}"
-                f"{counter_line}"
-                f"{checklist(grade, data['direction'])}\n"
                 f"🕐 {data['session_label']} · {data['session_risk']}",
                 priority=pri, tags=tag,
             )
-            alerts_sent += 1
-            session_signals.append({"pair":pair["name"],"grade":grade,"dir":data["direction"]})
+            alerts_sent+=1
             print(f"SENAL: {gl[grade]} {dir_sym} {pair['name']} ${data['price']}")
 
-            # aviso especial al alcanzar el limite
-            if today_count == DAILY_LIMIT:
-                notify(
-                    "🚫 LIMITE DIARIO ALCANZADO",
-                    f"Ya completaste {DAILY_LIMIT} trades hoy\n"
-                    f"El manual indica DETENER operaciones\n"
-                    f"Proxima sesion: 07:00 GT manana",
-                    priority="high", tags="stop_sign,warning",
-                )
-                alerts_sent += 1
-
-        # ── 3. Señal caducada ────────────────────────────────────────
-        prev_grade = prev.get("grade","none")
-        if prev_grade in ("App","Ap","B") and grade == "none":
-            expired_this_run.append(pair["name"])
-            notify(
-                f"❌ Señal caducada · {pair['name']}",
-                f"La señal {gl[prev_grade]} ya no esta activa\n"
-                f"💰 Precio actual: ${data['price']}\n"
-                f"🕐 {data['session_label']}",
-                priority="low", tags="x,warning",
-            )
-            alerts_sent += 1
-
-        # ── 4. Volatilidad extrema (ATR percentile > 85) ─────────────
-        atr_key = f"_atr_extreme_{sym}"
-        if data["atr_pct"] >= 85 and not state.get(atr_key):
-            notify(
-                f"💥 Volatilidad extrema · {pair['name']}",
-                f"ATR percentile: {data['atr_pct']}% (umbral: 85%)\n"
-                f"⚠️ Movimiento inusual · Confirmar antes de entrar\n"
-                f"💰 Precio: ${data['price']} · ADX: {data['adx']}\n"
-                f"🕐 {data['session_label']}",
-                priority="default", tags="fire,warning",
-            )
-            new_state[atr_key] = True
-            alerts_sent += 1
-        elif data["atr_pct"] < 75:
-            new_state[atr_key] = False   # resetear cuando baje
-
-        # ── 4. Bloqueado ─────────────────────────────────────────────
+        # 3. Bloqueado
         if data["blocked"] and not prev.get("blocked"):
             notify(
                 f"🔒 Bloqueado · {pair['name']}",
@@ -696,9 +454,9 @@ def main():
                 f"🕐 {data['session_label']}",
                 priority="low", tags="lock,warning",
             )
-            alerts_sent += 1
+            alerts_sent+=1
 
-        # ── 5. STC maduro ────────────────────────────────────────────
+        # 4. STC maduro
         if data["stc_warn"] and not prev.get("stc_warn"):
             notify(
                 f"⚡ STC Maduro · {pair['name']}",
@@ -707,108 +465,13 @@ def main():
                 f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
                 priority="default", tags="warning",
             )
-            alerts_sent += 1
+            alerts_sent+=1
 
-        new_state[sym] = {"grade":grade,"blocked":data["blocked"],
-                          "stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
-
-    # ── Circuit breaker: 2 señales caducadas consecutivas ───────────
-    if expired_this_run:
-        consecutive_expired += len(expired_this_run)
-        new_state["_consecutive_expired"] = consecutive_expired
-        if consecutive_expired >= 2 and not state.get("_circuit_breaker_sent"):
-            notify(
-                "⛔ CIRCUIT BREAKER · Señales fallando",
-                f"{consecutive_expired} señales caducadas consecutivas\n"
-                f"📉 El mercado no esta respondiendo al sistema\n"
-                f"🛡️ Reduce tamaño al 50% o para por hoy\n"
-                f"🔄 Se resetea automaticamente manana",
-                priority="high", tags="stop_sign,warning",
-            )
-            new_state["_circuit_breaker_sent"] = True
-            alerts_sent += 1
-    else:
-        # si hubo señales activas sin caducar, resetear contador
-        active_now = any(
-            new_state.get(p["symbol"],{}).get("grade","none") in ("App","Ap","B")
-            for p in PAIRS
-        )
-        if active_now:
-            new_state["_consecutive_expired"] = 0
-        else:
-            new_state["_consecutive_expired"] = consecutive_expired
-
-    # Resetear circuit breaker al dia siguiente
-    cb_date = state.get("_circuit_breaker_date","")
-    if cb_date != today_str:
-        new_state["_circuit_breaker_sent"] = False
-        new_state["_circuit_breaker_date"] = today_str
-        new_state["_consecutive_expired"]  = 0
-
-    # ── Confluencia multi-par (3+ pares misma direccion) ────────────
-    active = [s for s in session_signals if s["grade"] in ("App","Ap","B")]
-    longs  = [s for s in active if s["dir"]=="long"]
-    shorts = [s for s in active if s["dir"]=="short"]
-    for group, label, icon in [(longs,"LONG","📈"),(shorts,"SHORT","📉")]:
-        if len(group) >= 3:
-            names = ", ".join(s["pair"] for s in group)
-            notify(
-                f"🌊 CONFLUENCIA {label} · {len(group)} pares",
-                f"{icon} Movimiento de mercado detectado\n"
-                f"Pares: {names}\n"
-                f"💡 Alta probabilidad de continuacion\n"
-                f"🕐 {SESSION_META[get_session()]['label']}",
-                priority="urgent", tags="wave,rotating_light",
-            )
-            alerts_sent += 1
-
-    # ── Resumen de cierre NY ─────────────────────────────────────────
-    if is_close_window and not state.get("_close_sent"):
-        # calcular mejor oportunidad de la sesion
-        best_pair_lines = []
-        for sig in session_signals:
-            sym_key = next((p["symbol"] for p in PAIRS if p["name"]==sig["pair"]), None)
-            if not sym_key: continue
-            try:
-                d = analyze_pair({"symbol":sym_key,"name":sig["pair"]})
-                entry = state.get(sym_key,{}).get("price", d["price"])
-                move_pct = ((d["price"]-entry)/entry*100) if sig["dir"]=="long" else ((entry-d["price"])/entry*100)
-                best_pair_lines.append((sig["pair"], sig["grade"], move_pct, d["price"]))
-            except Exception:
-                pass
-        best_str = ""
-        if best_pair_lines:
-            best = max(best_pair_lines, key=lambda x: x[2])
-            icon = "🏆" if best[2] > 0 else "📉"
-            best_str = (f"\n{icon} Mejor oportunidad: {best[0]} ({gl[best[1]]})\n"
-                        f"   Movimiento: {best[2]:+.2f}% · Precio actual: ${best[3]}")
-
-        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'})" if btc else ""
-        notify(
-            "📊 CIERRE SESION NY · Trifecta Pro",
-            f"🕑 13:30 GT · {now_utc.strftime('%a %d %b')}\n"
-            f"{btc_str}\n\n"
-            f"Señales esta sesion: {len(session_signals)}\n"
-            + (f"  A++:{sum(1 for s in session_signals if s['grade']=='App')} · "
-               f"A+:{sum(1 for s in session_signals if s['grade']=='Ap')} · "
-               f"B:{sum(1 for s in session_signals if s['grade']=='B')}\n"
-               if session_signals else "  Ninguna\n")
-            + f"Trades ejecutados hoy: {today_count}/{DAILY_LIMIT}\n"
-            + best_str +
-            f"\nProxima sesion: 07:00 GT manana",
-            priority="default", tags="chart_bar",
-        )
-        new_state["_close_sent"] = True
-        alerts_sent += 1
-
-    # Preservar flags de sesion del state anterior si siguen vigentes
-    if state.get("_open_sent")  and is_open_window:
-        new_state["_open_sent"]  = True
-    if state.get("_close_sent") and is_close_window:
-        new_state["_close_sent"] = True
+        new_state[sym]={"grade":grade,"blocked":data["blocked"],
+                        "stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
 
     save_state(new_state)
-    print(f"Chequeo completo ({now_utc.isoformat()}). Alertas: {alerts_sent}")
+    print(f"Chequeo completo ({datetime.now(timezone.utc).isoformat()}). Alertas: {alerts_sent}")
 
 if __name__=="__main__":
     main()
