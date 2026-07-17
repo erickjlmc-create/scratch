@@ -1,13 +1,9 @@
 {
-  "_trade_count": {
-    "2026-07-17": 6
-  },
-  "_forming_SOLUSDT": "none",
   "SOLUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_forming_ETHUSDT": "none",
   "ETHUSDT": {
@@ -16,28 +12,25 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_forming_BNBUSDT": "none",
-  "_b_1h_BNBUSDT": true,
+  "_atr_extreme_BNBUSDT": true,
   "BNBUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
-  "_forming_AVAXUSDT": "none",
-  "_b_1h_AVAXUSDT": true,
+  "_atr_extreme_AVAXUSDT": true,
   "AVAXUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
-  "_forming_LINKUSDT": "none",
   "LINKUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
@@ -57,6 +50,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_ARBUSDT": true,
   "_forming_ARBUSDT": "none",
   "_b_1h_ARBUSDT": false,
   "ARBUSDT": {
@@ -65,6 +59,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_OPUSDT": true,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
@@ -73,7 +68,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -82,9 +76,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": true,
   "WLDUSDT": {
     "grade": "B",
     "blocked": false,
@@ -92,7 +84,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_TIAUSDT": false,
-  "_forming_TIAUSDT": "none",
+  "_forming_TIAUSDT": "short",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "none",
@@ -100,5 +92,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-17"
 }
