@@ -31,6 +31,13 @@ PAIRS = [
     {"symbol": "INJUSDT",  "name": "INJ/USDT"},
     {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
     {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
+    {"symbol": "XRPUSDT",  "name": "XRP/USDT"},
+    {"symbol": "HYPEUSDT",  "name": "HYPE/USDT"},
+    {"symbol": "DOGEUSDT",  "name": "DOGE/USDT"},
+    {"symbol": "ZECUSDT",  "name": "ZEC/USDT"},
+    {"symbol": "XMRUSDT",  "name": "XMR/USDT"},
+    {"symbol": "ADAUSDT",  "name": "ADA/USDT"},
+    {"symbol": "DEXEUSDT",  "name": "DEXE/USDT"},
 ]
 
 CFG = {
@@ -50,7 +57,7 @@ YF_SYMBOLS = {
     "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
     "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
     "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
-    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
+    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD", "XRPUSDT":"XRP-USD", "HYPEUSDT":"HYPE-USD", "DOGEUSDT":"DOGE-USD","ZECUSDT":"ZEC-USD", "XMRUSDT":"XMR-USD","ADAUSDT":"ADA-USD", "DEXEUSDT":"DEXE-USD",
 }
 
 def get_session():
