@@ -137,18 +137,46 @@ def calc_choppiness(candles,p):
     if rng==0 or atr_sum==0: return 50.0
     return 100*math.log10(atr_sum/rng)/math.log10(p)
 
-def calc_supertrend(candles,p,f):
-    n=len(candles); atr=calc_atr(candles,p); trend=[1]*n; st_line=[None]*n
-    up=dn=None
-    for i in range(p,n):
-        hl2=(candles[i]["high"]+candles[i]["low"])/2; a=atr[i] or 0
-        nu,nd=hl2-f*a,hl2+f*a; pc=candles[i-1]["close"]
-        up=max(nu,up) if (up is not None and pc>up) else nu
-        dn=min(nd,dn) if (dn is not None and pc<dn) else nd
-        if trend[i-1]==1: trend[i]=-1 if candles[i]["close"]<up else 1
-        else:             trend[i]=1  if candles[i]["close"]>dn else -1
-        st_line[i]=up if trend[i]==1 else dn
-    return trend,st_line
+def calc_supertrend(candles, p, f):
+    """
+    Replica EXACTA del Supertrend en Pine Script v5:
+      up_band := close[1] > up_band_prev ? math.max(up_band, up_band_prev) : up_band
+      dn_band := close[1] < dn_band_prev ? math.min(dn_band, dn_band_prev) : dn_band
+      trend_dir := close > dn_band_prev ? 1 : close < up_band_prev ? -1 : nz(trend_dir[1], 1)
+    La clave: la direccion se calcula con las bandas PREVIAS (antes de actualizar),
+    no con las bandas ya actualizadas. Eso evita los flips falsos.
+    """
+    n   = len(candles)
+    atr = calc_atr(candles, p)
+    trend   = [1]    * n
+    st_line = [None] * n
+    up_arr  = [None] * n
+    dn_arr  = [None] * n
+
+    for i in range(p, n):
+        hl2    = (candles[i]["high"] + candles[i]["low"]) / 2
+        a      = atr[i] or 0
+        raw_up = hl2 - f * a
+        raw_dn = hl2 + f * a
+
+        # Bandas previas (antes de actualizar) — equivale a up_band[1] / dn_band[1] en Pine
+        up_prev = up_arr[i-1] if up_arr[i-1] is not None else raw_up
+        dn_prev = dn_arr[i-1] if dn_arr[i-1] is not None else raw_dn
+
+        # Actualizar bandas usando el cierre ANTERIOR (close[1] en Pine)
+        prev_close = candles[i-1]["close"]
+        up_arr[i]  = max(raw_up, up_prev) if prev_close > up_prev else raw_up
+        dn_arr[i]  = min(raw_dn, dn_prev) if prev_close < dn_prev else raw_dn
+
+        # Tendencia con bandas PREVIAS — replica exacta de Pine
+        cur_close = candles[i]["close"]
+        if   cur_close > dn_prev: trend[i] = 1
+        elif cur_close < up_prev: trend[i] = -1
+        else:                     trend[i] = trend[i-1]
+
+        st_line[i] = up_arr[i] if trend[i] == 1 else dn_arr[i]
+
+    return trend, st_line
 
 def calc_rsi(closes,p):
     n=len(closes); res=[None]*n
@@ -632,7 +660,7 @@ def main():
                 notify(
                     f"🟢 Supertrend VERDE · {pair['name']}",
                     f"📈 Supertrend cambio a ALCISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
+                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
                     f"{btc_line('long')}"
                     f"🕐 {data['session_label']}",
@@ -642,7 +670,7 @@ def main():
                 notify(
                     f"🔴 Supertrend ROJO · {pair['name']}",
                     f"📉 Supertrend cambio a BAJISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · STC: {data['stc']}\n"
+                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
                     f"{btc_line('short')}"
                     f"🕐 {data['session_label']}",
@@ -758,7 +786,7 @@ def main():
             notify(
                 f"👀 Setup formándose · {pair['name']}",
                 f"{dir_icon} 2/3 pilares · Falta: {data['forming_missing']}\n"
-                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · STC:{data['stc']} · ADX:{data['adx']}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC:{data['stc']}\n"
                 f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}\n"
                 f"⏳ Esperar confirmacion del tercer pilar\n"
                 f"🕐 {data['session_label']}",
@@ -776,7 +804,7 @@ def main():
             notify(
                 f"🔓 Desbloqueado · {pair['name']}",
                 f"{dir_icon} Guardia liberada · Setup {gl[grade]} sigue valido\n"
-                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']}\n"
                 f"StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
                 f"💰 Precio: ${data['price']} · Posible entrada ahora\n"
                 f"🕐 {data['session_label']}",
@@ -791,8 +819,9 @@ def main():
             sl_txt_b  = f"${data['sl']}"  if data['sl']  else "--"
             tp1_txt_b = f"${data['tp1']}" if data['tp1'] else "--"
             notify(
-                f"⭐ B+ LONG confirmado · {pair['name']}",
+                f"⭐ B+ confirmado · {pair['name']}",
                 f"{dir_icon} Señal B con 1H alineado\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC:{data['stc']}\n"
                 f"ST 1H verde + EMA9>21 en 1H ✓\n"
                 f"💰 Precio: ${data['price']}\n"
                 f"🛑 SL: {sl_txt_b}\n"
@@ -810,7 +839,7 @@ def main():
         if data["blocked"] and not prev.get("blocked"):
             notify(
                 f"🔒 Bloqueado · {pair['name']}",
-                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · Setup valido pero guardia activa\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · Setup valido pero guardia activa\n"
                 f"📐 StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
                 f"📊 EMA200 4H: ${data['ema200_4h']} · Precio: ${data['price']}\n"
                 f"🕐 {data['session_label']}",
@@ -822,7 +851,7 @@ def main():
         if data["stc_warn"] and not prev.get("stc_warn"):
             notify(
                 f"⚡ STC Maduro · {pair['name']}",
-                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · STC en extremo ({data['stc']})\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC en extremo ({data['stc']})\n"
                 f"⚠️ Posible agotamiento · Reducir tamano\n"
                 f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
                 priority="default", tags="warning",
