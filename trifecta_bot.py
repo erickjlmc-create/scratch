@@ -241,10 +241,15 @@ def analyze_pair(pair):
     c15=fetch_klines(sym,"15",CFG["CANDLES"])
     c4h=fetch_klines(sym,"240",CFG["CANDLES_4H"])
     ticker=fetch_ticker(sym)
-    closes=[c["close"] for c in c15]; vols=[c["volume"] for c in c15]; n=len(c15)-1
+    closes=[c["close"] for c in c15]; vols=[c["volume"] for c in c15]
+    # n-1 = ultima vela CERRADA (evita ruido de la vela en formacion)
+    # n   = indice total por compatibilidad con funciones que usan arrays completos
+    n   = len(c15)-1
+    nc  = n - 1   # vela confirmada (penultima)
 
     st_trend,st_line_arr=calc_supertrend(c15,CFG["ST_PERIOD"],CFG["ST_FACTOR"])
-    st_bull=st_trend[n]==1; st_line_val=st_line_arr[n]
+    # Usar vela confirmada para el ST — evita flips falsos por vela en formacion
+    st_bull=st_trend[nc]==1; st_line_val=st_line_arr[nc]
 
     ema9a=ema(closes,CFG["EMA_FAST"]); ema21a=ema(closes,CFG["EMA_SLOW"])
     ema_bull=ema9a[n]>ema21a[n]; ema_bear=ema9a[n]<ema21a[n]
@@ -364,6 +369,7 @@ def analyze_pair(pair):
         "adx":round(adx_val),"chop":round(chop_val,1),"atr_pct":round(atr_pct,1),
         "stc":round(stc_val),
         "st_direction":"bull" if st_bull else "bear",
+        "st_icon": "🟢" if st_bull else "🔴",
         "session":sess,"session_label":meta["label"],"session_risk":meta["risk"],
     }
 
@@ -721,7 +727,7 @@ def main():
             notify(
                 f"❌ Señal caducada · {pair['name']}",
                 f"La señal {gl[prev_grade]} ya no esta activa\n"
-                f"💰 Precio actual: ${data['price']}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · Precio: ${data['price']}\n"
                 f"🕐 {data['session_label']}",
                 priority="low", tags="x,warning",
             )
@@ -732,7 +738,7 @@ def main():
         if data["atr_pct"] >= 85 and not state.get(atr_key):
             notify(
                 f"💥 Volatilidad extrema · {pair['name']}",
-                f"ATR percentile: {data['atr_pct']}% (umbral: 85%)\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ATR percentile: {data['atr_pct']}%\n"
                 f"⚠️ Movimiento inusual · Confirmar antes de entrar\n"
                 f"💰 Precio: ${data['price']} · ADX: {data['adx']}\n"
                 f"🕐 {data['session_label']}",
@@ -752,8 +758,8 @@ def main():
             notify(
                 f"👀 Setup formándose · {pair['name']}",
                 f"{dir_icon} 2/3 pilares · Falta: {data['forming_missing']}\n"
-                f"STC:{data['stc']} · ADX:{data['adx']} · Precio: ${data['price']}\n"
-                f"📊 EMA200 4H: ${data['ema200_4h']}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · STC:{data['stc']} · ADX:{data['adx']}\n"
+                f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}\n"
                 f"⏳ Esperar confirmacion del tercer pilar\n"
                 f"🕐 {data['session_label']}",
                 priority="low", tags="eyes,hourglass_flowing_sand",
@@ -770,6 +776,7 @@ def main():
             notify(
                 f"🔓 Desbloqueado · {pair['name']}",
                 f"{dir_icon} Guardia liberada · Setup {gl[grade]} sigue valido\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'}\n"
                 f"StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
                 f"💰 Precio: ${data['price']} · Posible entrada ahora\n"
                 f"🕐 {data['session_label']}",
@@ -803,7 +810,7 @@ def main():
         if data["blocked"] and not prev.get("blocked"):
             notify(
                 f"🔒 Bloqueado · {pair['name']}",
-                f"⚠️ Setup valido pero guardia activa\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · Setup valido pero guardia activa\n"
                 f"📐 StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
                 f"📊 EMA200 4H: ${data['ema200_4h']} · Precio: ${data['price']}\n"
                 f"🕐 {data['session_label']}",
@@ -815,8 +822,8 @@ def main():
         if data["stc_warn"] and not prev.get("stc_warn"):
             notify(
                 f"⚡ STC Maduro · {pair['name']}",
-                f"⚠️ Senal activa pero STC en extremo ({data['stc']})\n"
-                f"📉 Posible agotamiento · Reducir tamano\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · STC en extremo ({data['stc']})\n"
+                f"⚠️ Posible agotamiento · Reducir tamano\n"
                 f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
                 priority="default", tags="warning",
             )
