@@ -25,7 +25,7 @@ PAIRS = [
     {"symbol": "LINKUSDT", "name": "LINK/USDT"},
     {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
     {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
-    {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
+    {"symbol": "AAVEUSDT",  "name": "AAVE/USDT"},
     {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
     {"symbol": "OPUSDT",   "name": "OP/USDT"},
     {"symbol": "INJUSDT",  "name": "INJ/USDT"},
@@ -55,7 +55,7 @@ CFG = {
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
     "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
-    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
+    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","AAVEUSDT":"AAVE-USD",
     "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
     "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD", "XRPUSDT":"XRP-USD", "HYPEUSDT":"HYPE-USD", "DOGEUSDT":"DOGE-USD","ZECUSDT":"ZEC-USD", "XMRUSDT":"XMR-USD","ADAUSDT":"ADA-USD", "DEXEUSDT":"DEXE-USD",
 }
