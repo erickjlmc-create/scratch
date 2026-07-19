@@ -42,7 +42,7 @@
   "OPUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "INJUSDT": {
     "rvol_alert": false,
@@ -75,7 +75,7 @@
     "stc_down": false
   },
   "XMRUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "stc_up": false,
     "stc_down": false
   },
