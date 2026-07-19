@@ -31,13 +31,13 @@
   },
   "NEARUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "AAVEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "OPUSDT": {
     "rvol_alert": false,
@@ -77,7 +77,7 @@
   "XMRUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "ADAUSDT": {
     "rvol_alert": false,
