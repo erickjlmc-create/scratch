@@ -76,7 +76,7 @@
   },
   "XMRUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "ADAUSDT": {
@@ -86,7 +86,7 @@
   },
   "DEXEUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   }
 }
