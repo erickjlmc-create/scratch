@@ -17,7 +17,7 @@
   "AVAXUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "LINKUSDT": {
     "rvol_alert": false,
@@ -72,7 +72,7 @@
   "ZECUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "XMRUSDT": {
     "rvol_alert": false,
