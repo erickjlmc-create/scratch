@@ -6,7 +6,7 @@
   },
   "ETHUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "BNBUSDT": {
@@ -45,7 +45,7 @@
     "stc_down": false
   },
   "INJUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "stc_up": false,
     "stc_down": false
   },
