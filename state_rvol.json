@@ -51,7 +51,7 @@
   },
   "WLDUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "TIAUSDT": {
@@ -71,7 +71,7 @@
   },
   "ZECUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "XMRUSDT": {
@@ -87,6 +87,6 @@
   "DEXEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   }
 }
