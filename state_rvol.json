@@ -2,12 +2,12 @@
   "SOLUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "ETHUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "BNBUSDT": {
     "rvol_alert": false,
@@ -22,7 +22,7 @@
   "LINKUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "DOTUSDT": {
     "rvol_alert": false,
@@ -67,7 +67,7 @@
   "DOGEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "ZECUSDT": {
     "rvol_alert": false,
