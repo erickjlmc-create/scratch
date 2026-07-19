@@ -40,7 +40,7 @@
     "stc_down": false
   },
   "OPUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "stc_up": false,
     "stc_down": false
   },
@@ -57,7 +57,7 @@
   "TIAUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "XRPUSDT": {
     "rvol_alert": false,
