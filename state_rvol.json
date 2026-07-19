@@ -21,13 +21,13 @@
   },
   "LINKUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "DOTUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": true
+    "stc_up": true,
+    "stc_down": false
   },
   "NEARUSDT": {
     "rvol_alert": false,
@@ -61,7 +61,7 @@
   },
   "XRPUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "DOGEUSDT": {
