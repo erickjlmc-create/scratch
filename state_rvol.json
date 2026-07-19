@@ -72,7 +72,7 @@
   "ZECUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "XMRUSDT": {
     "rvol_alert": false,
