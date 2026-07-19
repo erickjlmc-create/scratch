@@ -27,7 +27,7 @@
   "DOTUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "NEARUSDT": {
     "rvol_alert": false,
@@ -51,13 +51,13 @@
   },
   "WLDUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "TIAUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "XRPUSDT": {
     "rvol_alert": false,
