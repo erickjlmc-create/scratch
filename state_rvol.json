@@ -40,7 +40,7 @@
     "stc_down": false
   },
   "OPUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "stc_up": false,
     "stc_down": false
   },
