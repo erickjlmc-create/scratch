@@ -26,7 +26,7 @@
   },
   "DOTUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "NEARUSDT": {
@@ -42,7 +42,7 @@
   "OPUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "INJUSDT": {
     "rvol_alert": false,
