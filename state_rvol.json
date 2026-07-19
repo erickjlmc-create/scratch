@@ -11,7 +11,7 @@
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "AVAXUSDT": {
@@ -36,12 +36,12 @@
   },
   "AAVEUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "OPUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "INJUSDT": {
@@ -81,7 +81,7 @@
   },
   "ADAUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "DEXEUSDT": {
