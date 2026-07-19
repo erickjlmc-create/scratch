@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "ETHUSDT": {
@@ -17,7 +17,7 @@
   "AVAXUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "LINKUSDT": {
     "rvol_alert": false,
@@ -41,7 +41,7 @@
   },
   "OPUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "INJUSDT": {
@@ -61,17 +61,17 @@
   },
   "XRPUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "DOGEUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "ZECUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "XMRUSDT": {
