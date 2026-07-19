@@ -56,7 +56,7 @@
   },
   "TIAUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "XRPUSDT": {
