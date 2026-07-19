@@ -1,6 +1,6 @@
 {
   "SOLUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "stc_up": false,
     "stc_down": true
   },
@@ -11,7 +11,7 @@
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "AVAXUSDT": {
@@ -41,13 +41,13 @@
   },
   "OPUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "INJUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "WLDUSDT": {
     "rvol_alert": false,
@@ -75,8 +75,8 @@
     "stc_down": false
   },
   "XMRUSDT": {
-    "rvol_alert": false,
-    "stc_up": false,
+    "rvol_alert": true,
+    "stc_up": true,
     "stc_down": false
   },
   "ADAUSDT": {
