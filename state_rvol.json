@@ -40,7 +40,7 @@
     "stc_down": false
   },
   "OPUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "stc_up": false,
     "stc_down": false
   },
@@ -81,7 +81,7 @@
   },
   "ADAUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "DEXEUSDT": {
