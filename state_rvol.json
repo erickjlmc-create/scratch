@@ -1,7 +1,7 @@
 {
   "SOLUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "ETHUSDT": {
@@ -11,12 +11,12 @@
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "AVAXUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "LINKUSDT": {
@@ -71,7 +71,7 @@
   },
   "ZECUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "XMRUSDT": {
