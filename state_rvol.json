@@ -15,7 +15,7 @@
     "stc_down": false
   },
   "AVAXUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "stc_up": false,
     "stc_down": false
   },
