@@ -2,7 +2,7 @@
   "SOLUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "ETHUSDT": {
     "rvol_alert": false,
@@ -11,7 +11,7 @@
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "AVAXUSDT": {
@@ -41,18 +41,18 @@
   },
   "OPUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "INJUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "WLDUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "TIAUSDT": {
     "rvol_alert": false,
@@ -76,7 +76,7 @@
   },
   "XMRUSDT": {
     "rvol_alert": true,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "ADAUSDT": {
