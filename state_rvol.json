@@ -11,7 +11,7 @@
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "AVAXUSDT": {
@@ -71,7 +71,7 @@
   },
   "ZECUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "XMRUSDT": {
@@ -87,6 +87,6 @@
   "DEXEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   }
 }
