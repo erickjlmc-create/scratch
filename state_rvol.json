@@ -15,7 +15,7 @@
     "stc_down": false
   },
   "AVAXUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "stc_up": false,
     "stc_down": false
   },
@@ -31,7 +31,7 @@
   },
   "NEARUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "AAVEUSDT": {
@@ -56,7 +56,7 @@
   },
   "TIAUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "XRPUSDT": {
@@ -81,12 +81,12 @@
   },
   "ADAUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "DEXEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   }
 }
