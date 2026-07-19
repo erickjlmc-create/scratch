@@ -1,1 +1,92 @@
-{}
+{
+  "SOLUSDT": {
+    "rvol_alert": true,
+    "stc_up": false,
+    "stc_down": true
+  },
+  "ETHUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "BNBUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "AVAXUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "LINKUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "DOTUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "NEARUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "AAVEUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "OPUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "INJUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "WLDUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "TIAUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "XRPUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "DOGEUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "ZECUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "XMRUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "ADAUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  },
+  "DEXEUSDT": {
+    "rvol_alert": false,
+    "stc_up": false,
+    "stc_down": false
+  }
+}
