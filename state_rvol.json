@@ -47,7 +47,7 @@
   "INJUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "WLDUSDT": {
     "rvol_alert": false,
