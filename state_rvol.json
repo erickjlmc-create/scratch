@@ -2,7 +2,7 @@
   "SOLUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "ETHUSDT": {
     "rvol_alert": false,
@@ -15,14 +15,14 @@
     "stc_down": false
   },
   "AVAXUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "stc_up": false,
     "stc_down": false
   },
   "LINKUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "DOTUSDT": {
     "rvol_alert": false,
@@ -32,7 +32,7 @@
   "NEARUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "AAVEUSDT": {
     "rvol_alert": false,
@@ -62,7 +62,7 @@
   "XRPUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "DOGEUSDT": {
     "rvol_alert": false,
@@ -82,11 +82,11 @@
   "ADAUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "DEXEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   }
 }
