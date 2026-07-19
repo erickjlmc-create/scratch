@@ -16,7 +16,7 @@
   },
   "AVAXUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "LINKUSDT": {
@@ -31,7 +31,7 @@
   },
   "NEARUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "AAVEUSDT": {
@@ -62,7 +62,7 @@
   "XRPUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": true
+    "stc_down": false
   },
   "DOGEUSDT": {
     "rvol_alert": false,
