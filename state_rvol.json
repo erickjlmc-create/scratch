@@ -31,13 +31,13 @@
   },
   "NEARUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
+    "stc_up": true,
     "stc_down": false
   },
   "AAVEUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "OPUSDT": {
     "rvol_alert": false,
@@ -46,7 +46,7 @@
   },
   "INJUSDT": {
     "rvol_alert": false,
-    "stc_up": true,
+    "stc_up": false,
     "stc_down": false
   },
   "WLDUSDT": {
@@ -77,7 +77,7 @@
   "XMRUSDT": {
     "rvol_alert": false,
     "stc_up": false,
-    "stc_down": false
+    "stc_down": true
   },
   "ADAUSDT": {
     "rvol_alert": false,
