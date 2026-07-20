@@ -14,7 +14,7 @@
     "mature_dn_10": false
   },
   "BNBUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
