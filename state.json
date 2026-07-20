@@ -53,7 +53,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_NEARUSDT": false,
+  "_atr_extreme_NEARUSDT": true,
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
@@ -62,7 +62,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_AAVEUSDT": false,
   "_forming_AAVEUSDT": "none",
   "_b_1h_AAVEUSDT": false,
   "AAVEUSDT": {
@@ -71,8 +70,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_OPUSDT": true,
-  "_forming_OPUSDT": "none",
+  "_forming_OPUSDT": "short",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -80,6 +78,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -151,7 +150,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_forming_DEXEUSDT": "none",
+  "_forming_DEXEUSDT": "short",
   "_b_1h_DEXEUSDT": false,
   "DEXEUSDT": {
     "grade": "none",
@@ -159,5 +158,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-20"
 }
