@@ -1,148 +1,179 @@
 import os
 import json
 import logging
-from datetime import datetime
-from typing import Dict, Any
+from datetime import datetime, timezone, timedelta
+from typing import Dict, Any, Optional
 import requests
 
-# Configuración de logs en consola de GitHub Actions
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+# ── 0. CONFIGURACIÓN DE LOGS DE ALTA VISIBILIDAD ────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - [%(levelname)s] - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 logger = logging.getLogger(__name__)
 
-# 1. CARGA DE VARIABLES DESDE EL ENTORNO DE GITHUB ACTIONS
+# ── 1. CARGA DE VARIABLES Y SECRETOS DE ENTORNO ──────────────────────────
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CANAL_PRINCIPAL_ID = os.getenv("TELEGRAM_CANAL_PRINCIPAL_ID")
 CANAL_RADAR_ID = os.getenv("TELEGRAM_CANAL_RADAR_ID")
-STATE_FILE = "state.json"
+STATE_FILE = os.getenv("STATE_FILE", "state.json")
 
-# Función síncrona optimizada para el ciclo rápido de GitHub Actions
-def enviar_notificacion(texto: str, destino: str = "principal") -> bool:
+def enviar_notificacion(texto_html: str, destino: str = "principal") -> bool:
+    """
+    Envía mensajes a Telegram utilizando HTML para evitar fallos de parseo.
+    - principal: Notificaciones con sonido (Alertas Operables / Breakeven)
+    - radar: Notificaciones silenciadas (Filtros, STC, Supertrend pasivos)
+    """
     if not TELEGRAM_BOT_TOKEN:
-        logger.error("Falta el TOKEN del bot de Telegram en los Secrets de GitHub.")
+        logger.error("❌ FALTA DE CONFIGURACIÓN: TELEGRAM_BOT_TOKEN no existe en Secrets.")
         return False
 
-    # Segmentación de destinos y configuración de sonido
     chat_id = CANAL_RADAR_ID if destino == "radar" else CANAL_PRINCIPAL_ID
-    disable_notification = True if destino == "radar" else False
+    if not chat_id:
+        logger.error(f"❌ FALTA DE CONFIGURACIÓN: ID del canal destino '{destino}' no encontrado.")
+        return False
+
+    # El canal radar se envía silenciado (disable_notification=True)
+    silenciar_notificacion = (destino == "radar")
 
     url = f"https://api.telegram.com/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": chat_id,
-        "text": texto,
-        "parse_mode": "Markdown",
-        "disable_notification": disable_notification
+        "text": texto_html,
+        "parse_mode": "HTML",
+        "disable_notification": silenciar_notificacion
     }
     
     try:
-        response = requests.post(url, json=payload, timeout=10)
-        return response.status_code == 200
-    except Exception as e:
-        logger.error(f"Error al enviar mensaje a Telegram ({destino}): {e}")
+        response = requests.post(url, json=payload, timeout=12)
+        if response.status_code == 200:
+            logger.info(f"⚡ Notificación enviada con éxito al canal [{destino.upper()}].")
+            return True
+        else:
+            logger.error(f"❌ Telegram API Error ({response.status_code}): {response.text}")
+            return False
+    except requests.exceptions.RequestException as e:
+        logger.error(f"❌ Error de red/timeout al conectar con Telegram ({destino}): {e}")
         return False
 
-# Funciones de persistencia para el archivo state.json controlado por tu .yml
+# ── PERSISTENCIA JSON PARA GITHUB ACTIONS ────────────────────────────────
 def cargar_estado() -> Dict[str, Any]:
     if os.path.exists(STATE_FILE):
         try:
-            with open(STATE_FILE, "r") as f:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"⚠️ Error al leer {STATE_FILE}, creando estado limpio. Detalle: {e}")
             return {"operaciones": {}}
     return {"operaciones": {}}
 
-def guardar_estado(estado: Dict[str, Any]):
+def guardar_estado(estado: Dict[str, Any]) -> None:
     try:
-        with open(STATE_FILE, "w") as f:
-            json.dump(estado, f, indent=4)
+        with open(STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(estado, f, indent=4, ensure_ascii=False)
+        logger.info(f"💾 Estado actualizado correctamente en '{STATE_FILE}'.")
     except Exception as e:
-        logger.error(f"No se pudo escribir en state.json: {e}")
+        logger.error(f"❌ Error crítico escribiendo en {STATE_FILE}: {e}")
 
-# 2 y 3. PROCESAMIENTO DE FILTROS (RVOL DUAL & HEATMAP)
+# ── 2 y 3. LÓGICA Y FILTROS DEL INDICADOR ───────────────────────────────
 def procesar_alerta_indicador(data: Dict[str, Any]):
-    setup = data.get("setup")
-    tipo = data.get("tipo")        # "LONG" o "SHORT"
-    activo = data.get("activo")    # Ej: "BTCUSDT"
-    rvol = float(data.get("rvol", 0.0))
-    heatmap = data.get("heatmap", "Normal").strip().lower()
-    mensaje_crudo = data.get("mensaje", "")
+    setup = data.get("setup", "")
+    tipo = data.get("tipo", "LONG").upper()
+    activo = data.get("activo", "UNKNOWN")
+    try:
+        rvol = float(data.get("rvol", 0.0))
+    except (ValueError, TypeError):
+        rvol = 0.0
+
+    heatmap = str(data.get("heatmap", "Normal")).strip().lower()
+    mensaje_crudo = str(data.get("mensaje", "")).strip()
 
     # 4. REDIRECCIÓN AUTOMÁTICA AL CANAL RADAR (Análisis Pasivo Silenciado)
-    if mensaje_crudo.startswith("RADAR:") or "stc" in mensaje_crudo.lower() or "supertrend" in mensaje_crudo.lower():
-        enviar_notificacion(texto=f"📢 *{mensaje_crudo}*", destino="radar")
+    msg_lower = mensaje_crudo.lower()
+    if mensaje_crudo.startswith("RADAR:") or "stc" in msg_lower or "supertrend" in msg_lower:
+        html_radar = f"📢 <b>[RADAR DE MERCADO]</b>\n<code>{mensaje_crudo}</code>"
+        enviar_notificacion(texto_html=html_radar, destino="radar")
         return
 
     # Lógica y Filtros restrictivos para el Setup B
     if setup == "Setup B":
-        # Usar la función de tiempo nativa de Python (0=Lunes, 5=Sábado, 6=Domingo)
-        dia_semana = datetime.now().weekday()
+        # Ajuste Zona Horaria UTC-6 para determinar día de la semana preciso
+        tz_gt = timezone(timedelta(hours=-6))
+        hora_local = datetime.now(tz_gt)
+        dia_semana = hora_local.weekday()  # 0=Lunes ... 5=Sábado, 6=Domingo
         es_fin_de_semana = dia_semana in [5, 6]
         
         # Umbral dinámico exigido según el día
         umbral_rvol = 3.0 if es_fin_de_semana else 4.0
 
         if rvol < umbral_rvol:
-            logger.info(f"❌ [{activo}] {setup} ignorado. RVOL actual: {rvol} (Mínimo requerido: {umbral_rvol})")
-            return  # Se ignora en silencio sin enviar alertas
+            logger.info(
+                f"🚫 [{activo}] {setup} descartado por filtro RVOL. "
+                f"Obtenido: {rvol:.2f}x | Requerido ({'Fin de semana' if es_fin_de_semana else 'Lunes-Viernes'}): {umbral_rvol}x"
+            )
+            return  # Ignora en silencio sin molestar en Telegram
 
-        # 3. Integración del Volume Heatmap como prefijo opcional
-        prefijo_heatmap = "🔥 ALTA DENSIDAD · " if heatmap in ["caliente", "muy caliente", "roja"] else ""
+        # Integración del Volume Heatmap como prefijo opcional
+        prefijo_heatmap = "🔥 <b>ALTA DENSIDAD</b> · " if heatmap in ["caliente", "muy caliente", "roja", "alta densidad"] else ""
 
         msg_senal = (
-            f"{prefijo_heatmap}✅ *SEÑAL EJECUTABLE: {setup}*\n"
-            f"📈 *Activo:* {activo}\n"
-            f"🔔 *Dirección:* {tipo}\n"
-            f"📊 *RVOL:* {rvol} (Umbral: {umbral_rvol})\n"
-            f"🧬 *Heatmap:* {heatmap.upper()}"
+            f"{prefijo_heatmap}✅ <b>SEÑAL EJECUTABLE: {setup}</b>\n"
+            f"📈 <b>Activo:</b> <code>{activo}</code>\n"
+            f"🔔 <b>Dirección:</b> {tipo}\n"
+            f"📊 <b>RVOL:</b> {rvol:.2f}x (Mínimo: {umbral_rvol}x)\n"
+            f"🧬 <b>Heatmap:</b> {heatmap.upper()}"
         )
-        enviar_notificacion(texto=msg_senal, destino="principal")
+        enviar_notificacion(texto_html=msg_senal, destino="principal")
 
-# 5. GESTIÓN ACTIVA DE OPERACIONES Y MOVIMIENTO A BREAKEVEN
+# ── 5. GESTIÓN ACTIVA DE OPERACIONES Y MOVIMIENTO A BREAKEVEN ────────────
 def gestionar_breakeven_trades(precio_actual_dict: Dict[str, float]):
     """
-    Compara los precios actuales del mercado con las órdenes guardadas en state.json.
-    Si toca el TP1, mueve el SL al precio de entrada y alerta al canal principal.
+    Compara precios actuales de mercado con las órdenes guardadas en state.json.
+    Al tocar el TP1, marca la orden como resguardada e informa al Canal Principal con sonido.
     """
     estado = cargar_estado()
+    operaciones = estado.get("operaciones", {})
     cambio_detectado = False
 
-    for id_trade, operacion in estado.get("operaciones", {}).items():
+    for id_trade, operacion in operaciones.items():
         if operacion.get("status") != "ABIERTA" or operacion.get("breakeven_activo", False):
             continue
 
         activo = operacion.get("activo")
         precio_actual = precio_actual_dict.get(activo)
         
-        if not precio_actual:
+        if precio_actual is None:
             continue
 
-        tipo = operacion.get("tipo")
-        precio_entrada = operacion.get("precio_entrada")
-        tp1 = operacion.get("tp1")
+        tipo = operacion.get("tipo", "LONG").upper()
+        precio_entrada = operacion.get("precio_entrada", 0.0)
+        tp1 = operacion.get("tp1", 0.0)
 
-        # Evaluar toque del TP1 según dirección
+        # Evaluar toque del TP1 según dirección del trade
         toco_tp1 = (tipo == "LONG" and precio_actual >= tp1) or (tipo == "SHORT" and precio_actual <= tp1)
 
         if toco_tp1:
-            # [Aquí ejecutarías la llamada a la API de tu Broker/Exchange para mover el SL]
-            # Ejemplo: exchange.modificar_sl(activo, precio_entrada)
-            
             operacion["breakeven_activo"] = True
             operacion["stop_loss"] = precio_entrada
             cambio_detectado = True
             
-            # Notificación obligatoria con sonido al canal principal
-            msg_be = f"🛡️ *POSICIÓN ASEGURADA* · [{activo}]\nTP1 Alcanzado. SL movido a Breakeven. Trade libre de riesgo."
-            enviar_notificacion(texto=msg_be, destino="principal")
+            msg_be = (
+                f"🛡️ <b>POSICIÓN ASEGURADA (BREAKEVEN)</b>\n"
+                f"📌 <b>Activo:</b> <code>{activo}</code>\n"
+                f"🎯 <b>TP1 Alcanzado:</b> {precio_actual}\n"
+                f"🔒 <b>Nuevo Stop Loss:</b> {precio_entrada} (Precio de entrada)"
+            )
+            enviar_notificacion(texto_html=msg_be, destino="principal")
 
     if cambio_detectado:
         guardar_estado(estado)
 
-# Simulación de ejecución del flujo de GitHub Actions
+# ── BLOQUE DE EJECUCIÓN SÍNCRONA PARA GITHUB ACTIONS ──────────────────────
 if __name__ == "__main__":
-    logger.info("Iniciando escaneo del bot desde el disparo de Cron-job...")
+    logger.info("🚀 Iniciando ciclo de escaneo desde GitHub Actions...")
     
-    # Aquí es donde mapeas tus datos de entrada del escáner en este ciclo
-    # (Ejemplo simulado de una alerta de fin de semana que pasa el filtro)
+    # Payload simulado / Entrada recibida
     datos_ciclo_actual = {
         "setup": "Setup B",
         "tipo": "LONG",
@@ -152,4 +183,4 @@ if __name__ == "__main__":
     }
     
     procesar_alerta_indicador(datos_ciclo_actual)
-    logger.info("Escaneo finalizado. GitHub procederá a guardar el state.json si hubo cambios.")
+    logger.info("🏁 Ciclo completado. El Runner finalizó la ejecución.")
