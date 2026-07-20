@@ -42,7 +42,7 @@
     "mature_dn_10": false
   },
   "NEARUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
