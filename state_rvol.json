@@ -1,92 +1,128 @@
 {
   "SOLUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "ETHUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "BNBUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "AVAXUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "LINKUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "DOTUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "NEARUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "AAVEUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "OPUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "INJUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "WLDUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "TIAUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "XRPUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": true
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "DOGEUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "ZECUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "XMRUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "ADAUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   },
   "DEXEUSDT": {
     "rvol_alert": false,
-    "stc_up": false,
-    "stc_down": false
+    "cross_up_25": false,
+    "cross_dn_75": false,
+    "mature_up_90": false,
+    "mature_dn_10": false
   }
 }
