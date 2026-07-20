@@ -4,14 +4,14 @@ on:
   schedule:
     # Cada 15 min, 24/7, todos los dias (Respaldo nativo)
     - cron: '*/15 * * * *'
-  workflow_dispatch: {}   # Permite que cron-job.org dispare el bot mediante la API de GitHub
+  workflow_dispatch: {}   # Permite que cron-job.org dispare el bot de forma externa y privada
 
 permissions:
   contents: write   # Necesario para que el bot pueda guardar y hacer commit de state.json
 
 concurrency:
   group: trifecta-bot-scan
-  cancel-in-progress: false   # Si un ciclo se retrasa, el siguiente espera en cola para no corromper state.json
+  cancel-in-progress: false   # Evita que se crucen ejecuciones y se corrompa el archivo state.json
 
 jobs:
   scan:
@@ -33,6 +33,7 @@ jobs:
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # Estas líneas jalan tus IDs ocultos de forma 100% segura y privada:
           TELEGRAM_CANAL_PRINCIPAL_ID: ${{ secrets.TELEGRAM_CANAL_PRINCIPAL_ID }}
           TELEGRAM_CANAL_RADAR_ID: ${{ secrets.TELEGRAM_CANAL_RADAR_ID }}
 
