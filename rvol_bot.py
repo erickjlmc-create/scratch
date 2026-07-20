@@ -1,7 +1,9 @@
 """
-RVOL Weekend Filter Bot — replica RVOL_Weekend_Heatmap.pine
-Detecta volumen relativo inusual (RVOL >= umbral) confirmado en 4H
-y cambios de dirección del STC. Corre independiente del bot Trifecta.
+RVOL Weekend Filter Bot v2 — replica RVOL_Weekend_Heatmap_1_.pine
+Cambios vs v1:
+  - STC calculado en 4H (no en 15M)
+  - Alertas STC basadas en cruces de niveles: 25↑, 75↓, 90↑ (maduro), 10↓ (maduro)
+  - RVOL sigue en 15M con confirmacion de volumen en 4H
 
 Destino: grupo Telegram RVOL (secrets RVOL_BOT_TOKEN + RVOL_CHAT_ID)
 """
@@ -11,7 +13,7 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime, timezone
 
-# ── CONFIG (replica Pine Script) ─────────────────────────────────
+# ── CONFIG ────────────────────────────────────────────────────────
 PAIRS = [
     {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
     {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
@@ -36,26 +38,30 @@ PAIRS = [
 ]
 
 CFG = {
-    # RVOL
-    "AVG_DAYS":       7,      # días para calcular el promedio
-    "BARS_PER_DAY":   96,     # velas de 15m en 24h
-    "RVOL_WEEKEND":   2.0,    # umbral sábado/domingo
-    "RVOL_WEEKDAY":   3.0,    # umbral lunes-viernes
-    # Heatmap z-score
-    "HEAT_LEN":       20,
-    "Z_HIGH":         1.0,
-    "Z_EXTRA_HIGH":   2.0,
-    "Z_LOW":         -1.0,
-    # 4H confirmation
-    "VOL_4H_LEN":     20,
-    # STC
-    "STC_CYCLE":      10,
-    "STC_FAST":       23,
-    "STC_SLOW":       50,
-    "STC_FACTOR":     0.5,
+    # RVOL en 15M
+    "AVG_DAYS":         7,
+    "BARS_PER_DAY":     96,       # velas de 15m en 24h
+    "RVOL_WEEKEND":     2.0,
+    "RVOL_WEEKDAY":     3.0,
+    # Heatmap z-score en 15M
+    "HEAT_LEN":         20,
+    "Z_HIGH":           1.0,
+    "Z_EXTRA_HIGH":     2.0,
+    "Z_LOW":           -1.0,
+    # Confirmacion volumen 4H
+    "VOL_4H_LEN":       20,
+    # STC en 4H (replica Pine)
+    "STC_CYCLE":        10,
+    "STC_FAST":         23,
+    "STC_SLOW":         50,
+    "STC_FACTOR":       0.5,
+    "STC_LEVEL_LOW":    25,       # cruce arriba → alcista iniciando
+    "STC_LEVEL_HIGH":   75,       # cruce abajo  → bajista
+    "STC_MATURE_HIGH":  90,       # zona madura alcista (agotamiento)
+    "STC_MATURE_LOW":   10,       # zona madura bajista (posible reversión)
     # Candles
-    "CANDLES_15":     800,    # ~8 días de 15m para calcular el promedio mismo horario
-    "CANDLES_4H":     50,
+    "CANDLES_15":       800,      # ~8 dias de 15m
+    "CANDLES_4H":       150,      # suficiente para STC + vol promedio en 4H
 }
 
 YF_SYMBOLS = {
@@ -76,44 +82,67 @@ def fetch_klines(symbol, interval, limit):
     if interval == "15":
         yi, per = "15m", "59d"
     else:
-        yi, per = "1h", "729d"
+        yi, per = "1h", "729d"   # 1h como proxy de 4H, tomamos cada 4 velas
     df = yf.download(yf_sym, period=per, interval=yi,
                      progress=False, auto_adjust=True)
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
     df = df.tail(limit).copy()
-    return [{"time": int(ts.timestamp()*1000),
-             "volume": float(r["Volume"]),
-             "close":  float(r["Close"])}
+    return [{"time":   int(ts.timestamp() * 1000),
+             "open":   float(r["Open"]),
+             "high":   float(r["High"]),
+             "low":    float(r["Low"]),
+             "close":  float(r["Close"]),
+             "volume": float(r["Volume"])}
             for ts, r in df.iterrows()]
 
+def resample_to_4h(candles_1h):
+    """Agrupa velas de 1H en grupos de 4 para simular el timeframe 4H."""
+    result = []
+    chunk = 4
+    # trabajamos en lotes de 4 desde el final hacia atrás para alinear la vela actual
+    n = len(candles_1h)
+    # tomar solo los bloques completos + el incompleto más reciente
+    start = n % chunk  # resto → primer bloque puede ser incompleto
+    groups = []
+    if start > 0:
+        groups.append(candles_1h[:start])
+    for i in range(start, n, chunk):
+        groups.append(candles_1h[i:i+chunk])
+    for g in groups:
+        if not g: continue
+        result.append({
+            "time":   g[-1]["time"],
+            "close":  g[-1]["close"],
+            "volume": sum(c["volume"] for c in g),
+        })
+    return result
+
 # ── INDICADORES ───────────────────────────────────────────────────
-def calc_rvol(candles):
-    """RVOL mismo horario: volumen actual / promedio del mismo slot en últimos 7 días."""
-    bpd = CFG["BARS_PER_DAY"]
+def calc_rvol(candles_15):
+    """RVOL mismo horario: vol actual / promedio del mismo slot en últimos 7 días."""
+    bpd  = CFG["BARS_PER_DAY"]
     days = CFG["AVG_DAYS"]
-    n = len(candles)
+    n    = len(candles_15)
     if n < bpd * days + 1:
         return None
-    current_vol = candles[-1]["volume"]
-    same_slot_vols = [candles[-(1 + i * bpd)]["volume"]
-                      for i in range(1, days + 1)
-                      if n - 1 - i * bpd >= 0]
-    if not same_slot_vols:
+    current_vol = candles_15[-1]["volume"]
+    slots = [candles_15[-(1 + i * bpd)]["volume"]
+             for i in range(1, days + 1) if n - 1 - i * bpd >= 0]
+    if not slots:
         return None
-    avg = sum(same_slot_vols) / len(same_slot_vols)
+    avg = sum(slots) / len(slots)
     return (current_vol / avg) if avg > 0 else None
 
-def calc_heatmap_z(candles):
-    """Z-score del volumen respecto a media/stdev de los últimos HEAT_LEN periodos."""
+def calc_heatmap_z(candles_15):
+    """Z-score del volumen en 15M."""
     length = CFG["HEAT_LEN"]
-    if len(candles) < length:
+    if len(candles_15) < length:
         return 0.0
-    vols = [c["volume"] for c in candles[-length:]]
+    vols = [c["volume"] for c in candles_15[-length:]]
     mean = sum(vols) / length
-    variance = sum((v - mean) ** 2 for v in vols) / length
-    std = math.sqrt(variance) if variance > 0 else 0
-    return ((candles[-1]["volume"] - mean) / std) if std > 0 else 0.0
+    std  = math.sqrt(sum((v - mean) ** 2 for v in vols) / length)
+    return ((candles_15[-1]["volume"] - mean) / std) if std > 0 else 0.0
 
 def heatmap_label(z):
     if z >= CFG["Z_EXTRA_HIGH"]: return "🔴 EXTRA ALTO"
@@ -121,72 +150,113 @@ def heatmap_label(z):
     if z <= CFG["Z_LOW"]:        return "🔵 BAJO"
     return "⚪ Normal"
 
-def confirm_4h(candles_4h):
+def confirm_vol_4h(candles_4h):
     """Volumen 4H actual >= promedio de los últimos VOL_4H_LEN periodos."""
     length = CFG["VOL_4H_LEN"]
     if len(candles_4h) < length + 1:
-        return True  # si no hay suficiente historial, no bloquear
-    vols = [c["volume"] for c in candles_4h[-(length+1):-1]]
-    avg = sum(vols) / len(vols)
+        return True
+    vols = [c["volume"] for c in candles_4h[-(length + 1):-1]]
+    avg  = sum(vols) / len(vols)
     return candles_4h[-1]["volume"] >= avg
 
-def calc_stc(closes):
-    """STC simplificado — detecta giro al alza o a la baja."""
-    n = len(closes)
-    fast = CFG["STC_FAST"]; slow = CFG["STC_SLOW"]
-    cycle = CFG["STC_CYCLE"]; factor = CFG["STC_FACTOR"]
-    if n < slow + cycle * 2:
+def calc_stc_4h(candles_4h):
+    """
+    STC calculado sobre cierres de 4H — replica exacta del Pine:
+      f_stc(close, stcLength, stcFastLen, stcSlowLen, stcFactor)
+    Devuelve (stc_current, stc_prev) para detectar cruces de nivel.
+    """
+    closes = [c["close"] for c in candles_4h]
+    n      = len(closes)
+    fast   = CFG["STC_FAST"]
+    slow   = CFG["STC_SLOW"]
+    cycle  = CFG["STC_CYCLE"]
+    factor = CFG["STC_FACTOR"]
+
+    if n < slow + cycle * 2 + 2:
         return None, None
 
-    # EMA fast y slow
+    # EMA helper
     def ema_arr(arr, p):
-        k = 2/(p+1); res = [None]*len(arr); last = None
+        k   = 2 / (p + 1)
+        res = [None] * len(arr)
+        last = None
         for i, v in enumerate(arr):
-            if last is None: res[i] = v; last = v
-            else: res[i] = v*k + last*(1-k); last = res[i]
+            if last is None:
+                res[i] = v; last = v
+            else:
+                res[i] = v * k + last * (1 - k); last = res[i]
         return res
 
-    ef = ema_arr(closes, fast)
-    es = ema_arr(closes, slow)
-    macd = [(ef[i]-es[i]) if (ef[i] and es[i]) else 0.0 for i in range(n)]
+    ef   = ema_arr(closes, fast)
+    es   = ema_arr(closes, slow)
+    macd = [(ef[i] - es[i]) if (ef[i] is not None and es[i] is not None) else 0.0
+            for i in range(n)]
 
+    # Stoch suavizado con factor (replica nz + var float en Pine)
     def stoch_smooth(src, ln):
-        out = [0.0]*len(src); f = [0.0]*len(src)
-        for i in range(ln-1, len(src)):
-            w = src[i-ln+1:i+1]; lo, hi = min(w), max(w)
-            raw = ((src[i]-lo)/(hi-lo)*100) if hi != lo else 0.0
-            f[i] = raw if i==ln-1 else f[i-1] + factor*(raw - f[i-1])
+        out = [0.0] * len(src)
+        f   = [0.0] * len(src)
+        for i in range(ln - 1, len(src)):
+            w      = src[i - ln + 1:i + 1]
+            lo, hi = min(w), max(w)
+            raw    = ((src[i] - lo) / (hi - lo) * 100) if hi != lo else 0.0
+            f[i]   = raw if i == ln - 1 else f[i-1] + factor * (raw - f[i-1])
             out[i] = f[i]
         return out
 
-    f2 = stoch_smooth(macd, cycle)
-    stc_out = stoch_smooth(f2, cycle)
+    f2      = stoch_smooth(macd,  cycle)
+    stc_arr = stoch_smooth(f2,    cycle)
 
-    cur  = stc_out[-1]
-    prev = stc_out[-2]
-    prev2= stc_out[-3] if len(stc_out) >= 3 else prev
+    stc_cur  = stc_arr[-1]
+    stc_prev = stc_arr[-2]
+    return stc_cur, stc_prev
 
-    turn_up   = cur > prev and prev <= prev2
-    turn_down = cur < prev and prev >= prev2
-    return turn_up, turn_down
+def detect_stc_events(stc_cur, stc_prev):
+    """
+    Detecta los 4 eventos del Pine Script:
+      crossover(stc4h, 25)    → ciclo alcista iniciando
+      crossunder(stc4h, 75)   → ciclo bajista
+      crossover(stc4h, 90)    → zona madura alcista (agotamiento)
+      crossunder(stc4h, 10)   → zona madura bajista (posible reversión)
+    """
+    if stc_cur is None or stc_prev is None:
+        return {"cross_up_25": False, "cross_dn_75": False,
+                "mature_up_90": False, "mature_dn_10": False, "stc_val": None}
+
+    cross_up_25  = stc_prev < 25  and stc_cur >= 25
+    cross_dn_75  = stc_prev > 75  and stc_cur <= 75
+    mature_up_90 = stc_prev < 90  and stc_cur >= 90
+    mature_dn_10 = stc_prev > 10  and stc_cur <= 10
+
+    return {
+        "cross_up_25":  cross_up_25,
+        "cross_dn_75":  cross_dn_75,
+        "mature_up_90": mature_up_90,
+        "mature_dn_10": mature_dn_10,
+        "stc_val":      round(stc_cur, 1),
+    }
 
 # ── ANALISIS POR PAR ──────────────────────────────────────────────
 def analyze_pair(pair):
     sym = pair["symbol"]
-    c15 = fetch_klines(sym, "15",  CFG["CANDLES_15"])
-    c4h = fetch_klines(sym, "240", CFG["CANDLES_4H"])
 
-    closes = [c["close"] for c in c15]
-    now_utc = datetime.now(timezone.utc)
-    is_weekend = now_utc.weekday() >= 5  # 5=Sat, 6=Sun
+    c15  = fetch_klines(sym, "15",  CFG["CANDLES_15"])
+    c1h  = fetch_klines(sym, "240", CFG["CANDLES_4H"])  # yfinance devuelve 1H
+    c4h  = resample_to_4h(c1h)                          # agrupamos a 4H
 
-    rvol = calc_rvol(c15)
-    z    = calc_heatmap_z(c15)
-    ok4h = confirm_4h(c4h)
+    closes_4h  = [c["close"] for c in c4h]
+    now_utc    = datetime.now(timezone.utc)
+    is_weekend = now_utc.weekday() >= 5
+
+    rvol      = calc_rvol(c15)
+    z         = calc_heatmap_z(c15)
+    ok4h      = confirm_vol_4h(c4h)
     threshold = CFG["RVOL_WEEKEND"] if is_weekend else CFG["RVOL_WEEKDAY"]
 
     rvol_alert = (rvol is not None) and (rvol >= threshold) and ok4h
-    stc_up, stc_down = calc_stc(closes)
+
+    stc_cur, stc_prev = calc_stc_4h(c4h)
+    stc_events        = detect_stc_events(stc_cur, stc_prev)
 
     return {
         "rvol":       round(rvol, 2) if rvol else None,
@@ -195,10 +265,9 @@ def analyze_pair(pair):
         "z_label":    heatmap_label(z),
         "ok4h":       ok4h,
         "rvol_alert": rvol_alert,
-        "stc_up":     stc_up,
-        "stc_down":   stc_down,
         "is_weekend": is_weekend,
-        "price":      closes[-1],
+        "price":      c15[-1]["close"],
+        **stc_events,
     }
 
 # ── ESTADO ────────────────────────────────────────────────────────
@@ -212,7 +281,6 @@ def save_state(s):
 
 # ── NOTIFICACIONES ────────────────────────────────────────────────
 def notify(title, body, priority="default", tags="chart_bar"):
-    """Envía SOLO al grupo RVOL (secrets independientes del bot Trifecta)."""
     topic = os.environ.get("RVOL_NTFY_TOPIC")
     if topic:
         try:
@@ -222,8 +290,8 @@ def notify(title, body, priority="default", tags="chart_bar"):
                           timeout=10)
         except Exception as e: print("Error ntfy:", e)
 
-    bot   = os.environ.get("RVOL_BOT_TOKEN")
-    chat  = os.environ.get("RVOL_CHAT_ID")
+    bot  = os.environ.get("RVOL_BOT_TOKEN")
+    chat = os.environ.get("RVOL_CHAT_ID")
     if bot and chat:
         try:
             requests.post(f"https://api.telegram.org/bot{bot}/sendMessage",
@@ -238,11 +306,11 @@ def notify(title, body, priority="default", tags="chart_bar"):
 
 # ── MAIN ──────────────────────────────────────────────────────────
 def main():
-    state = load_state()
-    new_state = {}
+    state       = load_state()
+    new_state   = {}
     alerts_sent = 0
-    now_utc = datetime.now(timezone.utc)
-    day_label = "🗓 FIN DE SEMANA" if now_utc.weekday() >= 5 else "📅 ENTRE SEMANA"
+    now_utc     = datetime.now(timezone.utc)
+    day_label   = "🗓 FIN DE SEMANA" if now_utc.weekday() >= 5 else "📅 ENTRE SEMANA"
 
     for pair in PAIRS:
         sym = pair["symbol"]
@@ -252,76 +320,112 @@ def main():
             print(f"Error en {sym}: {e}")
             continue
 
-        prev = state.get(sym, {"rvol_alert": False, "stc_up": False, "stc_down": False})
+        prev = state.get(sym, {
+            "rvol_alert": False,
+            "cross_up_25": False, "cross_dn_75": False,
+            "mature_up_90": False, "mature_dn_10": False,
+        })
 
-        # ── 1. Alerta RVOL (nuevo trigger) ───────────────────────
+        stc_str = f"STC 4H: {data['stc_val']}" if data["stc_val"] is not None else ""
+
+        # ── 1. RVOL Alto ─────────────────────────────────────────
         if data["rvol_alert"] and not prev.get("rvol_alert"):
-            rvol_str  = f"{data['rvol']}x" if data["rvol"] else "—"
-            threshold = data["threshold"]
-            day_str   = "Fin de semana" if data["is_weekend"] else "Entre semana"
+            rvol_str = f"{data['rvol']}x" if data["rvol"] else "—"
+            day_str  = "Fin de semana" if data["is_weekend"] else "Entre semana"
             notify(
-                f"📊 RVOL Alto · {pair['name']}",
+                f"🟥 PRIORIDAD ALTA · RVOL Alto · {pair['name']}",
                 f"⚠️ Volumen relativo inusual detectado\n"
-                f"RVOL: *{rvol_str}* (umbral {day_str}: {threshold}x)\n"
-                f"Heatmap: {data['z_label']} (z={data['z']})\n"
-                f"4H confirmado: {'✅' if data['ok4h'] else '❌'}\n"
+                f"📊 RVOL: *{rvol_str}* (umbral {day_str}: {data['threshold']}x)\n"
+                f"🔥 Heatmap: {data['z_label']} (z={data['z']})\n"
+                f"4H vol confirmado: {'✅' if data['ok4h'] else '❌'}\n"
+                f"{stc_str}\n"
                 f"💰 Precio: ${data['price']:.4f}\n"
                 f"⚠️ NO es señal Trifecta · Revisar manualmente\n"
                 f"🕐 {day_label}",
-                priority="high",
-                tags="bar_chart,warning",
+                priority="urgent",
+                tags="bar_chart,rotating_light",
             )
             alerts_sent += 1
             print(f"RVOL ALERT: {pair['name']} RVOL={rvol_str}")
 
-        # ── 2. RVOL se normaliza ──────────────────────────────────
+        # ── 2. RVOL Normalizado ───────────────────────────────────
         if prev.get("rvol_alert") and not data["rvol_alert"]:
             notify(
                 f"📉 RVOL Normalizado · {pair['name']}",
-                f"El volumen relativo volvió a niveles normales\n"
-                f"RVOL actual: {data['rvol']}x · Umbral: {data['threshold']}x\n"
+                f"Volumen relativo volvió a nivel normal\n"
+                f"RVOL: {data['rvol']}x · Umbral: {data['threshold']}x\n"
                 f"💰 Precio: ${data['price']:.4f}",
                 priority="low",
                 tags="bar_chart",
             )
             alerts_sent += 1
 
-        # ── 3. STC gira al alza ───────────────────────────────────
-        if data["stc_up"] and not prev.get("stc_up"):
-            rvol_ctx = f"RVOL: {data['rvol']}x · " if data["rvol"] else ""
+        # ── 3. STC 4H cruza 25 hacia arriba (ciclo alcista) ──────
+        if data["cross_up_25"] and not prev.get("cross_up_25"):
             notify(
-                f"🟢 STC Giro Alcista · {pair['name']}",
-                f"STC cambió de dirección: *giro ALCISTA*\n"
-                f"{rvol_ctx}Heatmap: {data['z_label']}\n"
-                f"💰 Precio: ${data['price']:.4f}\n"
-                f"ℹ️ Contexto de volumen, revisar con Trifecta\n"
+                f"🟥 PRIORIDAD ALTA · STC 4H cruza 25 ↑ · {pair['name']}",
+                f"🟢 *Ciclo alcista iniciando en 4H*\n"
+                f"STC cruzó el nivel 25 hacia arriba\n"
+                f"Poner atención en Longs de 15M\n"
+                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
                 f"🕐 {day_label}",
-                priority="default",
+                priority="high",
                 tags="green_circle,chart_with_upwards_trend",
             )
             alerts_sent += 1
-            print(f"STC UP: {pair['name']}")
+            print(f"STC 4H CROSS UP 25: {pair['name']} STC={data['stc_val']}")
 
-        # ── 4. STC gira a la baja ─────────────────────────────────
-        if data["stc_down"] and not prev.get("stc_down"):
-            rvol_ctx = f"RVOL: {data['rvol']}x · " if data["rvol"] else ""
+        # ── 4. STC 4H cruza 75 hacia abajo (ciclo bajista) ───────
+        if data["cross_dn_75"] and not prev.get("cross_dn_75"):
             notify(
-                f"🔴 STC Giro Bajista · {pair['name']}",
-                f"STC cambió de dirección: *giro BAJISTA*\n"
-                f"{rvol_ctx}Heatmap: {data['z_label']}\n"
-                f"💰 Precio: ${data['price']:.4f}\n"
-                f"ℹ️ Contexto de volumen, revisar con Trifecta\n"
+                f"🟥 PRIORIDAD ALTA · STC 4H cruza 75 ↓ · {pair['name']}",
+                f"🔴 *Ciclo bajista en 4H*\n"
+                f"STC cruzó el nivel 75 hacia abajo\n"
+                f"Poner atención en Shorts o cerrar runners\n"
+                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
                 f"🕐 {day_label}",
-                priority="default",
+                priority="high",
                 tags="red_circle,chart_with_downwards_trend",
             )
             alerts_sent += 1
-            print(f"STC DOWN: {pair['name']}")
+            print(f"STC 4H CROSS DN 75: {pair['name']} STC={data['stc_val']}")
+
+        # ── 5. STC 4H zona madura >90 (agotamiento alcista) ──────
+        if data["mature_up_90"] and not prev.get("mature_up_90"):
+            notify(
+                f"🟨 PRIORIDAD MEDIA · STC 4H >90 · {pair['name']}",
+                f"🔴 *Movimiento 4H agotado (alcista)*\n"
+                f"STC cruzó el nivel 90 hacia arriba\n"
+                f"Reducir tamaño en señales 15M\n"
+                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
+                f"🕐 {day_label}",
+                priority="default",
+                tags="warning,chart_with_downwards_trend",
+            )
+            alerts_sent += 1
+            print(f"STC 4H MATURE >90: {pair['name']} STC={data['stc_val']}")
+
+        # ── 6. STC 4H zona madura <10 (agotamiento bajista) ──────
+        if data["mature_dn_10"] and not prev.get("mature_dn_10"):
+            notify(
+                f"🟨 PRIORIDAD MEDIA · STC 4H <10 · {pair['name']}",
+                f"🟢 *Movimiento bajista agotado en 4H*\n"
+                f"STC cruzó el nivel 10 hacia abajo\n"
+                f"Posible reversión pronto\n"
+                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
+                f"🕐 {day_label}",
+                priority="default",
+                tags="warning,chart_with_upwards_trend",
+            )
+            alerts_sent += 1
+            print(f"STC 4H MATURE <10: {pair['name']} STC={data['stc_val']}")
 
         new_state[sym] = {
-            "rvol_alert": data["rvol_alert"],
-            "stc_up":     data["stc_up"],
-            "stc_down":   data["stc_down"],
+            "rvol_alert":  data["rvol_alert"],
+            "cross_up_25": data["cross_up_25"],
+            "cross_dn_75": data["cross_dn_75"],
+            "mature_up_90":data["mature_up_90"],
+            "mature_dn_10":data["mature_dn_10"],
         }
 
     save_state(new_state)
