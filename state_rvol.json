@@ -35,7 +35,7 @@
     "mature_dn_10": false
   },
   "DOTUSDT": {
-    "rvol_alert": false,
+    "rvol_alert": true,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
@@ -84,14 +84,14 @@
     "mature_dn_10": false
   },
   "XRPUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
     "mature_dn_10": false
   },
   "DOGEUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
@@ -112,7 +112,7 @@
     "mature_dn_10": false
   },
   "ADAUSDT": {
-    "rvol_alert": true,
+    "rvol_alert": false,
     "cross_up_25": false,
     "cross_dn_75": false,
     "mature_up_90": false,
