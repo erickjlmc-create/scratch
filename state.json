@@ -1,8 +1,8 @@
 {
-  "_vol_extrema_SOLUSDT": false,
-  "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": false,
-  "SOLUSDT": {
+  "_vol_extrema_BTCUSDT": false,
+  "_forming_BTCUSDT": "none",
+  "_b_1h_BTCUSDT": false,
+  "BTCUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
@@ -19,10 +19,50 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
+  "_vol_extrema_SOLUSDT": false,
+  "_forming_SOLUSDT": "none",
+  "_b_1h_SOLUSDT": false,
+  "SOLUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": null
+  },
   "_vol_extrema_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": null
+  },
+  "_vol_extrema_ADAUSDT": false,
+  "_forming_ADAUSDT": "none",
+  "_b_1h_ADAUSDT": false,
+  "ADAUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": null
+  },
+  "_vol_extrema_XRPUSDT": false,
+  "_forming_XRPUSDT": "none",
+  "_b_1h_XRPUSDT": false,
+  "XRPUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bull",
+    "st_confluencia": "bull"
+  },
+  "_vol_extrema_DOGEUSDT": false,
+  "_forming_DOGEUSDT": "none",
+  "_b_1h_DOGEUSDT": false,
+  "DOGEUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
@@ -59,30 +99,50 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_vol_extrema_NEARUSDT": false,
+  "_vol_extrema_NEARUSDT": true,
+  "_trade_count": {
+    "2026-07-21": 1
+  },
+  "_trade_NEARUSDT": {
+    "entry": 1.931,
+    "sl": 1.9569,
+    "tp1": 1.8922,
+    "direction": "short",
+    "tp1_hit": false
+  },
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
+    "grade": "prec",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": "bear"
+  },
+  "_vol_extrema_OPUSDT": false,
+  "_forming_OPUSDT": "none",
+  "_b_1h_OPUSDT": false,
+  "OPUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": null
+  },
+  "_vol_extrema_ATOMUSDT": false,
+  "_forming_ATOMUSDT": "none",
+  "_b_1h_ATOMUSDT": false,
+  "ATOMUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_ARBUSDT": false,
-  "_forming_ARBUSDT": "none",
-  "_b_1h_ARBUSDT": false,
-  "ARBUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bull",
-    "st_confluencia": null
-  },
-  "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "none",
-  "_b_1h_OPUSDT": false,
-  "OPUSDT": {
+  "_vol_extrema_RENDERUSDT": false,
+  "_forming_RENDERUSDT": "none",
+  "_b_1h_RENDERUSDT": false,
+  "RENDERUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
@@ -119,6 +179,28 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
+  "_vol_extrema_ZECUSDT": false,
+  "_forming_ZECUSDT": "none",
+  "_b_1h_ZECUSDT": false,
+  "ZECUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear",
+    "st_confluencia": "bear"
+  },
+  "_vol_extrema_XMRUSDT": false,
+  "_forming_XMRUSDT": "none",
+  "_b_1h_XMRUSDT": false,
+  "XMRUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bull",
+    "st_confluencia": "bull"
+  },
   "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-21",
   "_close_sent": true
 }
