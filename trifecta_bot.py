@@ -28,7 +28,7 @@ TELEGRAM_CANAL_PRINCIPAL_ID = os.environ.get("TELEGRAM_CANAL_PRINCIPAL_ID")
 TELEGRAM_CANAL_RADAR_ID     = os.environ.get("TELEGRAM_CANAL_RADAR_ID")
 NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
 
-[
+PAIRS = [
     {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
     {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
     {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
@@ -49,6 +49,9 @@ NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
     {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
     {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
 ]
+
+
+
 CFG = {
     "ST_PERIOD":10,"ST_FACTOR":3.0,"EMA_FAST":9,"EMA_SLOW":21,"MFI_PERIOD":14,
     "STC_CYCLE":10,"STC_FAST":23,"STC_SLOW":50,"STC_BULL":25,"STC_BEAR":75,
@@ -59,6 +62,7 @@ CFG = {
     "VOL_AVG":20,"EMA100":100,"EMA200":200,"EMA50_4H":50,"EMA200_4H":200,
     "TP1_R":1.5,"TP2_R":2.5,"TP3_R":4.0,
     "CANDLES":300,"CANDLES_4H":250,
+    "HEATMAP_LEN":50,"HEATMAP_HOT":2.5,
 }
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
@@ -443,15 +447,41 @@ def analyze_pair(pair):
 
 def obtener_estado_heatmap(symbol):
     """
-    TODO: conectar aquí tu proveedor real de Volume Heatmap (por ejemplo,
-    un endpoint de tu exchange o un scraper de tu herramienta de heatmap).
-    Debe retornar "normal" o "caliente".
+    Replica el indicador 'Heatmap Volume [xdecow]' en Pine Script:
+      mean   = SMA(volume, HEATMAP_LEN)
+      std    = desviacion estandar poblacional de volume, HEATMAP_LEN
+      stdbar = (volume_actual - mean) / std
 
-    Por ahora retorna "normal" siempre — así el bot sigue funcionando sin
-    romperse, pero la etiqueta 🔥 ALTA DENSIDAD nunca se activará hasta que
-    conectes una fuente real de datos.
+    Zonas del indicador original (por color):
+      stdbar > 4.0   -> Extra High (rojo)
+      stdbar > 2.5   -> High       (naranja)
+      stdbar > 1.0   -> Medium     (amarillo)
+      stdbar > -0.5  -> Normal     (celeste)
+      resto          -> Low        (teal)
+
+    Para esta integracion, "caliente" = zona High o Extra High (stdbar > 2.5,
+    HEATMAP_HOT en CFG) — las dos zonas rojas/naranjas del heatmap original.
+    Cualquier otra zona se reporta como "normal".
     """
-    return "normal"
+    largo = CFG["HEATMAP_LEN"]
+    try:
+        candles = fetch_klines(symbol, "15", largo + 5)
+        if len(candles) < largo:
+            return "normal"  # datos insuficientes, no arriesgar falso positivo
+
+        vols = [c["volume"] for c in candles]
+        ventana = vols[-largo:]
+        mean = sum(ventana) / largo
+        var = sum((v - mean) ** 2 for v in ventana) / largo   # stdev poblacional, como pstdev() en Pine
+        std = var ** 0.5
+        if std == 0:
+            return "normal"
+
+        stdbar = (vols[-1] - mean) / std
+        return "caliente" if stdbar > CFG["HEATMAP_HOT"] else "normal"
+    except Exception as e:
+        print(f"Error calculando heatmap de {symbol}: {e}")
+        return "normal"
 
 def calc_position(price, sl):
     """Calculadora de posicion: capital $100, riesgo 1%."""
@@ -1062,4 +1092,3 @@ def main():
 
 if __name__=="__main__":
     main()
-  
