@@ -12,8 +12,8 @@ TELEGRAM_CHAT_ID = "TU_CHAT_ID"
 
 PAIRS = [
     "BTC-USD", "ETH-USD", "SOL-USD", "ADA-USD", "XRP-USD",
-    "DOGE-USD", "AVAX-USD", "LINK-USD", "DOT-USD", "POL-USD",
-    "UNI-USD", "ATOM-USD", "LTC-USD"
+    "DOGE-USD", "AVAX-USD", "LINK-USD", "DOT-USD", "XRP-USD",
+    "DOGE-USD", "ATOM-USD", "RENDER-USD"
 ]
 
 STATE_FILE = "state.json"
