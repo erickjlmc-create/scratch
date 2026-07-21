@@ -28,22 +28,27 @@ TELEGRAM_CANAL_PRINCIPAL_ID = os.environ.get("TELEGRAM_CANAL_PRINCIPAL_ID")
 TELEGRAM_CANAL_RADAR_ID     = os.environ.get("TELEGRAM_CANAL_RADAR_ID")
 NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
 
-PAIRS = [
-    {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
-    {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
-    {"symbol": "BNBUSDT",  "name": "BNB/USDT"},
-    {"symbol": "AVAXUSDT", "name": "AVAX/USDT"},
-    {"symbol": "LINKUSDT", "name": "LINK/USDT"},
-    {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
-    {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
-    {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
-    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
-    {"symbol": "OPUSDT",   "name": "OP/USDT"},
-    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
-    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
-    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
+[
+    {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
+    {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
+    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
+    {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
+    {"symbol": "ADAUSDT",    "name": "ADA/USDT"},
+    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
+    {"symbol": "DOGEUSDT",   "name": "DOGE/USDT"},
+    {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
+    {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
+    {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
+    {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
+    {"symbol": "OPUSDT",     "name": "OP/USDT"},
+    {"symbol": "ATOMUSDT",   "name": "ATOM/USDT"},
+    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
+    {"symbol": "INJUSDT",    "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
+    {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
+    {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
 ]
-
 CFG = {
     "ST_PERIOD":10,"ST_FACTOR":3.0,"EMA_FAST":9,"EMA_SLOW":21,"MFI_PERIOD":14,
     "STC_CYCLE":10,"STC_FAST":23,"STC_SLOW":50,"STC_BULL":25,"STC_BEAR":75,
@@ -58,10 +63,25 @@ CFG = {
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
-    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
-    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
-    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
+    "BTCUSDT":    "BTC-USD",
+    "ETHUSDT":    "ETH-USD",
+    "SOLUSDT":    "SOL-USD",
+    "BNBUSDT":    "BNB-USD",
+    "ADAUSDT":    "ADA-USD",
+    "XRPUSDT":    "XRP-USD",
+    "DOGEUSDT":   "DOGE-USD",
+    "AVAXUSDT":   "AVAX-USD",
+    "LINKUSDT":   "LINK-USD",
+    "DOTUSDT":    "DOT-USD",
+    "NEARUSDT":   "NEAR-USD",
+    "OPUSDT":     "OP-USD",
+    "ATOMUSDT":   "ATOM-USD",
+    "RENDERUSDT": "RENDER-USD",
+    "INJUSDT":    "INJ-USD",
+    "WLDUSDT":    "WLD-USD",
+    "TIAUSDT":    "TIA-USD",
+    "ZECUSDT":    "ZEC-USD",
+    "XMRUSDT":    "XMR-USD",
 }
 
 def get_session():
