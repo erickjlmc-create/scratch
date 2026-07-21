@@ -18,21 +18,25 @@ import yfinance as yf
 from datetime import datetime, timezone, timedelta
 
 PAIRS = [
-    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
+    {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
     {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
+    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
     {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
+    {"symbol": "ADAUSDT",    "name": "ADA/USDT"},
+    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
+    {"symbol": "DOGEUSDT",   "name": "DOGE/USDT"},
     {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
     {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
     {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
     {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
-    {"symbol": "ARBUSDT",    "name": "ARB/USDT"},
-    {"symbol": "SUIUSDT",    "name": "SUI/USDT"},
     {"symbol": "OPUSDT",     "name": "OP/USDT"},
+    {"symbol": "ATOMUSDT",   "name": "ATOM/USDT"},
+    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
     {"symbol": "INJUSDT",    "name": "INJ/USDT"},
     {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
     {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
-    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
-    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
+    {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
+    {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
 ]
 
 CFG = {
@@ -49,21 +53,25 @@ CFG = {
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "SOLUSDT":    "SOL-USD",
+    "BTCUSDT":    "BTC-USD",
     "ETHUSDT":    "ETH-USD",
+    "SOLUSDT":    "SOL-USD",
     "BNBUSDT":    "BNB-USD",
+    "ADAUSDT":    "ADA-USD",
+    "XRPUSDT":    "XRP-USD",
+    "DOGEUSDT":   "DOGE-USD",
     "AVAXUSDT":   "AVAX-USD",
     "LINKUSDT":   "LINK-USD",
     "DOTUSDT":    "DOT-USD",
     "NEARUSDT":   "NEAR-USD",
-    "ARBUSDT":    "ARB-USD",
-    "SUIUSDT":    "SUI-USD",
     "OPUSDT":     "OP-USD",
+    "ATOMUSDT":   "ATOM-USD",
+    "RENDERUSDT": "RENDER-USD",
     "INJUSDT":    "INJ-USD",
     "WLDUSDT":    "WLD-USD",
     "TIAUSDT":    "TIA-USD",
-    "XRPUSDT":    "XRP-USD",
-    "RENDERUSDT": "RENDER-USD",
+    "ZECUSDT":    "ZEC-USD",
+    "XMRUSDT":    "XMR-USD",
 }
 
 def get_session():
