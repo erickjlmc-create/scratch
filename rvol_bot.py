@@ -1,435 +1,871 @@
 """
-RVOL Weekend Filter Bot v2 — replica RVOL_Weekend_Heatmap_1_.pine
-Cambios vs v1:
-  - STC calculado en 4H (no en 15M)
-  - Alertas STC basadas en cruces de niveles: 25↑, 75↓, 90↑ (maduro), 10↓ (maduro)
-  - RVOL sigue en 15M con confirmacion de volumen en 4H
+Sistema Trifecta Pro v5 - Bot de notificaciones
+Replica TrifectaPro_Dashboard_v5.html y TrifectaPro_Scanner_v5.pine
 
-Destino: grupo Telegram RVOL (secrets RVOL_BOT_TOKEN + RVOL_CHAT_ID)
+NOVEDADES v5 vs v4:
+  + Choppiness Index como filtro de regimen (junto a ADX)
+  + ATR Percentile reemplaza filtro binario ATR > avg
+  + EMA 100 en 15M como contexto adicional
+  + TPs automaticos calculados con SL en linea del Supertrend (1.5R/2.5R/4R)
+  + EMA 200 en 4H incluida en cada alerta
+
+SIEMPRE notifica cuando Supertrend cambia de color en cualquier par.
 """
 
 import os, json, math, requests
 import pandas as pd
 import yfinance as yf
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
-# ── CONFIG ────────────────────────────────────────────────────────
 PAIRS = [
-    {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
-    {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
-    {"symbol": "BNBUSDT",  "name": "BNB/USDT"},
-    {"symbol": "AVAXUSDT", "name": "AVAX/USDT"},
-    {"symbol": "LINKUSDT", "name": "LINK/USDT"},
-    {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
-    {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
-    {"symbol": "AAVEUSDT", "name": "AAVE/USDT"},
-    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
-    {"symbol": "OPUSDT",   "name": "OP/USDT"},
-    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
-    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
-    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
-    {"symbol": "XRPUSDT",  "name": "XRP/USDT"},
-    {"symbol": "HYPEUSDT", "name": "HYPE/USDT"},
-    {"symbol": "DOGEUSDT", "name": "DOGE/USDT"},
-    {"symbol": "ZECUSDT",  "name": "ZEC/USDT"},
-    {"symbol": "XMRUSDT",  "name": "XMR/USDT"},
-    {"symbol": "ADAUSDT",  "name": "ADA/USDT"},
-    {"symbol": "DEXEUSDT", "name": "DEXE/USDT"},
+    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
+    {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
+    {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
+    {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
+    {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
+    {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
+    {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
+    {"symbol": "ARBUSDT",    "name": "ARB/USDT"},
+    {"symbol": "SUIUSDT",    "name": "SUI/USDT"},
+    {"symbol": "OPUSDT",     "name": "OP/USDT"},
+    {"symbol": "INJUSDT",    "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
+    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
+    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
 ]
 
 CFG = {
-    # RVOL en 15M
-    "AVG_DAYS":         7,
-    "BARS_PER_DAY":     96,       # velas de 15m en 24h
-    "RVOL_WEEKEND":     2.0,
-    "RVOL_WEEKDAY":     3.0,
-    # Heatmap z-score en 15M
-    "HEAT_LEN":         20,
-    "Z_HIGH":           1.0,
-    "Z_EXTRA_HIGH":     2.0,
-    "Z_LOW":           -1.0,
-    # Confirmacion volumen 4H
-    "VOL_4H_LEN":       20,
-    # STC en 4H (replica Pine)
-    "STC_CYCLE":        10,
-    "STC_FAST":         23,
-    "STC_SLOW":         50,
-    "STC_FACTOR":       0.5,
-    "STC_LEVEL_LOW":    25,       # cruce arriba → alcista iniciando
-    "STC_LEVEL_HIGH":   75,       # cruce abajo  → bajista
-    "STC_MATURE_HIGH":  90,       # zona madura alcista (agotamiento)
-    "STC_MATURE_LOW":   10,       # zona madura bajista (posible reversión)
-    # Candles
-    "CANDLES_15":       800,      # ~8 dias de 15m
-    "CANDLES_4H":       150,      # suficiente para STC + vol promedio en 4H
+    "ST_PERIOD":10,"ST_FACTOR":3.0,"EMA_FAST":9,"EMA_SLOW":21,"MFI_PERIOD":14,
+    "STC_CYCLE":10,"STC_FAST":23,"STC_SLOW":50,"STC_BULL":25,"STC_BEAR":75,
+    "SRSI_RSI":14,"SRSI_STOCH":14,"SRSI_K":3,"SRSI_D":3,"SRSI_OB":85,"SRSI_OS":15,
+    "WR_LEN":14,"WR_OB":-20,"WR_OS":-80,
+    "ADX_PERIOD":14,"ADX_MIN":25,"CHOP_LEN":14,"CHOP_MAX":61,
+    "ATR_LEN":14,"ATR_PCT_LEN":100,"ATR_PCT_MIN":25,
+    "VOL_AVG":20,"EMA100":100,"EMA200":200,"EMA50_4H":50,"EMA200_4H":200,
+    "TP1_R":1.5,"TP2_R":2.5,"TP3_R":4.0,
+    "CANDLES":300,"CANDLES_4H":250,
 }
 
+STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
-    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","AAVEUSDT":"AAVE-USD",
-    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
-    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
-    "XRPUSDT":"XRP-USD",  "HYPEUSDT":"HYPE-USD","DOGEUSDT":"DOGE-USD",
-    "ZECUSDT":"ZEC-USD",  "XMRUSDT":"XMR-USD",  "ADAUSDT":"ADA-USD",
-    "DEXEUSDT":"DEXE-USD",
+    "SOLUSDT":    "SOL-USD",
+    "ETHUSDT":    "ETH-USD",
+    "BNBUSDT":    "BNB-USD",
+    "AVAXUSDT":   "AVAX-USD",
+    "LINKUSDT":   "LINK-USD",
+    "DOTUSDT":    "DOT-USD",
+    "NEARUSDT":   "NEAR-USD",
+    "ARBUSDT":    "ARB-USD",
+    "SUIUSDT":    "SUI-USD",
+    "OPUSDT":     "OP-USD",
+    "INJUSDT":    "INJ-USD",
+    "WLDUSDT":    "WLD-USD",
+    "TIAUSDT":    "TIA-USD",
+    "XRPUSDT":    "XRP-USD",
+    "RENDERUSDT": "RENDER-USD",
 }
 
-STATE_FILE = os.path.join(os.path.dirname(__file__), "state_rvol.json")
+def get_session():
+    now=datetime.now(timezone.utc); m=now.hour*60+now.minute
+    if   360<=m< 660: return "dead1"
+    elif 660<=m< 720: return "asia"
+    elif 720<=m< 780: return "london"
+    elif 780<=m<1020: return "ny"
+    elif 1020<=m<1170: return "ny_late"
+    elif 1170<=m<1380: return "post"
+    else:              return "dead2"
 
-# ── DATOS ─────────────────────────────────────────────────────────
-def fetch_klines(symbol, interval, limit):
-    yf_sym = YF_SYMBOLS[symbol]
-    if interval == "15":
-        yi, per = "15m", "59d"
-    else:
-        yi, per = "1h", "729d"   # 1h como proxy de 4H, tomamos cada 4 velas
-    df = yf.download(yf_sym, period=per, interval=yi,
-                     progress=False, auto_adjust=True)
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = df.columns.get_level_values(0)
-    df = df.tail(limit).copy()
-    return [{"time":   int(ts.timestamp() * 1000),
-             "open":   float(r["Open"]),
-             "high":   float(r["High"]),
-             "low":    float(r["Low"]),
-             "close":  float(r["Close"]),
-             "volume": float(r["Volume"])}
-            for ts, r in df.iterrows()]
+SESSION_META={
+    "dead1":  {"operable":False,"caution":False,"label":"💀 ZONA MUERTA","risk":"NO OPERAR"},
+    "asia":   {"operable":False,"caution":True, "label":"🌏 ASIA PRECAUCION","risk":"50% riesgo"},
+    "london": {"operable":True, "caution":False,"label":"🇬🇧 APERTURA LONDRES","risk":"100% riesgo"},
+    "ny":     {"operable":True, "caution":False,"label":"🗽 NY PRIME","risk":"OPTIMO 100%"},
+    "ny_late":{"operable":True, "caution":False,"label":"🌆 NY TARDIO","risk":"60% riesgo"},
+    "post":   {"operable":False,"caution":True, "label":"⚠️ POST-NY","risk":"50% riesgo"},
+    "dead2":  {"operable":False,"caution":False,"label":"🤖 BOTS/MUERTA","risk":"NO OPERAR"},
+}
 
-def resample_to_4h(candles_1h):
-    """Agrupa velas de 1H en grupos de 4 para simular el timeframe 4H."""
-    result = []
-    chunk = 4
-    # trabajamos en lotes de 4 desde el final hacia atrás para alinear la vela actual
-    n = len(candles_1h)
-    # tomar solo los bloques completos + el incompleto más reciente
-    start = n % chunk  # resto → primer bloque puede ser incompleto
-    groups = []
-    if start > 0:
-        groups.append(candles_1h[:start])
-    for i in range(start, n, chunk):
-        groups.append(candles_1h[i:i+chunk])
-    for g in groups:
-        if not g: continue
-        result.append({
-            "time":   g[-1]["time"],
-            "close":  g[-1]["close"],
-            "volume": sum(c["volume"] for c in g),
-        })
-    return result
+def fetch_klines(symbol,interval,limit):
+    yf_sym=YF_SYMBOLS[symbol]
+    if interval=="15":   yi,per="15m","59d"
+    elif interval=="240": yi,per="1h","729d"
+    else:                yi,per="1d","2y"
+    df=yf.download(yf_sym,period=per,interval=yi,progress=False,auto_adjust=True)
+    if isinstance(df.columns,pd.MultiIndex): df.columns=df.columns.get_level_values(0)
+    df=df.tail(limit).copy()
+    return [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),"high":float(r["High"]),
+             "low":float(r["Low"]),"close":float(r["Close"]),"volume":float(r["Volume"])}
+            for ts,r in df.iterrows()]
 
-# ── INDICADORES ───────────────────────────────────────────────────
-def calc_rvol(candles_15):
-    """RVOL mismo horario: vol actual / promedio del mismo slot en últimos 7 días."""
-    bpd  = CFG["BARS_PER_DAY"]
-    days = CFG["AVG_DAYS"]
-    n    = len(candles_15)
-    if n < bpd * days + 1:
-        return None
-    current_vol = candles_15[-1]["volume"]
-    slots = [candles_15[-(1 + i * bpd)]["volume"]
-             for i in range(1, days + 1) if n - 1 - i * bpd >= 0]
-    if not slots:
-        return None
-    avg = sum(slots) / len(slots)
-    return (current_vol / avg) if avg > 0 else None
+def fetch_ticker(symbol):
+    info=yf.Ticker(YF_SYMBOLS[symbol]).fast_info
+    return {"lastPrice":str(round(float(info.last_price),6))}
 
-def calc_heatmap_z(candles_15):
-    """Z-score del volumen en 15M."""
-    length = CFG["HEAT_LEN"]
-    if len(candles_15) < length:
-        return 0.0
-    vols = [c["volume"] for c in candles_15[-length:]]
-    mean = sum(vols) / length
-    std  = math.sqrt(sum((v - mean) ** 2 for v in vols) / length)
-    return ((candles_15[-1]["volume"] - mean) / std) if std > 0 else 0.0
+def ema(arr,p):
+    k=2/(p+1); res=[None]*len(arr); last=None; started=False
+    for i,v in enumerate(arr):
+        if v is None: continue
+        if not started: res[i]=v; last=v; started=True; continue
+        res[i]=v*k+last*(1-k); last=res[i]
+    return res
 
-def heatmap_label(z):
-    if z >= CFG["Z_EXTRA_HIGH"]: return "🔴 EXTRA ALTO"
-    if z >= CFG["Z_HIGH"]:       return "🟠 ALTO"
-    if z <= CFG["Z_LOW"]:        return "🔵 BAJO"
-    return "⚪ Normal"
+def sma(arr,p):
+    res=[None]*len(arr)
+    for i in range(len(arr)):
+        if i<p-1: continue
+        res[i]=sum((v or 0) for v in arr[i-p+1:i+1])/p
+    return res
 
-def confirm_vol_4h(candles_4h):
-    """Volumen 4H actual >= promedio de los últimos VOL_4H_LEN periodos."""
-    length = CFG["VOL_4H_LEN"]
-    if len(candles_4h) < length + 1:
-        return True
-    vols = [c["volume"] for c in candles_4h[-(length + 1):-1]]
-    avg  = sum(vols) / len(vols)
-    return candles_4h[-1]["volume"] >= avg
+def calc_atr(candles,p):
+    n=len(candles); tr=[0.0]*n
+    for i in range(n):
+        if i==0: tr[i]=candles[i]["high"]-candles[i]["low"]
+        else:
+            pr=candles[i-1]
+            tr[i]=max(candles[i]["high"]-candles[i]["low"],
+                      abs(candles[i]["high"]-pr["close"]),abs(candles[i]["low"]-pr["close"]))
+    res=[None]*n
+    if n<p: return res
+    res[p-1]=sum(tr[:p])/p
+    for i in range(p,n): res[i]=(res[i-1]*(p-1)+tr[i])/p
+    return res
 
-def calc_stc_4h(candles_4h):
-    """
-    STC calculado sobre cierres de 4H — replica exacta del Pine:
-      f_stc(close, stcLength, stcFastLen, stcSlowLen, stcFactor)
-    Devuelve (stc_current, stc_prev) para detectar cruces de nivel.
-    """
-    closes = [c["close"] for c in candles_4h]
-    n      = len(closes)
-    fast   = CFG["STC_FAST"]
-    slow   = CFG["STC_SLOW"]
-    cycle  = CFG["STC_CYCLE"]
-    factor = CFG["STC_FACTOR"]
+def calc_atr_percentile(candles,atr_len,pct_len):
+    atr_a=calc_atr(candles,atr_len); n=len(candles)
+    if n<pct_len or atr_a[-1] is None: return 50.0
+    cur=atr_a[-1]; win=[atr_a[i] for i in range(n-pct_len,n) if atr_a[i] is not None]
+    return (sum(1 for v in win if cur>=v)/len(win))*100 if win else 50.0
 
-    if n < slow + cycle * 2 + 2:
-        return None, None
+def calc_choppiness(candles,p):
+    n=len(candles)
+    if n<p: return 50.0
+    win=candles[-p:]
+    atr1=[max(c["high"]-c["low"],
+              abs(c["high"]-candles[i-1+n-p]["close"]) if i>0 else 0,
+              abs(c["low"] -candles[i-1+n-p]["close"]) if i>0 else 0)
+          for i,c in enumerate(win)]
+    atr_sum=sum(atr1); hh=max(c["high"] for c in win); ll=min(c["low"] for c in win)
+    rng=hh-ll
+    if rng==0 or atr_sum==0: return 50.0
+    return 100*math.log10(atr_sum/rng)/math.log10(p)
 
-    # EMA helper
-    def ema_arr(arr, p):
-        k   = 2 / (p + 1)
-        res = [None] * len(arr)
-        last = None
-        for i, v in enumerate(arr):
-            if last is None:
-                res[i] = v; last = v
-            else:
-                res[i] = v * k + last * (1 - k); last = res[i]
-        return res
+def calc_supertrend(candles, p, f):
+    n   = len(candles)
+    atr = calc_atr(candles, p)
+    trend   = [1]    * n
+    st_line = [None] * n
+    up_arr  = [None] * n
+    dn_arr  = [None] * n
 
-    ef   = ema_arr(closes, fast)
-    es   = ema_arr(closes, slow)
-    macd = [(ef[i] - es[i]) if (ef[i] is not None and es[i] is not None) else 0.0
-            for i in range(n)]
+    for i in range(p, n):
+        hl2    = (candles[i]["high"] + candles[i]["low"]) / 2
+        a      = atr[i] or 0
+        raw_up = hl2 - f * a
+        raw_dn = hl2 + f * a
 
-    # Stoch suavizado con factor (replica nz + var float en Pine)
-    def stoch_smooth(src, ln):
-        out = [0.0] * len(src)
-        f   = [0.0] * len(src)
-        for i in range(ln - 1, len(src)):
-            w      = src[i - ln + 1:i + 1]
-            lo, hi = min(w), max(w)
-            raw    = ((src[i] - lo) / (hi - lo) * 100) if hi != lo else 0.0
-            f[i]   = raw if i == ln - 1 else f[i-1] + factor * (raw - f[i-1])
-            out[i] = f[i]
-        return out
+        up_prev = up_arr[i-1] if up_arr[i-1] is not None else raw_up
+        dn_prev = dn_arr[i-1] if dn_arr[i-1] is not None else raw_dn
 
-    f2      = stoch_smooth(macd,  cycle)
-    stc_arr = stoch_smooth(f2,    cycle)
+        prev_close = candles[i-1]["close"]
+        up_arr[i]  = max(raw_up, up_prev) if prev_close > up_prev else raw_up
+        dn_arr[i]  = min(raw_dn, dn_prev) if prev_close < dn_prev else raw_dn
 
-    stc_cur  = stc_arr[-1]
-    stc_prev = stc_arr[-2]
-    return stc_cur, stc_prev
+        cur_close = candles[i]["close"]
+        if   cur_close > dn_prev: trend[i] = 1
+        elif cur_close < up_prev: trend[i] = -1
+        else:                     trend[i] = trend[i-1]
 
-def detect_stc_events(stc_cur, stc_prev):
-    """
-    Detecta los 4 eventos del Pine Script:
-      crossover(stc4h, 25)    → ciclo alcista iniciando
-      crossunder(stc4h, 75)   → ciclo bajista
-      crossover(stc4h, 90)    → zona madura alcista (agotamiento)
-      crossunder(stc4h, 10)   → zona madura bajista (posible reversión)
-    """
-    if stc_cur is None or stc_prev is None:
-        return {"cross_up_25": False, "cross_dn_75": False,
-                "mature_up_90": False, "mature_dn_10": False, "stc_val": None}
+        st_line[i] = up_arr[i] if trend[i] == 1 else dn_arr[i]
 
-    cross_up_25  = stc_prev < 25  and stc_cur >= 25
-    cross_dn_75  = stc_prev > 75  and stc_cur <= 75
-    mature_up_90 = stc_prev < 90  and stc_cur >= 90
-    mature_dn_10 = stc_prev > 10  and stc_cur <= 10
+    return trend, st_line
 
-    return {
-        "cross_up_25":  cross_up_25,
-        "cross_dn_75":  cross_dn_75,
-        "mature_up_90": mature_up_90,
-        "mature_dn_10": mature_dn_10,
-        "stc_val":      round(stc_cur, 1),
-    }
+def calc_rsi(closes,p):
+    n=len(closes); res=[None]*n
+    if n<p+1: return res
+    g=l=0.0
+    for i in range(1,p+1):
+        d=closes[i]-closes[i-1]
+        if d>0: g+=d
+        else:   l-=d
+    g/=p; l/=p; res[p]=100 if l==0 else 100-100/(1+g/l)
+    for i in range(p+1,n):
+        d=closes[i]-closes[i-1]; g=(g*(p-1)+max(d,0))/p; l=(l*(p-1)+max(-d,0))/p
+        res[i]=100 if l==0 else 100-100/(1+g/l)
+    return res
 
-# ── ANALISIS POR PAR ──────────────────────────────────────────────
+def calc_stochrsi_k(closes,rl,sl,ks,ds):
+    rsi=calc_rsi(closes,rl); n=len(closes); stoch=[None]*n
+    for i in range(rl+sl-1,n):
+        w=[v for v in rsi[i-sl+1:i+1] if v is not None]
+        if len(w)<sl: continue
+        lo,hi=min(w),max(w); stoch[i]=50 if hi==lo else ((rsi[i]-lo)/(hi-lo))*100
+    k=sma(stoch,ks); return k[n-1] if k[n-1] is not None else 50
+
+def calc_mfi(candles,p):
+    n=len(candles)
+    tp=[(c["high"]+c["low"]+c["close"])/3 for c in candles]
+    mf=[tp[i]*candles[i]["volume"] for i in range(n)]; res=[None]*n
+    for i in range(p,n):
+        pos=neg=0.0
+        for j in range(i-p+1,i+1):
+            if j==0: continue
+            if tp[j]>tp[j-1]: pos+=mf[j]
+            else:              neg+=mf[j]
+        res[i]=100 if neg==0 else 100-100/(1+pos/neg)
+    return res
+
+def calc_williams_r(candles,p):
+    n=len(candles)
+    if n<p: return -50
+    w=candles[-p:]; hh=max(c["high"] for c in w); ll=min(c["low"] for c in w)
+    cl=candles[-1]["close"]
+    return -50 if hh==ll else ((hh-cl)/(hh-ll))*-100
+
+def calc_adx(candles,p):
+    n=len(candles)
+    if n<2: return 0
+    tr,dm_p,dm_m=[],[],[]
+    for i in range(1,n):
+        hi=candles[i]["high"]-candles[i-1]["high"]; lo=candles[i-1]["low"]-candles[i]["low"]
+        tr.append(max(candles[i]["high"]-candles[i]["low"],
+                      abs(candles[i]["high"]-candles[i-1]["close"]),
+                      abs(candles[i]["low"]-candles[i-1]["close"])))
+        dm_p.append(hi if (hi>lo and hi>0) else 0)
+        dm_m.append(lo if (lo>hi and lo>0) else 0)
+    if len(tr)<p: return 0
+    av=sum(tr[:p]); p14=sum(dm_p[:p]); m14=sum(dm_m[:p]); dx=[]
+    for i in range(p,len(tr)):
+        av=av-av/p+tr[i]; p14=p14-p14/p+dm_p[i]; m14=m14-m14/p+dm_m[i]
+        dip=(p14/av)*100 if av else 0; dim=(m14/av)*100 if av else 0
+        s=dip+dim; dx.append((abs(dip-dim)/s)*100 if s else 0)
+    if len(dx)<p: return 0
+    adxv=sum(dx[:p])/p
+    for i in range(p,len(dx)): adxv=(adxv*(p-1)+dx[i])/p
+    return adxv
+
+def calc_stc(closes,cycle,fast,slow):
+    n=len(closes); ef=ema(closes,fast); es=ema(closes,slow)
+    macd=[(ef[i]-es[i]) if (ef[i] and es[i]) else 0 for i in range(n)]
+    def st1(src,ln):
+        r=[0.0]*len(src)
+        for i in range(ln-1,len(src)):
+            w=src[i-ln+1:i+1]; lo,hi=min(w),max(w)
+            r[i]=((src[i]-lo)/(hi-lo)*100) if hi!=lo else 0
+        return r
+    f1=st1(macd,cycle); pf=[0.0]*n
+    for i in range(n): pf[i]=f1[i] if i==0 else pf[i-1]+0.5*(f1[i]-pf[i-1])
+    f2=st1(pf,cycle); pff=[0.0]*n
+    for i in range(n): pff[i]=f2[i] if i==0 else pff[i-1]+0.5*(f2[i]-pff[i-1])
+    return pff[-1]
+
+def calc_tps(entry,sl,direction):
+    r=abs(entry-sl)
+    if r==0: return None,None,None
+    if direction=="long":
+        return entry+CFG["TP1_R"]*r,entry+CFG["TP2_R"]*r,entry+CFG["TP3_R"]*r
+    return entry-CFG["TP1_R"]*r,entry-CFG["TP2_R"]*r,entry-CFG["TP3_R"]*r
+
 def analyze_pair(pair):
-    sym = pair["symbol"]
+    sym=pair["symbol"]
+    c15=fetch_klines(sym,"15",CFG["CANDLES"])
+    c4h=fetch_klines(sym,"240",CFG["CANDLES_4H"])
+    ticker=fetch_ticker(sym)
+    closes=[c["close"] for c in c15]; vols=[c["volume"] for c in c15]
+    n   = len(c15)-1
+    nc  = n - 1
 
-    c15  = fetch_klines(sym, "15",  CFG["CANDLES_15"])
-    c1h  = fetch_klines(sym, "240", CFG["CANDLES_4H"])  # yfinance devuelve 1H
-    c4h  = resample_to_4h(c1h)                          # agrupamos a 4H
+    st_trend,st_line_arr=calc_supertrend(c15,CFG["ST_PERIOD"],CFG["ST_FACTOR"])
+    st_bull=st_trend[nc]==1; st_line_val=st_line_arr[nc]
 
-    closes_4h  = [c["close"] for c in c4h]
-    now_utc    = datetime.now(timezone.utc)
-    is_weekend = now_utc.weekday() >= 5
+    ema9a=ema(closes,CFG["EMA_FAST"]); ema21a=ema(closes,CFG["EMA_SLOW"])
+    ema_bull=ema9a[n]>ema21a[n]; ema_bear=ema9a[n]<ema21a[n]
 
-    rvol      = calc_rvol(c15)
-    z         = calc_heatmap_z(c15)
-    ok4h      = confirm_vol_4h(c4h)
-    threshold = CFG["RVOL_WEEKEND"] if is_weekend else CFG["RVOL_WEEKDAY"]
+    mfi_a=calc_mfi(c15,CFG["MFI_PERIOD"]); mfi_val=mfi_a[n] if mfi_a[n] is not None else 50
+    mfi_bull=mfi_val>50; mfi_bear=mfi_val<50
 
-    rvol_alert = (rvol is not None) and (rvol >= threshold) and ok4h
+    stc_val=calc_stc(closes,CFG["STC_CYCLE"],CFG["STC_FAST"],CFG["STC_SLOW"])
+    stc_bull=stc_val>CFG["STC_BULL"]; stc_bear=stc_val<CFG["STC_BEAR"]
+    stc_mature_l=stc_val>=95; stc_mature_s=stc_val<=5
 
-    stc_cur, stc_prev = calc_stc_4h(c4h)
-    stc_events        = detect_stc_events(stc_cur, stc_prev)
+    k_val=calc_stochrsi_k(closes,CFG["SRSI_RSI"],CFG["SRSI_STOCH"],CFG["SRSI_K"],CFG["SRSI_D"])
+    wr_val=calc_williams_r(c15,CFG["WR_LEN"])
+    block_l=(k_val>CFG["SRSI_OB"]) or (wr_val>CFG["WR_OB"])
+    block_s=(k_val<CFG["SRSI_OS"]) or (wr_val<CFG["WR_OS"])
+
+    adx_val=calc_adx(c15,CFG["ADX_PERIOD"]); adx_ok=adx_val>CFG["ADX_MIN"]
+    chop_val=calc_choppiness(c15,CFG["CHOP_LEN"]); chop_ok=chop_val<CFG["CHOP_MAX"]
+    regime_ok=adx_ok and chop_ok
+
+    atr_pct=calc_atr_percentile(c15,CFG["ATR_LEN"],CFG["ATR_PCT_LEN"])
+    atr_ok=atr_pct>=CFG["ATR_PCT_MIN"]
+
+    vol_sma=sma(vols,CFG["VOL_AVG"]); vol_ok=vols[n]>(vol_sma[n] or 0)
+
+    ema200a=ema(closes,CFG["EMA200"]); ema200_val=ema200a[n] or 0
+    ema100a=ema(closes,CFG["EMA100"]); ema100_val=ema100a[n] or 0
+    above200=closes[n]>ema200_val; below200=closes[n]<ema200_val
+
+    closes4h=[c["close"] for c in c4h]
+    ema50_4h_val =ema(closes4h,CFG["EMA50_4H"])[-1]  or 0
+    ema200_4h_val=ema(closes4h,CFG["EMA200_4H"])[-1] or 0
+    above4h=closes[n]>ema50_4h_val; below4h=closes[n]<ema50_4h_val
+
+    bull_p=sum([st_bull,ema_bull,mfi_bull]); bear_p=sum([not st_bull,ema_bear,mfi_bear])
+
+    bull_ctx=above200 and regime_ok and atr_ok and vol_ok and above4h and not block_l and stc_bull and not stc_mature_l
+    bear_ctx=below200 and regime_ok and atr_ok and vol_ok and below4h and not block_s and stc_bear and not stc_mature_s
+
+    sess=get_session(); meta=SESSION_META[sess]
+    in_op=meta["operable"]; in_ny_lon=sess in ("ny","london")
+
+    app_l=bull_p==3 and bull_ctx and in_ny_lon
+    app_s=bear_p==3 and bear_ctx and in_ny_lon
+    ap_l =bull_p==3 and bull_ctx and in_op and not app_l
+    ap_s =bear_p==3 and bear_ctx and in_op and not app_s
+    b_l  =bull_p>=2 and regime_ok and atr_ok and above4h and not block_l and stc_bull and in_op and not ap_l
+    b_s  =bear_p>=2 and regime_ok and atr_ok and below4h and not block_s and stc_bear and in_op and not ap_s
+    stc_warn=(stc_mature_l and (app_l or ap_l)) or (stc_mature_s and (app_s or ap_s))
+
+    forming_long  = bull_p == 2 and above200 and stc_bull and above4h and not block_l and in_op
+    forming_short = bear_p == 2 and below200 and stc_bear and below4h and not block_s and in_op
+    if forming_long:
+        missing = "MFI" if not mfi_bull else ("EMA cruce" if not ema_bull else "Supertrend")
+        forming_dir = "long"; forming_missing = missing
+    elif forming_short:
+        missing = "MFI" if not mfi_bear else ("EMA cruce" if not ema_bear else "Supertrend")
+        forming_dir = "short"; forming_missing = missing
+    else:
+        forming_dir = "none"; forming_missing = ""
+
+    h1_confirmed = False
+    if b_l or b_s:
+        try:
+            c1h = fetch_klines(pair["symbol"], "60", 60) if hasattr(pair,"__getitem__") else []
+            if len(c1h) >= 30:
+                cl1h = [c["close"] for c in c1h]
+                st1h,_ = calc_supertrend(c1h, CFG["ST_PERIOD"], CFG["ST_FACTOR"])
+                e9_1h  = ema(cl1h, 9)[-1] or 0
+                e21_1h = ema(cl1h, 21)[-1] or 0
+                if b_l:
+                    h1_confirmed = st1h[-1]==1 and e9_1h > e21_1h
+                else:
+                    h1_confirmed = st1h[-1]==-1 and e9_1h < e21_1h
+        except Exception:
+            h1_confirmed = False
+
+    if   app_l or app_s:    grade="App"
+    elif ap_l  or ap_s:     grade="Ap"
+    elif b_l   or b_s:      grade="B"
+    else:                    grade="none"
+
+    if   app_l or ap_l or b_l: direction="long"
+    elif app_s or ap_s or b_s: direction="short"
+    else:                      direction="none"
+
+    price=float(ticker["lastPrice"])
+    sl_val=st_line_val if st_line_val else price*(0.98 if direction=="long" else 1.02)
+    tp1,tp2,tp3=calc_tps(price,sl_val,direction)
 
     return {
-        "rvol":       round(rvol, 2) if rvol else None,
-        "threshold":  threshold,
-        "z":          round(z, 2),
-        "z_label":    heatmap_label(z),
-        "ok4h":       ok4h,
-        "rvol_alert": rvol_alert,
-        "is_weekend": is_weekend,
-        "price":      c15[-1]["close"],
-        **stc_events,
+        "grade":grade,"direction":direction,
+        "blocked":False,"stc_warn":stc_warn,
+        "forming_dir":forming_dir,"forming_missing":forming_missing,
+        "h1_confirmed":h1_confirmed,
+        "chop_val":round(chop_val,1),
+        "price":price,
+        "sl":  round(sl_val,4)  if sl_val else None,
+        "tp1": round(tp1,4)     if tp1    else None,
+        "tp2": round(tp2,4)     if tp2    else None,
+        "tp3": round(tp3,4)     if tp3    else None,
+        "ema200_15m": round(ema200_val,4),
+        "ema100_15m": round(ema100_val,4),
+        "ema50_4h":   round(ema50_4h_val,4),
+        "ema200_4h":  round(ema200_4h_val,4),
+        "bull_p":bull_p,"bear_p":bear_p,
+        "k":round(k_val),"wr":round(wr_val),
+        "adx":round(adx_val),"chop":round(chop_val,1),"atr_pct":round(atr_pct,1),
+        "stc":round(stc_val),
+        "st_direction":"bull" if st_bull else "bear",
+        "st_icon": "🟢" if st_bull else "🔴",
+        "session":sess,"session_label":meta["label"],"session_risk":meta["risk"],
     }
 
-# ── ESTADO ────────────────────────────────────────────────────────
+def calc_position(price, sl):
+    CAPITAL   = 100.0
+    RISK_PCT  = 0.01
+    risk_usd  = CAPITAL * RISK_PCT
+    dist      = abs(price - sl)
+    if dist == 0: return None
+    contracts = risk_usd / dist
+    pos_value = contracts * price
+    dist_pct  = (dist / price) * 100
+    return {
+        "risk_usd":  round(risk_usd, 2),
+        "dist":      round(dist, 4),
+        "dist_pct":  round(dist_pct, 2),
+        "contracts": round(contracts, 4),
+        "pos_value": round(pos_value, 2),
+        "margin_5x": round(pos_value / 5, 2),
+    }
+
+def get_btc_context():
+    try:
+        df = yf.download("BTC-USD", period="5d", interval="15m",
+                         progress=False, auto_adjust=True)
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
+        df = df.tail(50)
+        c = [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),
+              "high":float(r["High"]),"low":float(r["Low"]),
+              "close":float(r["Close"]),"volume":float(r["Volume"])}
+             for ts,r in df.iterrows()]
+    except Exception as e:
+        print(f"BTC fetch error: {e}")
+        return None
+    if len(c) < 20: return None
+    closes = [x["close"] for x in c]
+    st_trend, _ = calc_supertrend(c, CFG["ST_PERIOD"], CFG["ST_FACTOR"])
+    bt = st_trend[-1]
+    chg1h = ((closes[-1] - closes[-4]) / closes[-4]) * 100 if len(closes) >= 4 else 0
+    e9  = ema(closes, 9)[-1] or closes[-1]
+    e21 = ema(closes, 21)[-1] or closes[-1]
+    strong = bt == 1 and e9 > e21 and chg1h > 0
+    weak   = bt == -1 or (bt == 1 and chg1h < -0.5)
+    return {
+        "bull": bt == 1, "strong": strong, "weak": weak,
+        "chg1h": round(chg1h, 2), "price": round(closes[-1], 2),
+    }
+
 def load_state():
     try:
         with open(STATE_FILE) as f: return json.load(f)
     except: return {}
 
 def save_state(s):
-    with open(STATE_FILE, "w") as f: json.dump(s, f, indent=2)
+    with open(STATE_FILE,"w") as f: json.dump(s,f,indent=2)
 
-# ── NOTIFICACIONES ────────────────────────────────────────────────
-def notify(title, body, priority="default", tags="chart_bar"):
-    topic = os.environ.get("RVOL_NTFY_TOPIC")
+def notify(title,body,priority="default",tags="rotating_light"):
+    topic=os.environ.get("NTFY_TOPIC")
     if topic:
         try:
-            requests.post(f"https://ntfy.sh/{topic}",
-                          data=body.encode("utf-8"),
-                          headers={"Title": title, "Priority": priority, "Tags": tags},
-                          timeout=10)
-        except Exception as e: print("Error ntfy:", e)
-
-    bot  = os.environ.get("RVOL_BOT_TOKEN")
-    chat = os.environ.get("RVOL_CHAT_ID")
+            requests.post(f"https://ntfy.sh/{topic}",data=body.encode("utf-8"),
+                          headers={"Title":title,"Priority":priority,"Tags":tags},timeout=10)
+        except Exception as e: print("Error ntfy:",e)
+    bot=os.environ.get("TELEGRAM_BOT_TOKEN"); chat=os.environ.get("TELEGRAM_CHAT_ID")
     if bot and chat:
         try:
             requests.post(f"https://api.telegram.org/bot{bot}/sendMessage",
-                          json={"chat_id": chat,
-                                "text": f"*{title}*\n{body}",
-                                "parse_mode": "Markdown"},
+                          json={"chat_id":chat,"text":f"*{title}*\n{body}","parse_mode":"Markdown"},
                           timeout=10)
-        except Exception as e: print("Error Telegram RVOL:", e)
-
+        except Exception as e: print("Error Telegram:",e)
     if not topic and not (bot and chat):
-        print(f"[Sin canal RVOL] {title} | {body}")
+        print(f"[Sin canal] {title} | {body}")
 
-# ── MAIN ──────────────────────────────────────────────────────────
 def main():
-    state       = load_state()
-    new_state   = {}
+    state     = load_state()
+    new_state = {}
     alerts_sent = 0
-    now_utc     = datetime.now(timezone.utc)
-    day_label   = "🗓 FIN DE SEMANA" if now_utc.weekday() >= 5 else "📅 ENTRE SEMANA"
+    session_signals = []
+    expired_this_run = []
+    gl = {"App":"A++","Ap":"A+","B":"B"}
+
+    now_utc  = datetime.now(timezone.utc)
+    gt_hour  = (now_utc.hour - 6) % 24
+    gt_min   = now_utc.minute
+    today_str = now_utc.strftime("%Y-%m-%d")
+    weekday   = now_utc.weekday()
+
+    is_open_window    = (gt_hour == 7  and gt_min < 15)
+    is_close_window   = (gt_hour == 13 and 30 <= gt_min < 45)
+    is_weekly_window  = (weekday == 0  and gt_hour == 6 and 50 <= gt_min <= 59)
+
+    MACRO_EVENTS = [
+        {"date":"2026-07-29","hour_utc":18,"name":"FOMC Decision"},
+        {"date":"2026-07-30","hour_utc":12,"name":"GDP Q2"},
+        {"date":"2026-08-01","hour_utc":12,"name":"NFP Julio"},
+        {"date":"2026-08-12","hour_utc":12,"name":"CPI Julio"},
+    ]
+
+    trade_count = state.get("_trade_count", {})
+    today_count = trade_count.get(today_str, 0)
+    DAILY_LIMIT = 3
+
+    consecutive_expired = state.get("_consecutive_expired", 0)
+
+    btc = get_btc_context()
+    btc_ok_long  = btc is None or btc["bull"]
+    btc_ok_short = btc is None or not btc["bull"]
+
+    for ev in MACRO_EVENTS:
+        ev_dt = datetime.strptime(f"{ev['date']} {ev['hour_utc']:02d}:00",
+                                  "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+        mins_to_event = (ev_dt - now_utc).total_seconds() / 60
+        ev_key = f"_macro_{ev['date']}_{ev['hour_utc']}"
+        if 0 < mins_to_event <= 15 and not state.get(ev_key):
+            notify(
+                f"📅 EVENTO MACRO en {int(mins_to_event)} min",
+                f"⚠️ {ev['name']}\n"
+                f"🚫 No abrir nuevas posiciones\n"
+                f"🛡️ Si tienes trade abierto: mueve SL a breakeven\n"
+                f"🕐 Hora GT: {int(mins_to_event)} minutos",
+                priority="urgent", tags="calendar,warning",
+            )
+            new_state[ev_key] = True
+            alerts_sent += 1
+        elif mins_to_event <= 0 and state.get(ev_key):
+            new_state[ev_key] = False
+
+    if is_weekly_window and not state.get("_weekly_sent"):
+        weekly_lines = []
+        for pair in PAIRS:
+            try:
+                d = analyze_pair(pair)
+                st  = "🟢" if d["st_direction"]=="bull" else "🔴"
+                e4h = "↑" if d["price"] > d["ema200_4h"] else "↓"
+                stc = "▲" if d["stc"] > 50 else "▼"
+                weekly_lines.append(
+                    f"{st} {pair['name']:<12} 4H:{e4h} STC:{stc}{d['stc']:>3} ADX:{d['adx']:>3}"
+                )
+            except Exception:
+                weekly_lines.append(f"❓ {pair['name']:<12} error")
+        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
+        notify(
+            f"📅 RESUMEN SEMANAL · {now_utc.strftime('%d %b %Y')}",
+            f"Vista 4H de los pares\n"
+            f"{btc_str}\n\n"
+            + "\n".join(weekly_lines) +
+            f"\n\nSesion NY abre en 10 min · 07:00 GT",
+            priority="default", tags="calendar,chart_bar",
+        )
+        new_state["_weekly_sent"] = True
+        alerts_sent += 1
+
+    def btc_line(direction):
+        if btc is None: return ""
+        if direction == "long" and btc["weak"]:
+            return f"⚠️ CONTEXTO BTC: Bajando {btc['chg1h']}% en 1H · Reducir tamano 60%\n"
+        if direction == "short" and btc["strong"]:
+            return f"⚠️ CONTEXTO BTC: Subiendo {btc['chg1h']}% en 1H · Reducir tamano 60%\n"
+        trend = "ALCISTA" if btc["bull"] else "BAJISTA"
+        return f"✅ BTC {trend} ({btc['chg1h']:+.1f}% 1H) · Alineado\n"
+
+    def checklist(grade, direction):
+        if grade == "App":
+            return "📋 CHECKLIST: A++ → EJECUTAR DIRECTO"
+        if grade == "Ap":
+            return "📋 CHECKLIST: A+ → EJECUTAR (confirmar 1H alineado)"
+        if grade == "B":
+            return ("📋 CHECKLIST B → verificar:\n"
+                    "  1. Vela 15M cierra limpia\n"
+                    "  2. Volumen > promedio\n"
+                    "  3. No hay resistencia/soporte cercano")
+        return ""
+
+    if is_open_window and not state.get("_open_sent"):
+        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
+        lines = []
+        for pair in PAIRS:
+            try:
+                d = analyze_pair(pair)
+                st = "🟢" if d["st_direction"]=="bull" else "🔴"
+                e4h = "↑" if d["price"] > d["ema200_4h"] else "↓"
+                lines.append(f"{st} {pair['name']:<12} EMA200 4H:{e4h}  STC:{d['stc']:>3}")
+            except Exception:
+                lines.append(f"❓ {pair['name']:<12} error")
+        notify(
+            "📊 APERTURA SESION NY · Trifecta Pro",
+            f"🕖 07:00 GT · {now_utc.strftime('%a %d %b')}\n"
+            f"{btc_str}\n\n"
+            + "\n".join(lines),
+            priority="default", tags="chart_bar",
+        )
+        new_state["_open_sent"] = True
+        alerts_sent += 1
 
     for pair in PAIRS:
         sym = pair["symbol"]
-        try:
-            data = analyze_pair(pair)
+        try: data = analyze_pair(pair)
         except Exception as e:
-            print(f"Error en {sym}: {e}")
-            continue
+            print(f"Error en {sym}: {e}"); continue
 
-        prev = state.get(sym, {
-            "rvol_alert": False,
-            "cross_up_25": False, "cross_dn_75": False,
-            "mature_up_90": False, "mature_dn_10": False,
-        })
+        prev  = state.get(sym, {"grade":"none","st_direction":None})
+        grade = data["grade"]
 
-        stc_str = f"STC 4H: {data['stc_val']}" if data["stc_val"] is not None else ""
+        pos = None
+        if data["sl"] and data["price"]:
+            pos = calc_position(data["price"], data["sl"])
 
-        # ── 1. RVOL Alto ─────────────────────────────────────────
-        if data["rvol_alert"] and not prev.get("rvol_alert"):
-            rvol_str = f"{data['rvol']}x" if data["rvol"] else "—"
-            day_str  = "Fin de semana" if data["is_weekend"] else "Entre semana"
+        def pos_block():
+            if not pos: return ""
+            return (
+                f"💵 Capital: $100 · Riesgo 1% = ${pos['risk_usd']}\n"
+                f"📏 Distancia SL: ${pos['dist']} ({pos['dist_pct']}%)\n"
+                f"📦 Contratos: {pos['contracts']}\n"
+                f"💼 Valor posicion: ${pos['pos_value']} (margen 5x: ~${pos['margin_5x']})\n"
+            )
+
+        st_now  = data["st_direction"]
+        st_prev = prev.get("st_direction")
+        if st_prev is not None and st_now != st_prev:
+            if st_now == "bull":
+                notify(
+                    f"🟢 Supertrend VERDE · {pair['name']}",
+                    f"📈 Supertrend cambio a ALCISTA en 15M\n"
+                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                    f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
+                    f"{btc_line('long')}"
+                    f"🕐 {data['session_label']}",
+                    priority="high", tags="green_circle,chart_with_upwards_trend",
+                )
+            else:
+                notify(
+                    f"🔴 Supertrend ROJO · {pair['name']}",
+                    f"📉 Supertrend cambio a BAJISTA en 15M\n"
+                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                    f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
+                    f"{btc_line('short')}"
+                    f"🕐 {data['session_label']}",
+                    priority="high", tags="red_circle,chart_with_downwards_trend",
+                )
+            alerts_sent += 1
+
+        if grade in ("App","Ap","B") and grade != prev.get("grade"):
+            p   = max(data["bull_p"], data["bear_p"])
+            pri = "urgent" if grade=="App" else "high"
+            if data["direction"] == "long":
+                dir_icon="📈"; dir_sym="LONG"
+                tag="rotating_light,chart_with_upwards_trend"
+                btc_aligned = btc_ok_long
+            else:
+                dir_icon="📉"; dir_sym="SHORT"
+                tag="rotating_light,chart_with_downwards_trend"
+                btc_aligned = btc_ok_short
+
+            grade_icons = {"App":"🚨","Ap":"⭐","B":"✅"}
+            sl_txt  = f"${data['sl']}"  if data['sl']  else "--"
+            tp1_txt = f"${data['tp1']}" if data['tp1'] else "--"
+            tp2_txt = f"${data['tp2']}" if data['tp2'] else "--"
+            tp3_txt = f"${data['tp3']}" if data['tp3'] else "--"
+
+            btc_warn = ""
+            if not btc_aligned and btc:
+                trend_btc = "cayendo" if data["direction"]=="long" else "subiendo"
+                btc_warn = f"⚠️ BTC {trend_btc} {btc['chg1h']:+.1f}% · Senal valida pero reducir 60%\n"
+
+            today_count += 1
+            trade_count[today_str] = today_count
+            new_state["_trade_count"] = trade_count
+            trades_restantes = DAILY_LIMIT - today_count
+            if trades_restantes > 0:
+                counter_line = f"📊 Trade #{today_count}/{DAILY_LIMIT} hoy · Quedan {trades_restantes}\n"
+            else:
+                counter_line = f"🚫 Trade #{today_count}/{DAILY_LIMIT} · LIMITE DIARIO ALCANZADO\n"
+
             notify(
-                f"🟥 PRIORIDAD ALTA · RVOL Alto · {pair['name']}",
-                f"⚠️ Volumen relativo inusual detectado\n"
-                f"📊 RVOL: *{rvol_str}* (umbral {day_str}: {data['threshold']}x)\n"
-                f"🔥 Heatmap: {data['z_label']} (z={data['z']})\n"
-                f"4H vol confirmado: {'✅' if data['ok4h'] else '❌'}\n"
-                f"{stc_str}\n"
-                f"💰 Precio: ${data['price']:.4f}\n"
-                f"⚠️ NO es señal Trifecta · Revisar manualmente\n"
-                f"🕐 {day_label}",
-                priority="urgent",
-                tags="bar_chart,rotating_light",
+                f"{grade_icons[grade]} {gl[grade]} {dir_icon} {dir_sym} · {pair['name']}",
+                f"🎯 {p}/3 pilares · STC:{data['stc']} · ADX:{data['adx']} · Chop:{data['chop']}\n"
+                f"📐 ATR%:{data['atr_pct']}% · WR:{data['wr']} · K:{data['k']}\n"
+                f"💰 Precio: ${data['price']}\n"
+                f"🛑 SL: {sl_txt} (Supertrend)\n"
+                f"🎯 TP1: {tp1_txt} (1.5R · 40%)\n"
+                f"🎯 TP2: {tp2_txt} (2.5R · 35%)\n"
+                f"🏆 TP3: {tp3_txt} (4R · runner)\n"
+                f"─────────────────\n"
+                f"{pos_block()}"
+                f"─────────────────\n"
+                f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
+                f"📊 EMA200 15M: ${data['ema200_15m']}\n"
+                f"─────────────────\n"
+                f"{btc_warn}"
+                f"{counter_line}"
+                f"{checklist(grade, data['direction'])}\n"
+                f"🕐 {data['session_label']} · {data['session_risk']}",
+                priority=pri, tags=tag,
             )
             alerts_sent += 1
-            print(f"RVOL ALERT: {pair['name']} RVOL={rvol_str}")
+            session_signals.append({"pair":pair["name"],"grade":grade,"dir":data["direction"]})
 
-        # ── 2. RVOL Normalizado ───────────────────────────────────
-        if prev.get("rvol_alert") and not data["rvol_alert"]:
+            if today_count == DAILY_LIMIT:
+                notify(
+                    "🚫 LIMITE DIARIO ALCANZADO",
+                    f"Ya completaste {DAILY_LIMIT} trades hoy\n"
+                    f"El manual indica DETENER operaciones\n"
+                    f"Proxima sesion: 07:00 GT manana",
+                    priority="high", tags="stop_sign,warning",
+                )
+                alerts_sent += 1
+
+        prev_grade = prev.get("grade","none")
+        if prev_grade in ("App","Ap","B") and grade == "none":
+            expired_this_run.append(pair["name"])
             notify(
-                f"📉 RVOL Normalizado · {pair['name']}",
-                f"Volumen relativo volvió a nivel normal\n"
-                f"RVOL: {data['rvol']}x · Umbral: {data['threshold']}x\n"
-                f"💰 Precio: ${data['price']:.4f}",
-                priority="low",
-                tags="bar_chart",
+                f"❌ Señal caducada · {pair['name']}",
+                f"La señal {gl[prev_grade]} ya no esta activa\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · Precio: ${data['price']}\n"
+                f"🕐 {data['session_label']}",
+                priority="low", tags="x,warning",
             )
             alerts_sent += 1
 
-        # ── 3. STC 4H cruza 25 hacia arriba (ciclo alcista) ──────
-        if data["cross_up_25"] and not prev.get("cross_up_25"):
+        atr_key = f"_atr_extreme_{sym}"
+        if data["atr_pct"] >= 85 and not state.get(atr_key):
             notify(
-                f"🟥 PRIORIDAD ALTA · STC 4H cruza 25 ↑ · {pair['name']}",
-                f"🟢 *Ciclo alcista iniciando en 4H*\n"
-                f"STC cruzó el nivel 25 hacia arriba\n"
-                f"Poner atención en Longs de 15M\n"
-                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
-                f"🕐 {day_label}",
-                priority="high",
-                tags="green_circle,chart_with_upwards_trend",
+                f"💥 Volatilidad extrema · {pair['name']}",
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ATR percentile: {data['atr_pct']}%\n"
+                f"⚠️ Movimiento inusual · Confirmar antes de entrar\n"
+                f"💰 Precio: ${data['price']} · ADX: {data['adx']}\n"
+                f"🕐 {data['session_label']}",
+                priority="default", tags="fire,warning",
+            )
+            new_state[atr_key] = True
+            alerts_sent += 1
+        elif data["atr_pct"] < 75:
+            new_state[atr_key] = False
+
+        form_key = f"_forming_{sym}"
+        prev_forming = state.get(form_key, "none")
+        fd = data["forming_dir"]
+        if fd != "none" and grade == "none" and fd != prev_forming:
+            dir_icon = "📈" if fd == "long" else "📉"
+            notify(
+                f"👀 Setup formándose · {pair['name']}",
+                f"{dir_icon} 2/3 pilares · Falta: {data['forming_missing']}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}\n"
+                f"⏳ Esperar confirmacion del tercer pilar\n"
+                f"🕐 {data['session_label']}",
+                priority="low", tags="eyes,hourglass_flowing_sand",
+            )
+            new_state[form_key] = fd
+            alerts_sent += 1
+        elif fd == "none":
+            new_state[form_key] = "none"
+
+        b_key = f"_b_1h_{sym}"
+        if grade == "B" and data["h1_confirmed"] and not state.get(b_key):
+            dir_icon = "📈" if data["direction"]=="long" else "📉"
+            sl_txt_b  = f"${data['sl']}"  if data['sl']  else "--"
+            tp1_txt_b = f"${data['tp1']}" if data['tp1'] else "--"
+            notify(
+                f"⭐ B+ confirmado · {pair['name']}",
+                f"{dir_icon} Señal B con 1H alineado\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                f"ST 1H verde + EMA9>21 en 1H ✓\n"
+                f"💰 Precio: ${data['price']}\n"
+                f"🛑 SL: {sl_txt_b}\n"
+                f"🎯 TP1: {tp1_txt_b} (1.5R)\n"
+                f"📊 EMA200 4H: ${data['ema200_4h']}\n"
+                f"🕐 {data['session_label']}",
+                priority="high", tags="star,chart_with_upwards_trend",
+            )
+            new_state[b_key] = True
+            alerts_sent += 1
+        elif grade != "B":
+            new_state[b_key] = False
+
+        if data["stc_warn"] and not prev.get("stc_warn"):
+            notify(
+                f"⚡ STC Maduro · {pair['name']}",
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · STC en extremo ({data['stc']})\n"
+                f"⚠️ Posible agotamiento · Reducir tamano\n"
+                f"💰 Precio: ${data['price']} · EMA200 4H: ${data['ema200_4h']}",
+                priority="default", tags="warning",
             )
             alerts_sent += 1
-            print(f"STC 4H CROSS UP 25: {pair['name']} STC={data['stc_val']}")
 
-        # ── 4. STC 4H cruza 75 hacia abajo (ciclo bajista) ───────
-        if data["cross_dn_75"] and not prev.get("cross_dn_75"):
+        new_state[sym] = {"grade":grade,"stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
+
+    if expired_this_run:
+        consecutive_expired += len(expired_this_run)
+        new_state["_consecutive_expired"] = consecutive_expired
+        if consecutive_expired >= 2 and not state.get("_circuit_breaker_sent"):
             notify(
-                f"🟥 PRIORIDAD ALTA · STC 4H cruza 75 ↓ · {pair['name']}",
-                f"🔴 *Ciclo bajista en 4H*\n"
-                f"STC cruzó el nivel 75 hacia abajo\n"
-                f"Poner atención en Shorts o cerrar runners\n"
-                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
-                f"🕐 {day_label}",
-                priority="high",
-                tags="red_circle,chart_with_downwards_trend",
+                "⛔ CIRCUIT BREAKER · Señales fallando",
+                f"{consecutive_expired} señales caducadas consecutivas\n"
+                f"📉 El mercado no esta respondiendo al sistema\n"
+                f"🛡️ Reduce tamaño al 50% o para por hoy\n"
+                f"🔄 Se resetea automaticamente manana",
+                priority="high", tags="stop_sign,warning",
+            )
+            new_state["_circuit_breaker_sent"] = True
+            alerts_sent += 1
+    else:
+        active_now = any(
+            new_state.get(p["symbol"],{}).get("grade","none") in ("App","Ap","B")
+            for p in PAIRS
+        )
+        if active_now:
+            new_state["_consecutive_expired"] = 0
+        else:
+            new_state["_consecutive_expired"] = consecutive_expired
+
+    cb_date = state.get("_circuit_breaker_date","")
+    if cb_date != today_str:
+        new_state["_circuit_breaker_sent"] = False
+        new_state["_circuit_breaker_date"] = today_str
+        new_state["_consecutive_expired"]  = 0
+
+    active = [s for s in session_signals if s["grade"] in ("App","Ap","B")]
+    longs  = [s for s in active if s["dir"]=="long"]
+    shorts = [s for s in active if s["dir"]=="short"]
+    for group, label, icon in [(longs,"LONG","📈"),(shorts,"SHORT","📉")]:
+        if len(group) >= 3:
+            names = ", ".join(s["pair"] for s in group)
+            notify(
+                f"🌊 CONFLUENCIA {label} · {len(group)} pares",
+                f"{icon} Movimiento de mercado detectado\n"
+                f"Pares: {names}\n"
+                f"💡 Alta probabilidad de continuacion\n"
+                f"🕐 {SESSION_META[get_session()]['label']}",
+                priority="urgent", tags="wave,rotating_light",
             )
             alerts_sent += 1
-            print(f"STC 4H CROSS DN 75: {pair['name']} STC={data['stc_val']}")
 
-        # ── 5. STC 4H zona madura >90 (agotamiento alcista) ──────
-        if data["mature_up_90"] and not prev.get("mature_up_90"):
-            notify(
-                f"🟨 PRIORIDAD MEDIA · STC 4H >90 · {pair['name']}",
-                f"🔴 *Movimiento 4H agotado (alcista)*\n"
-                f"STC cruzó el nivel 90 hacia arriba\n"
-                f"Reducir tamaño en señales 15M\n"
-                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
-                f"🕐 {day_label}",
-                priority="default",
-                tags="warning,chart_with_downwards_trend",
-            )
-            alerts_sent += 1
-            print(f"STC 4H MATURE >90: {pair['name']} STC={data['stc_val']}")
+    if is_close_window and not state.get("_close_sent"):
+        best_pair_lines = []
+        for sig in session_signals:
+            sym_key = next((p["symbol"] for p in PAIRS if p["name"]==sig["pair"]), None)
+            if not sym_key: continue
+            try:
+                d = analyze_pair({"symbol":sym_key,"name":sig["pair"]})
+                entry = state.get(sym_key,{}).get("price", d["price"])
+                move_pct = ((d["price"]-entry)/entry*100) if sig["dir"]=="long" else ((entry-d["price"])/entry*100)
+                best_pair_lines.append((sig["pair"], sig["grade"], move_pct, d["price"]))
+            except Exception:
+                pass
+        best_str = ""
+        if best_pair_lines:
+            best = max(best_pair_lines, key=lambda x: x[2])
+            icon = "🏆" if best[2] > 0 else "📉"
+            best_str = (f"\n{icon} Mejor oportunidad: {best[0]} ({gl[best[1]]})\n"
+                        f"   Movimiento: {best[2]:+.2f}% · Precio actual: ${best[3]}")
 
-        # ── 6. STC 4H zona madura <10 (agotamiento bajista) ──────
-        if data["mature_dn_10"] and not prev.get("mature_dn_10"):
-            notify(
-                f"🟨 PRIORIDAD MEDIA · STC 4H <10 · {pair['name']}",
-                f"🟢 *Movimiento bajista agotado en 4H*\n"
-                f"STC cruzó el nivel 10 hacia abajo\n"
-                f"Posible reversión pronto\n"
-                f"💰 Precio: ${data['price']:.4f} · {stc_str}\n"
-                f"🕐 {day_label}",
-                priority="default",
-                tags="warning,chart_with_upwards_trend",
-            )
-            alerts_sent += 1
-            print(f"STC 4H MATURE <10: {pair['name']} STC={data['stc_val']}")
+        btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'})" if btc else ""
+        notify(
+            "📊 CIERRE SESION NY · Trifecta Pro",
+            f"🕑 13:30 GT · {now_utc.strftime('%a %d %b')}\n"
+            f"{btc_str}\n\n"
+            f"Señales esta sesion: {len(session_signals)}\n"
+            + (f"  A++:{sum(1 for s in session_signals if s['grade']=='App')} · "
+               f"A+:{sum(1 for s in session_signals if s['grade']=='Ap')} · "
+               f"B:{sum(1 for s in session_signals if s['grade']=='B')}\n"
+               if session_signals else "  Ninguna\n")
+            + f"Trades ejecutados hoy: {today_count}/{DAILY_LIMIT}\n"
+            + best_str +
+            f"\nProxima sesion: 07:00 GT manana",
+            priority="default", tags="chart_bar",
+        )
+        new_state["_close_sent"] = True
+        alerts_sent += 1
 
-        new_state[sym] = {
-            "rvol_alert":  data["rvol_alert"],
-            "cross_up_25": data["cross_up_25"],
-            "cross_dn_75": data["cross_dn_75"],
-            "mature_up_90":data["mature_up_90"],
-            "mature_dn_10":data["mature_dn_10"],
-        }
+    if state.get("_open_sent")  and is_open_window:
+        new_state["_open_sent"]  = True
+    if state.get("_close_sent") and is_close_window:
+        new_state["_close_sent"] = True
 
     save_state(new_state)
-    print(f"RVOL chequeo completo ({now_utc.isoformat()}). Alertas: {alerts_sent}")
+    print(f"Chequeo completo ({now_utc.isoformat()}). Alertas: {alerts_sent}")
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
