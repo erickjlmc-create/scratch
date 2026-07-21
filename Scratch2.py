@@ -38,7 +38,7 @@ CFG = {
     "CANDLES":300,"CANDLES_4H":250,
 }
 
-STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
+STATE_FILE = os.path.join(os.path.dirname(__file__), "state2.json")
 YF_SYMBOLS = {
     "BTCUSDT":    "BTC-USD",
     "ETHUSDT":    "ETH-USD",
