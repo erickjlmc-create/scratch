@@ -1,4 +1,4 @@
-name: Schedule2
+name: Scheduled2
 
 on:
   schedule:
@@ -28,9 +28,9 @@ jobs:
       - run: python Scratch2.py
         env:
           # Secrets exclusivos del grupo RVOL — distintos al bot Trifecta
-          RVOL_BOT_TOKEN:   ${{ secrets.RVOL_BOT_TOKEN }}
-          RVOL_CHAT_ID:     ${{ secrets.RVOL_CHAT_ID }}
-          RVOL_NTFY_TOPIC:  ${{ secrets.RVOL_NTFY_TOPIC }}
+          SCRATCH_TOKEN:   ${{ secrets.RVOL_BOT_TOKEN }}
+          SCRATCH_CHAT_ID:     ${{ secrets.RVOL_CHAT_ID }}
+          NTFY_TOPIC:  ${{ secrets.RVOL_NTFY_TOPIC }}
 
       - name: Save State
         run: |
