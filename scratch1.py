@@ -29,19 +29,25 @@ TELEGRAM_CANAL_RADAR_ID     = os.environ.get("TELEGRAM_CANAL_RADAR_ID")
 NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
 
 PAIRS = [
-    {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
-    {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
-    {"symbol": "BNBUSDT",  "name": "BNB/USDT"},
-    {"symbol": "AVAXUSDT", "name": "AVAX/USDT"},
-    {"symbol": "LINKUSDT", "name": "LINK/USDT"},
-    {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
-    {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
-    {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
-    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
-    {"symbol": "OPUSDT",   "name": "OP/USDT"},
-    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
-    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
-    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
+    {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
+    {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
+    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
+    {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
+    {"symbol": "ADAUSDT",    "name": "ADA/USDT"},
+    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
+    {"symbol": "DOGEUSDT",   "name": "DOGE/USDT"},
+    {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
+    {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
+    {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
+    {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
+    {"symbol": "OPUSDT",     "name": "OP/USDT"},
+    {"symbol": "ATOMUSDT",   "name": "ATOM/USDT"},
+    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
+    {"symbol": "INJUSDT",    "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
+    {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
+    {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
 ]
 
 CFG = {
