@@ -29,28 +29,20 @@ TELEGRAM_CANAL_RADAR_ID     = os.environ.get("TELEGRAM_CANAL_RADAR_ID")
 NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
 
 PAIRS = [
-    {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
-    {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
-    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
-    {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
-    {"symbol": "ADAUSDT",    "name": "ADA/USDT"},
-    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
-    {"symbol": "DOGEUSDT",   "name": "DOGE/USDT"},
-    {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
-    {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
-    {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
-    {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
-    {"symbol": "OPUSDT",     "name": "OP/USDT"},
-    {"symbol": "ATOMUSDT",   "name": "ATOM/USDT"},
-    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
-    {"symbol": "INJUSDT",    "name": "INJ/USDT"},
-    {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
-    {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
-    {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
-    {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
+    {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
+    {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
+    {"symbol": "BNBUSDT",  "name": "BNB/USDT"},
+    {"symbol": "AVAXUSDT", "name": "AVAX/USDT"},
+    {"symbol": "LINKUSDT", "name": "LINK/USDT"},
+    {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
+    {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
+    {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
+    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
+    {"symbol": "OPUSDT",   "name": "OP/USDT"},
+    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
 ]
-
-
 
 CFG = {
     "ST_PERIOD":10,"ST_FACTOR":3.0,"EMA_FAST":9,"EMA_SLOW":21,"MFI_PERIOD":14,
@@ -62,30 +54,16 @@ CFG = {
     "VOL_AVG":20,"EMA100":100,"EMA200":200,"EMA50_4H":50,"EMA200_4H":200,
     "TP1_R":1.5,"TP2_R":2.5,"TP3_R":4.0,
     "CANDLES":300,"CANDLES_4H":250,
-    "HEATMAP_LEN":50,"HEATMAP_HOT":2.5,
+    "HEATMAP_LEN":50,
+    "HEATMAP_EXTRA_HIGH":4.0,"HEATMAP_HIGH":2.5,"HEATMAP_MEDIUM":1.0,"HEATMAP_NORMAL":-0.5,
 }
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "BTCUSDT":    "BTC-USD",
-    "ETHUSDT":    "ETH-USD",
-    "SOLUSDT":    "SOL-USD",
-    "BNBUSDT":    "BNB-USD",
-    "ADAUSDT":    "ADA-USD",
-    "XRPUSDT":    "XRP-USD",
-    "DOGEUSDT":   "DOGE-USD",
-    "AVAXUSDT":   "AVAX-USD",
-    "LINKUSDT":   "LINK-USD",
-    "DOTUSDT":    "DOT-USD",
-    "NEARUSDT":   "NEAR-USD",
-    "OPUSDT":     "OP-USD",
-    "ATOMUSDT":   "ATOM-USD",
-    "RENDERUSDT": "RENDER-USD",
-    "INJUSDT":    "INJ-USD",
-    "WLDUSDT":    "WLD-USD",
-    "TIAUSDT":    "TIA-USD",
-    "ZECUSDT":    "ZEC-USD",
-    "XMRUSDT":    "XMR-USD",
+    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
+    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
+    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
+    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
 }
 
 def get_session():
@@ -356,8 +334,8 @@ def analyze_pair(pair):
 
     bull_p=sum([st_bull,ema_bull,mfi_bull]); bear_p=sum([not st_bull,ema_bear,mfi_bear])
 
-    bull_ctx=above200 and regime_ok and atr_ok and vol_ok and above4h and not block_l and stc_bull and not stc_mature_l
-    bear_ctx=below200 and regime_ok and atr_ok and vol_ok and below4h and not block_s and stc_bear and not stc_mature_s
+    bull_ctx=above200 and rvol_ok and vol_ok and above4h and not block_l and stc_bull and not stc_mature_l
+    bear_ctx=below200 and rvol_ok and vol_ok and below4h and not block_s and stc_bear and not stc_mature_s
 
     sess=get_session(); meta=SESSION_META[sess]
     in_op=meta["operable"]; in_caut=meta["caution"]; in_ny_lon=sess in ("ny","london")
@@ -452,16 +430,12 @@ def obtener_estado_heatmap(symbol):
       std    = desviacion estandar poblacional de volume, HEATMAP_LEN
       stdbar = (volume_actual - mean) / std
 
-    Zonas del indicador original (por color):
-      stdbar > 4.0   -> Extra High (rojo)
-      stdbar > 2.5   -> High       (naranja)
-      stdbar > 1.0   -> Medium     (amarillo)
-      stdbar > -0.5  -> Normal     (celeste)
-      resto          -> Low        (teal)
-
-    Para esta integracion, "caliente" = zona High o Extra High (stdbar > 2.5,
-    HEATMAP_HOT en CFG) — las dos zonas rojas/naranjas del heatmap original.
-    Cualquier otra zona se reporta como "normal".
+    Retorna la zona exacta, igual que las 5 zonas de color del indicador:
+      "extra_high" -> stdbar > 4.0   (rojo)
+      "high"       -> stdbar > 2.5   (naranja)
+      "medium"     -> stdbar > 1.0   (amarillo)
+      "normal"     -> stdbar > -0.5  (celeste)
+      "low"        -> resto          (teal)
     """
     largo = CFG["HEATMAP_LEN"]
     try:
@@ -478,7 +452,11 @@ def obtener_estado_heatmap(symbol):
             return "normal"
 
         stdbar = (vols[-1] - mean) / std
-        return "caliente" if stdbar > CFG["HEATMAP_HOT"] else "normal"
+        if stdbar > CFG["HEATMAP_EXTRA_HIGH"]: return "extra_high"
+        if stdbar > CFG["HEATMAP_HIGH"]:        return "high"
+        if stdbar > CFG["HEATMAP_MEDIUM"]:      return "medium"
+        if stdbar > CFG["HEATMAP_NORMAL"]:      return "normal"
+        return "low"
     except Exception as e:
         print(f"Error calculando heatmap de {symbol}: {e}")
         return "normal"
@@ -726,6 +704,30 @@ def main():
                                 "stc_warn":False,"st_direction":None})
         grade = data["grade"]
 
+        # ── Volatilidad extrema: RVOL + Heatmap → canal radar ─────────
+        # Se calcula una sola vez por par y se reutiliza mas abajo para el
+        # prefijo 🔥 ALTA DENSIDAD del Setup B.
+        heatmap_zone = obtener_estado_heatmap(sym)
+        rvol_ok_general = data["rvol"] is not None and data["rvol"] >= data["rvol_umbral"]
+        heatmap_denso = heatmap_zone in ("extra_high", "high", "medium")
+        vol_extrema_ahora = rvol_ok_general and heatmap_denso
+
+        vol_key = f"_vol_extrema_{sym}"
+        vol_extrema_prev = state.get(vol_key, False)
+        if vol_extrema_ahora and not vol_extrema_prev:
+            zona_label = {"extra_high":"Extra High","high":"High","medium":"Medium"}[heatmap_zone]
+            notify(
+                f"💥 Volatilidad extrema · {pair['name']}",
+                f"📶 RVOL: {data['rvol']} (min. {data['rvol_umbral']})\n"
+                f"🌡️ Heatmap: {zona_label}\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · Precio: ${data['price']}\n"
+                f"🕐 {data['session_label']}",
+                priority="default", tags="fire,warning",
+                destino="radar",
+            )
+            alerts_sent += 1
+        new_state[vol_key] = vol_extrema_ahora
+
         # ── Breakeven manual: alerta al tocar TP1 de una operación activa ──
         # No hay bróker conectado (Yahoo Finance solo da precios, no ejecuta
         # órdenes), así que esto es un AVISO para que muevas el SL tú mismo.
@@ -764,15 +766,26 @@ def main():
                 f"💼 Valor posicion: ${pos['pos_value']} (margen 5x: ~${pos['margin_5x']})\n"
             )
 
-        # ── 1. Supertrend flip — SIEMPRE ────────────────────────────
-        st_now  = data["st_direction"]
-        st_prev = prev.get("st_direction")
-        if st_prev is not None and st_now != st_prev:
-            if st_now == "bull":
+        # ── 1. Confluencia Supertrend 15M + EMA200 ────────────────────
+        # Antes se avisaba cada vez que el Supertrend cambiaba de color.
+        # Ahora solo se avisa cuando el Supertrend y la EMA200 quedan
+        # alineados en la misma dirección:
+        #   ST BAJISTA (rojo)  + precio por DEBAJO de la EMA200  -> confluencia bajista
+        #   ST ALCISTA (verde) + precio por ENCIMA de la EMA200  -> confluencia alcista
+        st_now = data["st_direction"]
+        ema200_15m = data["ema200_15m"]
+        confluencia_alcista = (st_now == "bull" and data["price"] > ema200_15m)
+        confluencia_bajista = (st_now == "bear" and data["price"] < ema200_15m)
+        confluencia_ahora = "bull" if confluencia_alcista else "bear" if confluencia_bajista else None
+        confluencia_prev = prev.get("st_confluencia")
+
+        if confluencia_ahora is not None and confluencia_ahora != confluencia_prev:
+            if confluencia_ahora == "bull":
                 notify(
-                    f"🟢 Supertrend VERDE · {pair['name']}",
-                    f"📈 Supertrend cambio a ALCISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                    f"🟢 Confluencia ST+EMA200 ALCISTA · {pair['name']}",
+                    f"📈 Supertrend 15M VERDE y precio por ENCIMA de la EMA200\n"
+                    f"💰 Precio: ${data['price']} · EMA200 15M: ${ema200_15m}\n"
+                    f"📊 ADX:{data['adx']} · STC:{data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
                     f"{btc_line('long')}"
                     f"🕐 {data['session_label']}",
@@ -781,9 +794,10 @@ def main():
                 )
             else:
                 notify(
-                    f"🔴 Supertrend ROJO · {pair['name']}",
-                    f"📉 Supertrend cambio a BAJISTA en 15M\n"
-                    f"💰 Precio: ${data['price']} · ADX:{data['adx']} · STC:{data['stc']}\n"
+                    f"🔴 Confluencia ST+EMA200 BAJISTA · {pair['name']}",
+                    f"📉 Supertrend 15M ROJO y precio por DEBAJO de la EMA200\n"
+                    f"💰 Precio: ${data['price']} · EMA200 15M: ${ema200_15m}\n"
+                    f"📊 ADX:{data['adx']} · STC:{data['stc']}\n"
                     f"📊 EMA200 4H: ${data['ema200_4h']} · EMA50 4H: ${data['ema50_4h']}\n"
                     f"{btc_line('short')}"
                     f"🕐 {data['session_label']}",
@@ -791,7 +805,7 @@ def main():
                     destino="radar",
                 )
             alerts_sent += 1
-            print(f"ST FLIP: {pair['name']} -> {st_now.upper()} ${data['price']}")
+            print(f"CONFLUENCIA ST+EMA200: {pair['name']} -> {confluencia_ahora.upper()} ${data['price']}")
 
         # ── 2. Señal nueva ───────────────────────────────────────────
         if grade in ("App","Ap","B","prec") and grade != prev.get("grade"):
@@ -817,7 +831,7 @@ def main():
             heatmap_prefix = ""
             if grade == "B":
                 rvol_line = f"📶 RVOL: {data['rvol']} (min. {data['rvol_umbral']})\n"
-                if obtener_estado_heatmap(sym) == "caliente":
+                if heatmap_zone in ("extra_high", "high"):
                     heatmap_prefix = "🔥 ALTA DENSIDAD "
 
             # advertencia si BTC no alineado
@@ -891,21 +905,6 @@ def main():
             alerts_sent += 1
             new_state.pop(trade_key, None)  # dejar de rastrear TP1/breakeven
 
-        # ── 4. Volatilidad extrema (ATR percentile > 85) ─────────────
-        atr_key = f"_atr_extreme_{sym}"
-        if data["atr_pct"] >= 85 and not state.get(atr_key):
-            notify(
-                f"💥 Volatilidad extrema · {pair['name']}",
-                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ATR percentile: {data['atr_pct']}%\n"
-                f"⚠️ Movimiento inusual · Confirmar antes de entrar\n"
-                f"💰 Precio: ${data['price']} · ADX: {data['adx']}\n"
-                f"🕐 {data['session_label']}",
-                priority="default", tags="fire,warning",
-            )
-            new_state[atr_key] = True
-            alerts_sent += 1
-        elif data["atr_pct"] < 75:
-            new_state[atr_key] = False
 
         # ── 5. Setup en formación (2/3 pilares) ──────────────────────
         form_key = f"_forming_{sym}"
@@ -990,7 +989,8 @@ def main():
             alerts_sent += 1
 
         new_state[sym] = {"grade":grade,"blocked":data["blocked"],
-                          "stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
+                          "stc_warn":data["stc_warn"],"st_direction":data["st_direction"],
+                          "st_confluencia":confluencia_ahora}
 
     # ── Circuit breaker: 2 señales caducadas consecutivas ───────────
     if expired_this_run:
