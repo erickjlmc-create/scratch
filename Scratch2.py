@@ -146,6 +146,14 @@ def calc_choppiness(candles,p):
     return 100*math.log10(atr_sum/rng)/math.log10(p)
 
 def calc_supertrend(candles, p, f):
+    """
+    Replica EXACTA del Supertrend en Pine Script v5:
+      up_band := close[1] > up_band_prev ? math.max(up_band, up_band_prev) : up_band
+      dn_band := close[1] < dn_band_prev ? math.min(dn_band, dn_band_prev) : dn_band
+      trend_dir := close > dn_band_prev ? 1 : close < up_band_prev ? -1 : nz(trend_dir[1], 1)
+    La clave: la direccion se calcula con las bandas PREVIAS (antes de actualizar),
+    no con las bandas ya actualizadas. Eso evita los flips falsos.
+    """
     n   = len(candles)
     atr = calc_atr(candles, p)
     trend   = [1]    * n
@@ -159,13 +167,16 @@ def calc_supertrend(candles, p, f):
         raw_up = hl2 - f * a
         raw_dn = hl2 + f * a
 
+        # Bandas previas (antes de actualizar) — equivale a up_band[1] / dn_band[1] en Pine
         up_prev = up_arr[i-1] if up_arr[i-1] is not None else raw_up
         dn_prev = dn_arr[i-1] if dn_arr[i-1] is not None else raw_dn
 
+        # Actualizar bandas usando el cierre ANTERIOR (close[1] en Pine)
         prev_close = candles[i-1]["close"]
         up_arr[i]  = max(raw_up, up_prev) if prev_close > up_prev else raw_up
         dn_arr[i]  = min(raw_dn, dn_prev) if prev_close < dn_prev else raw_dn
 
+        # Tendencia con bandas PREVIAS — replica exacta de Pine
         cur_close = candles[i]["close"]
         if   cur_close > dn_prev: trend[i] = 1
         elif cur_close < up_prev: trend[i] = -1
@@ -267,10 +278,13 @@ def analyze_pair(pair):
     c4h=fetch_klines(sym,"240",CFG["CANDLES_4H"])
     ticker=fetch_ticker(sym)
     closes=[c["close"] for c in c15]; vols=[c["volume"] for c in c15]
+    # n-1 = ultima vela CERRADA (evita ruido de la vela en formacion)
+    # n   = indice total por compatibilidad con funciones que usan arrays completos
     n   = len(c15)-1
-    nc  = n - 1
+    nc  = n - 1   # vela confirmada (penultima)
 
     st_trend,st_line_arr=calc_supertrend(c15,CFG["ST_PERIOD"],CFG["ST_FACTOR"])
+    # Usar vela confirmada para el ST — evita flips falsos por vela en formacion
     st_bull=st_trend[nc]==1; st_line_val=st_line_arr[nc]
 
     ema9a=ema(closes,CFG["EMA_FAST"]); ema21a=ema(closes,CFG["EMA_SLOW"])
@@ -312,7 +326,7 @@ def analyze_pair(pair):
     bear_ctx=below200 and regime_ok and atr_ok and vol_ok and below4h and not block_s and stc_bear and not stc_mature_s
 
     sess=get_session(); meta=SESSION_META[sess]
-    in_op=meta["operable"]; in_ny_lon=sess in ("ny","london")
+    in_op=meta["operable"]; in_caut=meta["caution"]; in_ny_lon=sess in ("ny","london")
 
     app_l=bull_p==3 and bull_ctx and in_ny_lon
     app_s=bear_p==3 and bear_ctx and in_ny_lon
@@ -320,8 +334,12 @@ def analyze_pair(pair):
     ap_s =bear_p==3 and bear_ctx and in_op and not app_s
     b_l  =bull_p>=2 and regime_ok and atr_ok and above4h and not block_l and stc_bull and in_op and not ap_l
     b_s  =bear_p>=2 and regime_ok and atr_ok and below4h and not block_s and stc_bear and in_op and not ap_s
+    prec_l=bull_p==3 and bull_ctx and in_caut; prec_s=bear_p==3 and bear_ctx and in_caut
+    blk_l=(bull_p>=2 and above200 and regime_ok and atr_ok and above4h and stc_bull and in_op) and block_l
+    blk_s=(bear_p>=2 and below200 and regime_ok and atr_ok and below4h and stc_bear and in_op) and block_s
     stc_warn=(stc_mature_l and (app_l or ap_l)) or (stc_mature_s and (app_s or ap_s))
 
+    # ── Setup en formación (2/3 pilares, falta 1) ───────────────────
     forming_long  = bull_p == 2 and above200 and stc_bull and above4h and not block_l and in_op
     forming_short = bear_p == 2 and below200 and stc_bear and below4h and not block_s and in_op
     if forming_long:
@@ -333,6 +351,7 @@ def analyze_pair(pair):
     else:
         forming_dir = "none"; forming_missing = ""
 
+    # ── Confirmación 1H para señales B ──────────────────────────────
     h1_confirmed = False
     if b_l or b_s:
         try:
@@ -352,11 +371,15 @@ def analyze_pair(pair):
     if   app_l or app_s:    grade="App"
     elif ap_l  or ap_s:     grade="Ap"
     elif b_l   or b_s:      grade="B"
+    elif prec_l or prec_s:  grade="prec"
+    elif blk_l or blk_s:    grade="blocked"
     else:                    grade="none"
 
-    if   app_l or ap_l or b_l: direction="long"
-    elif app_s or ap_s or b_s: direction="short"
-    else:                      direction="none"
+    if   app_l or ap_l or b_l or prec_l:   direction="long"
+    elif app_s or ap_s or b_s or prec_s:   direction="short"
+    elif blk_l: direction="long"
+    elif blk_s: direction="short"
+    else:       direction="none"
 
     price=float(ticker["lastPrice"])
     sl_val=st_line_val if st_line_val else price*(0.98 if direction=="long" else 1.02)
@@ -364,7 +387,7 @@ def analyze_pair(pair):
 
     return {
         "grade":grade,"direction":direction,
-        "blocked":False,"stc_warn":stc_warn,
+        "blocked":blk_l or blk_s,"stc_warn":stc_warn,
         "forming_dir":forming_dir,"forming_missing":forming_missing,
         "h1_confirmed":h1_confirmed,
         "chop_val":round(chop_val,1),
@@ -387,9 +410,10 @@ def analyze_pair(pair):
     }
 
 def calc_position(price, sl):
+    """Calculadora de posicion: capital $100, riesgo 1%."""
     CAPITAL   = 100.0
     RISK_PCT  = 0.01
-    risk_usd  = CAPITAL * RISK_PCT
+    risk_usd  = CAPITAL * RISK_PCT          # $1.00
     dist      = abs(price - sl)
     if dist == 0: return None
     contracts = risk_usd / dist
@@ -405,19 +429,25 @@ def calc_position(price, sl):
     }
 
 def get_btc_context():
+    """Evalua el estado actual de BTC para filtro de correlacion."""
     try:
-        df = yf.download("BTC-USD", period="5d", interval="15m",
-                         progress=False, auto_adjust=True)
-        if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
-        df = df.tail(50)
-        c = [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),
-              "high":float(r["High"]),"low":float(r["Low"]),
-              "close":float(r["Close"]),"volume":float(r["Volume"])}
-             for ts,r in df.iterrows()]
-    except Exception as e:
-        print(f"BTC fetch error: {e}")
-        return None
+        c = fetch_klines("BTCUSDT" if "BTCUSDT" in YF_SYMBOLS else "BTCUSDT_fake",
+                         "15", 50)
+    except Exception:
+        # BTC no esta en PAIRS, descargarlo directo
+        try:
+            df = yf.download("BTC-USD", period="5d", interval="15m",
+                             progress=False, auto_adjust=True)
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
+            df = df.tail(50)
+            c = [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),
+                  "high":float(r["High"]),"low":float(r["Low"]),
+                  "close":float(r["Close"]),"volume":float(r["Volume"])}
+                 for ts,r in df.iterrows()]
+        except Exception as e:
+            print(f"BTC fetch error: {e}")
+            return None
     if len(c) < 20: return None
     closes = [x["close"] for x in c]
     st_trend, _ = calc_supertrend(c, CFG["ST_PERIOD"], CFG["ST_FACTOR"])
@@ -462,19 +492,21 @@ def main():
     new_state = {}
     alerts_sent = 0
     session_signals = []
-    expired_this_run = []
-    gl = {"App":"A++","Ap":"A+","B":"B"}
+    expired_this_run = []         # para circuit breaker
+    gl = {"App":"A++","Ap":"A+","B":"B","prec":"PRECAUCION"}
 
     now_utc  = datetime.now(timezone.utc)
     gt_hour  = (now_utc.hour - 6) % 24
     gt_min   = now_utc.minute
     today_str = now_utc.strftime("%Y-%m-%d")
-    weekday   = now_utc.weekday()
+    weekday   = now_utc.weekday()   # 0=Lun … 6=Dom
 
     is_open_window    = (gt_hour == 7  and gt_min < 15)
     is_close_window   = (gt_hour == 13 and 30 <= gt_min < 45)
     is_weekly_window  = (weekday == 0  and gt_hour == 6 and 50 <= gt_min <= 59)
 
+    # ── Calendario macro hardcodeado (YYYY-MM-DD HH UTC) ────────────
+    # Actualiza estas fechas cada mes con el calendario económico
     MACRO_EVENTS = [
         {"date":"2026-07-29","hour_utc":18,"name":"FOMC Decision"},
         {"date":"2026-07-30","hour_utc":12,"name":"GDP Q2"},
@@ -482,16 +514,29 @@ def main():
         {"date":"2026-08-12","hour_utc":12,"name":"CPI Julio"},
     ]
 
+    # ── Contador diario ──────────────────────────────────────────────
     trade_count = state.get("_trade_count", {})
     today_count = trade_count.get(today_str, 0)
     DAILY_LIMIT = 3
 
+    def register_trade():
+        nonlocal today_count
+        today_count += 1
+        trade_count[today_str] = today_count
+        new_state["_trade_count"] = trade_count
+
+    def check_trade_limit():
+        return today_count < DAILY_LIMIT
+
+    # ── Circuit breaker: señales caducadas consecutivas ──────────────
     consecutive_expired = state.get("_consecutive_expired", 0)
 
+    # ── BTC context (se evalua una sola vez, antes de usarse) ───────
     btc = get_btc_context()
     btc_ok_long  = btc is None or btc["bull"]
     btc_ok_short = btc is None or not btc["bull"]
 
+    # ── Aviso evento macro (15 min antes) ───────────────────────────
     for ev in MACRO_EVENTS:
         ev_dt = datetime.strptime(f"{ev['date']} {ev['hour_utc']:02d}:00",
                                   "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
@@ -508,9 +553,11 @@ def main():
             )
             new_state[ev_key] = True
             alerts_sent += 1
+            print(f"MACRO: {ev['name']} en {int(mins_to_event)} min")
         elif mins_to_event <= 0 and state.get(ev_key):
-            new_state[ev_key] = False
+            new_state[ev_key] = False   # resetear despues del evento
 
+    # ── Resumen semanal (Lunes 06:50 GT) ────────────────────────────
     if is_weekly_window and not state.get("_weekly_sent"):
         weekly_lines = []
         for pair in PAIRS:
@@ -527,7 +574,7 @@ def main():
         btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
         notify(
             f"📅 RESUMEN SEMANAL · {now_utc.strftime('%d %b %Y')}",
-            f"Vista 4H de los pares\n"
+            f"Vista 4H de los 13 pares\n"
             f"{btc_str}\n\n"
             + "\n".join(weekly_lines) +
             f"\n\nSesion NY abre en 10 min · 07:00 GT",
@@ -535,6 +582,9 @@ def main():
         )
         new_state["_weekly_sent"] = True
         alerts_sent += 1
+    elif weekday != 0:
+        pass   # resetea el flag en dias que no son lunes
+
 
     def btc_line(direction):
         if btc is None: return ""
@@ -546,6 +596,7 @@ def main():
         return f"✅ BTC {trend} ({btc['chg1h']:+.1f}% 1H) · Alineado\n"
 
     def checklist(grade, direction):
+        """Decision binaria segun el grade."""
         if grade == "App":
             return "📋 CHECKLIST: A++ → EJECUTAR DIRECTO"
         if grade == "Ap":
@@ -555,10 +606,14 @@ def main():
                     "  1. Vela 15M cierra limpia\n"
                     "  2. Volumen > promedio\n"
                     "  3. No hay resistencia/soporte cercano")
+        if grade == "prec":
+            return "📋 CHECKLIST PREC → Solo con contexto muy claro · 50% tamano"
         return ""
 
+    # ── RESUMEN APERTURA NY ──────────────────────────────────────────
     if is_open_window and not state.get("_open_sent"):
         btc_str = f"BTC ${btc['price']} ({'🟢' if btc['bull'] else '🔴'} {btc['chg1h']:+.1f}%)" if btc else "BTC N/D"
+        # estado de todos los pares
         lines = []
         for pair in PAIRS:
             try:
@@ -577,6 +632,9 @@ def main():
         )
         new_state["_open_sent"] = True
         alerts_sent += 1
+    elif not is_open_window:
+        # resetear flag fuera de la ventana
+        pass
 
     for pair in PAIRS:
         sym = pair["symbol"]
@@ -584,9 +642,11 @@ def main():
         except Exception as e:
             print(f"Error en {sym}: {e}"); continue
 
-        prev  = state.get(sym, {"grade":"none","st_direction":None})
+        prev  = state.get(sym, {"grade":"none","blocked":False,
+                                "stc_warn":False,"st_direction":None})
         grade = data["grade"]
 
+        # ── Calculadora de posicion ──────────────────────────────────
         pos = None
         if data["sl"] and data["price"]:
             pos = calc_position(data["price"], data["sl"])
@@ -600,6 +660,7 @@ def main():
                 f"💼 Valor posicion: ${pos['pos_value']} (margen 5x: ~${pos['margin_5x']})\n"
             )
 
+        # ── 1. Supertrend flip — SIEMPRE ────────────────────────────
         st_now  = data["st_direction"]
         st_prev = prev.get("st_direction")
         if st_prev is not None and st_now != st_prev:
@@ -624,10 +685,12 @@ def main():
                     priority="high", tags="red_circle,chart_with_downwards_trend",
                 )
             alerts_sent += 1
+            print(f"ST FLIP: {pair['name']} -> {st_now.upper()} ${data['price']}")
 
-        if grade in ("App","Ap","B") and grade != prev.get("grade"):
+        # ── 2. Señal nueva ───────────────────────────────────────────
+        if grade in ("App","Ap","B","prec") and grade != prev.get("grade"):
             p   = max(data["bull_p"], data["bear_p"])
-            pri = "urgent" if grade=="App" else "high"
+            pri = "urgent" if grade=="App" else "high" if grade in ("Ap","prec") else "default"
             if data["direction"] == "long":
                 dir_icon="📈"; dir_sym="LONG"
                 tag="rotating_light,chart_with_upwards_trend"
@@ -637,20 +700,20 @@ def main():
                 tag="rotating_light,chart_with_downwards_trend"
                 btc_aligned = btc_ok_short
 
-            grade_icons = {"App":"🚨","Ap":"⭐","B":"✅"}
+            grade_icons = {"App":"🚨","Ap":"⭐","B":"✅","prec":"⚠️"}
             sl_txt  = f"${data['sl']}"  if data['sl']  else "--"
             tp1_txt = f"${data['tp1']}" if data['tp1'] else "--"
             tp2_txt = f"${data['tp2']}" if data['tp2'] else "--"
             tp3_txt = f"${data['tp3']}" if data['tp3'] else "--"
 
+            # advertencia si BTC no alineado
             btc_warn = ""
             if not btc_aligned and btc:
                 trend_btc = "cayendo" if data["direction"]=="long" else "subiendo"
                 btc_warn = f"⚠️ BTC {trend_btc} {btc['chg1h']:+.1f}% · Senal valida pero reducir 60%\n"
 
-            today_count += 1
-            trade_count[today_str] = today_count
-            new_state["_trade_count"] = trade_count
+            # contador de trades del dia
+            register_trade()
             trades_restantes = DAILY_LIMIT - today_count
             if trades_restantes > 0:
                 counter_line = f"📊 Trade #{today_count}/{DAILY_LIMIT} hoy · Quedan {trades_restantes}\n"
@@ -680,7 +743,9 @@ def main():
             )
             alerts_sent += 1
             session_signals.append({"pair":pair["name"],"grade":grade,"dir":data["direction"]})
+            print(f"SENAL: {gl[grade]} {dir_sym} {pair['name']} ${data['price']}")
 
+            # aviso especial al alcanzar el limite
             if today_count == DAILY_LIMIT:
                 notify(
                     "🚫 LIMITE DIARIO ALCANZADO",
@@ -691,6 +756,7 @@ def main():
                 )
                 alerts_sent += 1
 
+        # ── 3. Señal caducada ────────────────────────────────────────
         prev_grade = prev.get("grade","none")
         if prev_grade in ("App","Ap","B") and grade == "none":
             expired_this_run.append(pair["name"])
@@ -703,6 +769,7 @@ def main():
             )
             alerts_sent += 1
 
+        # ── 4. Volatilidad extrema (ATR percentile > 85) ─────────────
         atr_key = f"_atr_extreme_{sym}"
         if data["atr_pct"] >= 85 and not state.get(atr_key):
             notify(
@@ -718,6 +785,7 @@ def main():
         elif data["atr_pct"] < 75:
             new_state[atr_key] = False
 
+        # ── 5. Setup en formación (2/3 pilares) ──────────────────────
         form_key = f"_forming_{sym}"
         prev_forming = state.get(form_key, "none")
         fd = data["forming_dir"]
@@ -737,6 +805,22 @@ def main():
         elif fd == "none":
             new_state[form_key] = "none"
 
+        # ── 6. Par desbloqueado ───────────────────────────────────────
+        was_blocked = prev.get("blocked", False)
+        if was_blocked and not data["blocked"] and grade in ("App","Ap","B"):
+            dir_icon = "📈" if data["direction"]=="long" else "📉"
+            notify(
+                f"🔓 Desbloqueado · {pair['name']}",
+                f"{dir_icon} Guardia liberada · Setup {gl[grade]} sigue valido\n"
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']}\n"
+                f"StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
+                f"💰 Precio: ${data['price']} · Posible entrada ahora\n"
+                f"🕐 {data['session_label']}",
+                priority="high", tags="unlock,rotating_light",
+            )
+            alerts_sent += 1
+
+        # ── 7. Confirmacion 1H para señal B ──────────────────────────
         b_key = f"_b_1h_{sym}"
         if grade == "B" and data["h1_confirmed"] and not state.get(b_key):
             dir_icon = "📈" if data["direction"]=="long" else "📉"
@@ -759,6 +843,19 @@ def main():
         elif grade != "B":
             new_state[b_key] = False
 
+        # ── 4. Bloqueado ─────────────────────────────────────────────
+        if data["blocked"] and not prev.get("blocked"):
+            notify(
+                f"🔒 Bloqueado · {pair['name']}",
+                f"{data['st_icon']} ST {'ALCISTA' if data['st_direction']=='bull' else 'BAJISTA'} · ADX:{data['adx']} · Setup valido pero guardia activa\n"
+                f"📐 StochRSI K:{data['k']} · Williams %R:{data['wr']}\n"
+                f"📊 EMA200 4H: ${data['ema200_4h']} · Precio: ${data['price']}\n"
+                f"🕐 {data['session_label']}",
+                priority="low", tags="lock,warning",
+            )
+            alerts_sent += 1
+
+        # ── 5. STC maduro ────────────────────────────────────────────
         if data["stc_warn"] and not prev.get("stc_warn"):
             notify(
                 f"⚡ STC Maduro · {pair['name']}",
@@ -769,8 +866,10 @@ def main():
             )
             alerts_sent += 1
 
-        new_state[sym] = {"grade":grade,"stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
+        new_state[sym] = {"grade":grade,"blocked":data["blocked"],
+                          "stc_warn":data["stc_warn"],"st_direction":data["st_direction"]}
 
+    # ── Circuit breaker: 2 señales caducadas consecutivas ───────────
     if expired_this_run:
         consecutive_expired += len(expired_this_run)
         new_state["_consecutive_expired"] = consecutive_expired
@@ -786,6 +885,7 @@ def main():
             new_state["_circuit_breaker_sent"] = True
             alerts_sent += 1
     else:
+        # si hubo señales activas sin caducar, resetear contador
         active_now = any(
             new_state.get(p["symbol"],{}).get("grade","none") in ("App","Ap","B")
             for p in PAIRS
@@ -795,12 +895,14 @@ def main():
         else:
             new_state["_consecutive_expired"] = consecutive_expired
 
+    # Resetear circuit breaker al dia siguiente
     cb_date = state.get("_circuit_breaker_date","")
     if cb_date != today_str:
         new_state["_circuit_breaker_sent"] = False
         new_state["_circuit_breaker_date"] = today_str
         new_state["_consecutive_expired"]  = 0
 
+    # ── Confluencia multi-par (3+ pares misma direccion) ────────────
     active = [s for s in session_signals if s["grade"] in ("App","Ap","B")]
     longs  = [s for s in active if s["dir"]=="long"]
     shorts = [s for s in active if s["dir"]=="short"]
@@ -817,7 +919,9 @@ def main():
             )
             alerts_sent += 1
 
+    # ── Resumen de cierre NY ─────────────────────────────────────────
     if is_close_window and not state.get("_close_sent"):
+        # calcular mejor oportunidad de la sesion
         best_pair_lines = []
         for sig in session_signals:
             sym_key = next((p["symbol"] for p in PAIRS if p["name"]==sig["pair"]), None)
@@ -854,6 +958,7 @@ def main():
         new_state["_close_sent"] = True
         alerts_sent += 1
 
+    # Preservar flags de sesion del state anterior si siguen vigentes
     if state.get("_open_sent")  and is_open_window:
         new_state["_open_sent"]  = True
     if state.get("_close_sent") and is_close_window:
