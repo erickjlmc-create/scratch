@@ -80,6 +80,7 @@
     "st_confluencia": null
   },
   "_vol_extrema_OPUSDT": false,
+  "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -119,6 +120,5 @@
     "st_confluencia": null
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-21"
+  "_close_sent": true
 }
