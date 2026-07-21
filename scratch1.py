@@ -66,11 +66,27 @@ CFG = {
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
-    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
-    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
-    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
+    "BTCUSDT":    "BTC-USD",
+    "ETHUSDT":    "ETH-USD",
+    "SOLUSDT":    "SOL-USD",
+    "BNBUSDT":    "BNB-USD",
+    "ADAUSDT":    "ADA-USD",
+    "XRPUSDT":    "XRP-USD",
+    "DOGEUSDT":   "DOGE-USD",
+    "AVAXUSDT":   "AVAX-USD",
+    "LINKUSDT":   "LINK-USD",
+    "DOTUSDT":    "DOT-USD",
+    "NEARUSDT":   "NEAR-USD",
+    "OPUSDT":     "OP-USD",
+    "ATOMUSDT":   "ATOM-USD",
+    "RENDERUSDT": "RENDER-USD",
+    "INJUSDT":    "INJ-USD",
+    "WLDUSDT":    "WLD-USD",
+    "TIAUSDT":    "TIA-USD",
+    "ZECUSDT":    "ZEC-USD",
+    "XMRUSDT":    "XMR-USD",
 }
+
 
 def get_session():
     now=datetime.now(timezone.utc); m=now.hour*60+now.minute
