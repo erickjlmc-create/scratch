@@ -1,4 +1,4 @@
-name: RVOL Bot
+name: Schedule2
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: rvol-bot-scan
+  group: Scheduled-run-2
   cancel-in-progress: false
 
 jobs:
@@ -25,14 +25,14 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: python rvol_bot.py
+      - run: python Scratch2.py
         env:
           # Secrets exclusivos del grupo RVOL — distintos al bot Trifecta
           RVOL_BOT_TOKEN:   ${{ secrets.RVOL_BOT_TOKEN }}
           RVOL_CHAT_ID:     ${{ secrets.RVOL_CHAT_ID }}
           RVOL_NTFY_TOPIC:  ${{ secrets.RVOL_NTFY_TOPIC }}
 
-      - name: Guardar estado RVOL
+      - name: Save State
         run: |
           git config user.name "rvol-bot"
           git config user.email "bot@users.noreply.github.com"
