@@ -26,7 +26,9 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
+  "_b_1h_BNBUSDT": true,
   "BNBUSDT": {
     "grade": "B",
     "blocked": false,
@@ -49,23 +51,27 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_DOGEUSDT": true,
   "_forming_DOGEUSDT": "none",
+  "_b_1h_DOGEUSDT": true,
   "DOGEUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_AVAXUSDT": true,
+  "_b_1h_AVAXUSDT": true,
   "AVAXUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
+  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -80,7 +86,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_NEARUSDT": false,
-  "_forming_NEARUSDT": "short",
+  "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
     "grade": "none",
@@ -88,7 +94,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_OPUSDT": true,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
@@ -97,18 +102,12 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-07-23": 3
-  },
-  "_atr_extreme_ATOMUSDT": true,
-  "_b_1h_ATOMUSDT": true,
   "ATOMUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_RENDERUSDT": true,
   "_forming_RENDERUSDT": "none",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
@@ -117,8 +116,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_INJUSDT": true,
-  "_forming_INJUSDT": "short",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -153,7 +150,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XMRUSDT": false,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -162,7 +158,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-23"
+  "_consecutive_expired": 1
 }
