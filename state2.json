@@ -43,34 +43,38 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_trade_count": {
+    "2026-07-23": 18
+  },
   "_atr_extreme_XRPUSDT": false,
-  "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
+    "grade": "B",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear"
+  },
+  "_forming_DOGEUSDT": "short",
+  "_b_1h_DOGEUSDT": false,
+  "DOGEUSDT": {
+    "grade": "none",
+    "blocked": false,
+    "stc_warn": false,
+    "st_direction": "bear"
+  },
+  "_atr_extreme_AVAXUSDT": true,
+  "_forming_AVAXUSDT": "none",
+  "_b_1h_AVAXUSDT": false,
+  "AVAXUSDT": {
     "grade": "blocked",
     "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_DOGEUSDT": true,
-  "_forming_DOGEUSDT": "none",
-  "DOGEUSDT": {
-    "grade": "B",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
-  "_forming_AVAXUSDT": "none",
-  "AVAXUSDT": {
-    "grade": "B",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bear"
-  },
   "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
+  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -93,17 +97,15 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-07-23": 17
-  },
+  "_atr_extreme_OPUSDT": true,
   "_forming_OPUSDT": "none",
+  "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ATOMUSDT": true,
   "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
@@ -112,14 +114,15 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_RENDERUSDT": true,
   "_forming_RENDERUSDT": "none",
+  "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_forming_INJUSDT": "short",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -136,6 +139,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_TIAUSDT": false,
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
@@ -144,6 +148,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_ZECUSDT": true,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
@@ -160,6 +165,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 2,
-  "_circuit_breaker_sent": true
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-23"
 }
