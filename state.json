@@ -1,5 +1,4 @@
 {
-  "_open_sent": true,
   "_vol_extrema_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
@@ -161,7 +160,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_TIAUSDT": false,
-  "_forming_TIAUSDT": "short",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "none",
@@ -190,7 +188,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-23"
+  "_consecutive_expired": 0
 }
