@@ -75,8 +75,8 @@
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -84,8 +84,8 @@
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -107,6 +107,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_ATOMUSDT": true,
   "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
@@ -142,6 +143,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "B",
     "blocked": false,
@@ -157,7 +159,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -167,5 +168,6 @@
     "st_direction": "bear"
   },
   "_consecutive_expired": 0,
-  "_open_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-23"
 }
