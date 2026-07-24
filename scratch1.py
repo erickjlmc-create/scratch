@@ -29,7 +29,15 @@ PAIRS = [
     {"symbol": "INJUSDT",  "name": "INJ/USDT"},
     {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
     {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
+    {"symbol": "XRPUSDT",  "name": "XRP/USDT"},
+    {"symbol": "HYPEUSDT",  "name": "HYPE/USDT"},
+    {"symbol": "DOGEUSDT",  "name": "DOGE/USDT"},
+    {"symbol": "ZECUSDT",  "name": "ZEC/USDT"},
+    {"symbol": "XMRUSDT",  "name": "XMR/USDT"},
+    {"symbol": "ADAUSDT",  "name": "ADA/USDT"},
+    {"symbol": "DEXEUSDT",  "name": "DEXE/USDT"},
 ]
+
 
 CFG = {
     "ST_PERIOD":10,"ST_FACTOR":3.0,"EMA_FAST":9,"EMA_SLOW":21,"MFI_PERIOD":14,
