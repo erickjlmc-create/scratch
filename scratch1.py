@@ -16,25 +16,19 @@ TELEGRAM_CANAL_RADAR_ID     = os.environ.get("TELEGRAM_CANAL_RADAR_ID")
 NTFY_TOPIC                  = os.environ.get("NTFY_TOPIC")
 
 PAIRS = [
-    {"symbol": "BTCUSDT",    "name": "BTC/USDT"},
-    {"symbol": "ETHUSDT",    "name": "ETH/USDT"},
-    {"symbol": "SOLUSDT",    "name": "SOL/USDT"},
-    {"symbol": "BNBUSDT",    "name": "BNB/USDT"},
-    {"symbol": "ADAUSDT",    "name": "ADA/USDT"},
-    {"symbol": "XRPUSDT",    "name": "XRP/USDT"},
-    {"symbol": "DOGEUSDT",   "name": "DOGE/USDT"},
-    {"symbol": "AVAXUSDT",   "name": "AVAX/USDT"},
-    {"symbol": "LINKUSDT",   "name": "LINK/USDT"},
-    {"symbol": "DOTUSDT",    "name": "DOT/USDT"},
-    {"symbol": "NEARUSDT",   "name": "NEAR/USDT"},
-    {"symbol": "OPUSDT",     "name": "OP/USDT"},
-    {"symbol": "ATOMUSDT",   "name": "ATOM/USDT"},
-    {"symbol": "RENDERUSDT", "name": "RENDER/USDT"},
-    {"symbol": "INJUSDT",    "name": "INJ/USDT"},
-    {"symbol": "WLDUSDT",    "name": "WLD/USDT"},
-    {"symbol": "TIAUSDT",    "name": "TIA/USDT"},
-    {"symbol": "ZECUSDT",    "name": "ZEC/USDT"},
-    {"symbol": "XMRUSDT",    "name": "XMR/USDT"},
+    {"symbol": "SOLUSDT",  "name": "SOL/USDT"},
+    {"symbol": "ETHUSDT",  "name": "ETH/USDT"},
+    {"symbol": "BNBUSDT",  "name": "BNB/USDT"},
+    {"symbol": "AVAXUSDT", "name": "AVAX/USDT"},
+    {"symbol": "LINKUSDT", "name": "LINK/USDT"},
+    {"symbol": "DOTUSDT",  "name": "DOT/USDT"},
+    {"symbol": "NEARUSDT", "name": "NEAR/USDT"},
+    {"symbol": "ARBUSDT",  "name": "ARB/USDT"},
+    {"symbol": "SUIUSDT",  "name": "SUI/USDT"},
+    {"symbol": "OPUSDT",   "name": "OP/USDT"},
+    {"symbol": "INJUSDT",  "name": "INJ/USDT"},
+    {"symbol": "WLDUSDT",  "name": "WLD/USDT"},
+    {"symbol": "TIAUSDT",  "name": "TIA/USDT"},
 ]
 
 CFG = {
@@ -53,27 +47,11 @@ CFG = {
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
 YF_SYMBOLS = {
-    "BTCUSDT":    "BTC-USD",
-    "ETHUSDT":    "ETH-USD",
-    "SOLUSDT":    "SOL-USD",
-    "BNBUSDT":    "BNB-USD",
-    "ADAUSDT":    "ADA-USD",
-    "XRPUSDT":    "XRP-USD",
-    "DOGEUSDT":   "DOGE-USD",
-    "AVAXUSDT":   "AVAX-USD",
-    "LINKUSDT":   "LINK-USD",
-    "DOTUSDT":    "DOT-USD",
-    "NEARUSDT":   "NEAR-USD",
-    "OPUSDT":     "OP-USD",
-    "ATOMUSDT":   "ATOM-USD",
-    "RENDERUSDT": "RENDER-USD",
-    "INJUSDT":    "INJ-USD",
-    "WLDUSDT":    "WLD-USD",
-    "TIAUSDT":    "TIA-USD",
-    "ZECUSDT":    "ZEC-USD",
-    "XMRUSDT":    "XMR-USD",
+    "SOLUSDT":"SOL-USD",  "ETHUSDT":"ETH-USD",  "BNBUSDT":"BNB-USD",  "AVAXUSDT":"AVAX-USD",
+    "LINKUSDT":"LINK-USD","DOTUSDT":"DOT-USD",  "NEARUSDT":"NEAR-USD","ARBUSDT":"ARB-USD",
+    "SUIUSDT":"SUI-USD",  "OPUSDT":"OP-USD",    "INJUSDT":"INJ-USD",
+    "WLDUSDT":"WLD-USD",  "TIAUSDT":"TIA-USD",
 }
-
 
 def get_session():
     now=datetime.now(timezone.utc); m=now.hour*60+now.minute
@@ -97,10 +75,25 @@ SESSION_META={
 
 def fetch_klines(symbol,interval,limit):
     yf_sym=YF_SYMBOLS[symbol]
-    if interval=="15":   yi,per="15m","59d"
-    elif interval=="240": yi,per="1h","729d"
-    else:                yi,per="1d","2y"
-    df=yf.download(yf_sym,period=per,interval=yi,progress=False,auto_adjust=True)
+
+    if interval=="15":
+        df=yf.download(yf_sym,period="59d",interval="15m",progress=False,auto_adjust=True)
+
+    elif interval=="240":
+        # Yahoo Finance no ofrece velas nativas de 4H. Se descargan velas de
+        # 1H y se re-muestrean (resample) a 4H reales (00/04/08/12/16/20 UTC),
+        # agregando OHLCV correctamente en vez de usar el 1H tal cual.
+        df=yf.download(yf_sym,period="729d",interval="1h",progress=False,auto_adjust=True)
+        if isinstance(df.columns,pd.MultiIndex): df.columns=df.columns.get_level_values(0)
+        df=df.resample("4h").agg({"Open":"first","High":"max","Low":"min",
+                                   "Close":"last","Volume":"sum"}).dropna()
+
+    elif interval=="60":
+        df=yf.download(yf_sym,period="729d",interval="1h",progress=False,auto_adjust=True)
+
+    else:
+        df=yf.download(yf_sym,period="2y",interval="1d",progress=False,auto_adjust=True)
+
     if isinstance(df.columns,pd.MultiIndex): df.columns=df.columns.get_level_values(0)
     df=df.tail(limit).copy()
     return [{"time":int(ts.timestamp()*1000),"open":float(r["Open"]),"high":float(r["High"]),
@@ -737,29 +730,68 @@ def main():
             alerts_sent += 1
         new_state[vol_key] = vol_extrema_ahora
 
-        # ── Breakeven manual: alerta al tocar TP1 de una operación activa ──
+        # ── Gestión activa manual: TP1 -> Breakeven -> TP2 -> TP1 -> TP3 -> Cierre ──
         # No hay bróker conectado (Yahoo Finance solo da precios, no ejecuta
-        # órdenes), así que esto es un AVISO para que muevas el SL tú mismo.
+        # órdenes), así que esto son AVISOS para que muevas el SL/cierres tú mismo.
         trade_key = f"_trade_{sym}"
         trade_activo = state.get(trade_key)
-        if trade_activo and not trade_activo.get("tp1_hit") and trade_activo.get("tp1"):
-            tp1_tocado = (
-                (trade_activo["direction"]=="long"  and data["price"] >= trade_activo["tp1"]) or
-                (trade_activo["direction"]=="short" and data["price"] <= trade_activo["tp1"])
-            )
-            if tp1_tocado:
-                notify(
-                    f"🛡️ POSICIÓN ASEGURADA · {pair['name']} · TP1 Alcanzado.",
-                    f"SL movido a Breakeven. Trade libre de riesgo.\n"
-                    f"👉 Muévelo tú manualmente a ${trade_activo['entry']} en tu plataforma "
-                    f"(no hay bróker conectado, solo Yahoo Finance como fuente de precio).",
-                    priority="high", tags="shield", destino="principal",
+        if trade_activo:
+            direccion = trade_activo["direction"]
+
+            # TP1 -> mover SL a Breakeven (entrada)
+            if not trade_activo.get("tp1_hit") and trade_activo.get("tp1"):
+                tp1_tocado = (
+                    (direccion=="long"  and data["price"] >= trade_activo["tp1"]) or
+                    (direccion=="short" and data["price"] <= trade_activo["tp1"])
                 )
-                trade_activo["tp1_hit"] = True
-                alerts_sent += 1
-            new_state[trade_key] = trade_activo
-        elif trade_activo:
-            new_state[trade_key] = trade_activo
+                if tp1_tocado:
+                    notify(
+                        f"🛡️ POSICIÓN ASEGURADA · {pair['name']} · TP1 Alcanzado.",
+                        f"SL movido a Breakeven. Trade libre de riesgo.\n"
+                        f"👉 Muévelo tú manualmente a ${trade_activo['entry']} en tu plataforma "
+                        f"(no hay bróker conectado, solo Yahoo Finance como fuente de precio).",
+                        priority="high", tags="shield", destino="principal",
+                    )
+                    trade_activo["tp1_hit"] = True
+                    alerts_sent += 1
+
+            # TP2 -> mover SL a TP1 (solo si TP1 ya se aseguro)
+            elif trade_activo.get("tp1_hit") and not trade_activo.get("tp2_hit") and trade_activo.get("tp2"):
+                tp2_tocado = (
+                    (direccion=="long"  and data["price"] >= trade_activo["tp2"]) or
+                    (direccion=="short" and data["price"] <= trade_activo["tp2"])
+                )
+                if tp2_tocado:
+                    notify(
+                        f"🎯 TP2 ALCANZADO · {pair['name']}",
+                        f"SL movido a TP1 (${trade_activo['tp1']}). Ganancia asegurada.\n"
+                        f"👉 Muévelo tú manualmente en tu plataforma "
+                        f"(no hay bróker conectado, solo Yahoo Finance como fuente de precio).",
+                        priority="high", tags="dart", destino="principal",
+                    )
+                    trade_activo["tp2_hit"] = True
+                    alerts_sent += 1
+
+            # TP3 -> cierre total del runner (solo si TP2 ya se aseguro)
+            elif trade_activo.get("tp2_hit") and not trade_activo.get("tp3_hit") and trade_activo.get("tp3"):
+                tp3_tocado = (
+                    (direccion=="long"  and data["price"] >= trade_activo["tp3"]) or
+                    (direccion=="short" and data["price"] <= trade_activo["tp3"])
+                )
+                if tp3_tocado:
+                    notify(
+                        f"🏆 TP3 ALCANZADO · {pair['name']} · Trade completo.",
+                        f"Cierra el runner restante manualmente en tu plataforma.\n"
+                        f"👉 Objetivo final cumplido (4R).",
+                        priority="high", tags="trophy", destino="principal",
+                    )
+                    trade_activo["tp3_hit"] = True
+                    alerts_sent += 1
+                    new_state.pop(trade_key, None)  # trade cerrado, dejar de rastrear
+                    trade_activo = None
+
+            if trade_activo is not None:
+                new_state[trade_key] = trade_activo
 
         # ── Calculadora de posicion ──────────────────────────────────
         pos = None
@@ -883,10 +915,12 @@ def main():
             session_signals.append({"pair":pair["name"],"grade":grade,"dir":data["direction"]})
             print(f"SENAL: {gl[grade]} {dir_sym} {pair['name']} ${data['price']}")
 
-            # Iniciar seguimiento de TP1 para la alerta de breakeven manual
+            # Iniciar seguimiento de TP1/TP2/TP3 para las alertas de gestion activa
             new_state[trade_key] = {
-                "entry": data["price"], "sl": data["sl"], "tp1": data["tp1"],
-                "direction": data["direction"], "tp1_hit": False,
+                "entry": data["price"], "sl": data["sl"],
+                "tp1": data["tp1"], "tp2": data["tp2"], "tp3": data["tp3"],
+                "direction": data["direction"],
+                "tp1_hit": False, "tp2_hit": False, "tp3_hit": False,
             }
 
             # aviso especial al alcanzar el limite
