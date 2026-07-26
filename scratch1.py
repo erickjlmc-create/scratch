@@ -1,4 +1,3 @@
-
 import os, json, math, requests
 import pandas as pd
 import yfinance as yf
@@ -984,6 +983,7 @@ def main():
                 f"⏳ Esperar confirmacion del tercer pilar\n"
                 f"🕐 {data['session_label']}",
                 priority="low", tags="eyes,hourglass_flowing_sand",
+                destino="radar",
             )
             new_state[form_key] = fd
             alerts_sent += 1
