@@ -1,16 +1,3 @@
-"""
-Sistema Trifecta Pro v5 - Bot de notificaciones
-Replica TrifectaPro_Dashboard_v5.html y TrifectaPro_Scanner_v5.pine
-
-NOVEDADES v5 vs v4:
-  + Choppiness Index como filtro de regimen (junto a ADX)
-  + ATR Percentile reemplaza filtro binario ATR > avg
-  + EMA 100 en 15M como contexto adicional
-  + TPs automaticos calculados con SL en linea del Supertrend (1.5R/2.5R/4R)
-  + EMA 200 en 4H incluida en cada alerta
-
-SIEMPRE notifica cuando Supertrend cambia de color en cualquier par.
-"""
 
 import os, json, math, requests
 import pandas as pd
