@@ -31,18 +31,14 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-07-27": 2
-  },
   "_forming_ADAUSDT": "none",
+  "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": true,
   "XRPUSDT": {
     "grade": "B",
     "blocked": false,
@@ -66,7 +62,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_LINKUSDT": false,
-  "_forming_LINKUSDT": "none",
   "LINKUSDT": {
     "grade": "B",
     "blocked": false,
@@ -89,11 +84,11 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_OPUSDT": true,
   "_forming_OPUSDT": "none",
+  "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -144,7 +139,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -153,7 +147,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-27"
+  "_consecutive_expired": 1
 }
