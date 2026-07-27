@@ -189,8 +189,5 @@
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-27",
-  "_close_sent": true
+  "_consecutive_expired": 0
 }
