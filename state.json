@@ -60,7 +60,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOGEUSDT": false,
-  "_forming_DOGEUSDT": "short",
+  "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
     "grade": "none",
@@ -189,7 +189,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-07-27"
+  "_consecutive_expired": 0
 }
