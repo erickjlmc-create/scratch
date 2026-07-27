@@ -89,10 +89,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_DOTUSDT": true,
-  "_trade_count": {
-    "2026-07-27": 1
-  },
+  "_vol_extrema_DOTUSDT": false,
   "_trade_DOTUSDT": {
     "entry": 0.782,
     "sl": 0.7969,
@@ -107,7 +104,7 @@
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "prec",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -203,5 +200,7 @@
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-27"
 }
