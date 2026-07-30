@@ -35,10 +35,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-07-30": 2
-  },
-  "_atr_extreme_ADAUSDT": true,
   "_forming_ADAUSDT": "none",
   "ADAUSDT": {
     "grade": "B",
@@ -110,8 +106,10 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ATOMUSDT": false,
+  "_forming_ATOMUSDT": "none",
+  "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -169,5 +167,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-30"
 }
