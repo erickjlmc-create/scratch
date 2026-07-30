@@ -1,5 +1,6 @@
 {
   "_atr_extreme_BTCUSDT": false,
+  "_forming_BTCUSDT": "long",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -25,6 +26,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -32,9 +34,6 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
-  },
-  "_trade_count": {
-    "2026-07-30": 1
   },
   "_atr_extreme_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
@@ -73,8 +72,9 @@
   },
   "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
+  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -134,7 +134,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_WLDUSDT": false,
-  "_forming_WLDUSDT": "short",
+  "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -169,5 +169,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-30"
 }
