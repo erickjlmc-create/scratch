@@ -143,7 +143,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_TIAUSDT": false,
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
@@ -171,5 +170,6 @@
     "st_direction": "bull"
   },
   "_consecutive_expired": 0,
-  "_close_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-07-30"
 }
