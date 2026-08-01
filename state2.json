@@ -119,8 +119,8 @@
   "_forming_RENDERUSDT": "none",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -151,9 +151,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-08-01": 1
-  },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
   "ZECUSDT": {
@@ -171,7 +168,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-01"
+  "_consecutive_expired": 0
 }
