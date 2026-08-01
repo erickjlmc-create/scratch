@@ -191,7 +191,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_XMRUSDT": false,
-  "_forming_XMRUSDT": "none",
+  "_forming_XMRUSDT": "long",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
