@@ -1,6 +1,5 @@
 {
   "_vol_extrema_BTCUSDT": false,
-  "_forming_BTCUSDT": "short",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -20,7 +19,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_SOLUSDT": false,
-  "_forming_SOLUSDT": "none",
+  "_forming_SOLUSDT": "short",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -79,11 +78,24 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_LINKUSDT": false,
+  "_vol_extrema_LINKUSDT": true,
+  "_trade_count": {
+    "2026-08-02": 2
+  },
+  "_trade_LINKUSDT": {
+    "entry": 8.255,
+    "sl": 8.3244,
+    "tp1": 8.1509,
+    "tp2": 8.0816,
+    "tp3": 7.9775,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_LINKUSDT": "none",
-  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -160,11 +172,21 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_WLDUSDT": false,
+  "_vol_extrema_WLDUSDT": true,
+  "_trade_WLDUSDT": {
+    "entry": 0.3131,
+    "sl": 0.3173,
+    "tp1": 0.3068,
+    "tp2": 0.3026,
+    "tp3": 0.2964,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -200,7 +222,5 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-02"
+  "_consecutive_expired": 0
 }
