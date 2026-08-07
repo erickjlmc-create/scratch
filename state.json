@@ -90,25 +90,11 @@
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_vol_extrema_LINKUSDT": true,
-  "_trade_count": {
-    "2026-08-07": 2
-  },
-  "_trade_LINKUSDT": {
-    "entry": 8.25,
-    "sl": 8.1702,
-    "tp1": 8.3696,
-    "tp2": 8.4494,
-    "tp3": 8.569,
-    "direction": "long",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_vol_extrema_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "App",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -146,7 +132,6 @@
     "st_confluencia": null
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "long",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -195,7 +180,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_TIAUSDT": false,
+  "_vol_extrema_TIAUSDT": true,
   "_trade_TIAUSDT": {
     "entry": 0.3285,
     "sl": 0.3311,
@@ -236,7 +221,5 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-07"
+  "_consecutive_expired": 1
 }
