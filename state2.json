@@ -1,10 +1,6 @@
 {
-  "_trade_count": {
-    "2026-08-08": 4
-  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": true,
   "BTCUSDT": {
     "grade": "B",
     "blocked": false,
@@ -20,17 +16,19 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-08-08": 6
+  },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
+  "_b_1h_BNBUSDT": true,
   "BNBUSDT": {
     "grade": "B",
     "blocked": false,
@@ -38,6 +36,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_ADAUSDT": false,
+  "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -47,14 +46,12 @@
   },
   "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
   "DOGEUSDT": {
     "grade": "B",
@@ -81,7 +78,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_DOTUSDT": false,
-  "_forming_DOTUSDT": "none",
+  "_forming_DOTUSDT": "short",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -98,8 +95,11 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_OPUSDT": false,
+  "_forming_OPUSDT": "none",
+  "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -158,15 +158,15 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 2,
-  "_circuit_breaker_sent": true
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-08"
 }
