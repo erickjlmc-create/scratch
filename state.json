@@ -1,23 +1,9 @@
 {
-  "_vol_extrema_BTCUSDT": true,
-  "_trade_count": {
-    "2026-08-08": 2
-  },
-  "_trade_BTCUSDT": {
-    "entry": 65071.679688,
-    "sl": 64974.9057,
-    "tp1": 65216.8407,
-    "tp2": 65313.6147,
-    "tp3": 65458.7757,
-    "direction": "long",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_vol_extrema_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": true,
+  "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -33,39 +19,27 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_SOLUSDT": true,
+  "_vol_extrema_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_BNBUSDT": true,
-  "_trade_BNBUSDT": {
-    "entry": 604.909973,
-    "sl": 602.7507,
-    "tp1": 608.1489,
-    "tp2": 610.3082,
-    "tp3": 613.5472,
-    "direction": "long",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_vol_extrema_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
-  "_b_1h_BNBUSDT": true,
+  "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
   "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "long",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -74,7 +48,7 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_vol_extrema_XRPUSDT": true,
+  "_vol_extrema_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
@@ -247,7 +221,6 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-08"
+  "_consecutive_expired": 2,
+  "_circuit_breaker_sent": true
 }
