@@ -1,6 +1,6 @@
 {
   "_vol_extrema_BTCUSDT": false,
-  "_forming_BTCUSDT": "long",
+  "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -81,6 +81,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_AVAXUSDT": false,
+  "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -141,11 +142,24 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "long",
-  "_b_1h_OPUSDT": false,
+  "_vol_extrema_OPUSDT": true,
+  "_trade_count": {
+    "2026-08-09": 1
+  },
+  "_trade_OPUSDT": {
+    "entry": 0.089,
+    "sl": 0.0888,
+    "tp1": 0.0893,
+    "tp2": 0.0895,
+    "tp3": 0.0897,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
+  "_b_1h_OPUSDT": true,
   "OPUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -221,7 +235,5 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-09"
+  "_consecutive_expired": 0
 }
