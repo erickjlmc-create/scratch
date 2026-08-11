@@ -21,12 +21,12 @@
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_BNBUSDT": false,
+  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -63,7 +63,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "none",
+  "_forming_AVAXUSDT": "long",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -71,7 +71,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_LINKUSDT": true,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
@@ -107,16 +106,18 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-08-11": 1
+  },
   "_atr_extreme_ATOMUSDT": false,
   "_forming_ATOMUSDT": "none",
-  "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_forming_RENDERUSDT": "short",
+  "_forming_RENDERUSDT": "none",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -125,11 +126,11 @@
     "st_direction": "bull"
   },
   "_atr_extreme_INJUSDT": false,
-  "_forming_INJUSDT": "none",
+  "_forming_INJUSDT": "long",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -160,8 +161,8 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XMRUSDT": false,
-  "_forming_XMRUSDT": "long",
+  "_atr_extreme_XMRUSDT": true,
+  "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -169,7 +170,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-11"
+  "_consecutive_expired": 0
 }
