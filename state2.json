@@ -1,24 +1,24 @@
 {
-  "_atr_extreme_BTCUSDT": true,
   "BTCUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ETHUSDT": true,
   "ETHUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_SOLUSDT": true,
   "SOLUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -34,8 +34,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XRPUSDT": true,
-  "_forming_XRPUSDT": "short",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -54,13 +52,13 @@
   },
   "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
+  "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_LINKUSDT": true,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
@@ -80,8 +78,8 @@
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -103,6 +101,7 @@
     "st_direction": "bull"
   },
   "_forming_RENDERUSDT": "none",
+  "_b_1h_RENDERUSDT": true,
   "RENDERUSDT": {
     "grade": "B",
     "blocked": false,
@@ -110,7 +109,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_INJUSDT": false,
-  "_forming_INJUSDT": "none",
+  "_forming_INJUSDT": "long",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -118,6 +117,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_WLDUSDT": true,
   "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
@@ -135,16 +135,17 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_trade_count": {
+    "2026-08-13": 1
+  },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
-  "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -153,5 +154,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-13"
 }
