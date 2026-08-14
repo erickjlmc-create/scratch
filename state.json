@@ -213,7 +213,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_XMRUSDT": false,
-  "_forming_XMRUSDT": "long",
+  "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -222,5 +222,7 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-14"
 }
