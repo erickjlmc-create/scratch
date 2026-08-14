@@ -20,8 +20,8 @@
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -52,6 +52,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
@@ -68,10 +69,11 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_LINKUSDT": true,
   "_forming_LINKUSDT": "none",
-  "_b_1h_LINKUSDT": true,
+  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -80,8 +82,8 @@
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -121,7 +123,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -166,7 +167,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-14"
+  "_consecutive_expired": 1,
+  "_close_sent": true
 }
