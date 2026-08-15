@@ -50,7 +50,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_XRPUSDT": false,
-  "_forming_XRPUSDT": "short",
+  "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -192,6 +192,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ZECUSDT": false,
+  "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -211,6 +212,5 @@
     "st_confluencia": "bull"
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-15"
+  "_close_sent": true
 }
