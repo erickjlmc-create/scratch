@@ -132,22 +132,10 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_OPUSDT": false,
-  "_trade_count": {
-    "2026-08-15": 1
-  },
-  "_trade_OPUSDT": {
-    "entry": 0.08573,
-    "sl": 0.0862,
-    "tp1": 0.085,
-    "tp2": 0.0845,
-    "tp3": 0.0838,
-    "direction": "short",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_forming_OPUSDT": "short",
+  "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -223,5 +211,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-15"
 }
