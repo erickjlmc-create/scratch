@@ -212,5 +212,7 @@
     "st_confluencia": "bull"
   },
   "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-15",
   "_close_sent": true
 }
