@@ -131,7 +131,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_OPUSDT": false,
+  "_vol_extrema_OPUSDT": true,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
