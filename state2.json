@@ -1,7 +1,5 @@
 {
-  "_open_sent": true,
   "_atr_extreme_BTCUSDT": false,
-  "_forming_BTCUSDT": "long",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -172,6 +170,5 @@
     "st_direction": "bear"
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-18"
+  "_open_sent": true
 }
