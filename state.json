@@ -1,5 +1,6 @@
 {
   "_vol_extrema_BTCUSDT": false,
+  "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -9,7 +10,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ETHUSDT": false,
-  "_forming_ETHUSDT": "none",
+  "_forming_ETHUSDT": "long",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -100,7 +101,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOTUSDT": false,
-  "_forming_DOTUSDT": "none",
+  "_forming_DOTUSDT": "short",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -140,7 +141,6 @@
     "st_confluencia": null
   },
   "_vol_extrema_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "short",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -200,5 +200,6 @@
     "st_confluencia": "bear"
   },
   "_consecutive_expired": 0,
-  "_open_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-18"
 }
