@@ -159,11 +159,25 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_TIAUSDT": false,
+  "_vol_extrema_TIAUSDT": true,
+  "_trade_count": {
+    "2026-08-19": 1
+  },
+  "_trade_TIAUSDT": {
+    "entry": 0.3145,
+    "sl": 0.3059,
+    "tp1": 0.3274,
+    "tp2": 0.3361,
+    "tp3": 0.349,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
-    "grade": "none",
+    "grade": "App",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -179,15 +193,17 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_XMRUSDT": false,
+  "_vol_extrema_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-19"
 }
