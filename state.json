@@ -120,7 +120,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ATOMUSDT": false,
-  "_forming_ATOMUSDT": "long",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -130,7 +129,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "long",
+  "_forming_RENDERUSDT": "none",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -186,10 +185,8 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull",
-    "st_confluencia": "bull"
+    "st_direction": "bear",
+    "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-20"
+  "_consecutive_expired": 0
 }
