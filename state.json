@@ -40,7 +40,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "long",
+  "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -170,7 +170,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ZECUSDT": false,
-  "_forming_ZECUSDT": "long",
+  "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -187,7 +187,9 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
-    "st_confluencia": null
+    "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-20"
 }
