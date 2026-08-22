@@ -42,7 +42,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
@@ -51,7 +51,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
@@ -171,5 +171,6 @@
     "st_direction": "bull"
   },
   "_consecutive_expired": 0,
-  "_close_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-22"
 }
