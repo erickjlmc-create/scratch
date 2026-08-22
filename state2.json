@@ -91,9 +91,10 @@
   },
   "_atr_extreme_NEARUSDT": false,
   "_forming_NEARUSDT": "none",
+  "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -169,7 +170,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-22"
+  "_consecutive_expired": 0
 }
