@@ -20,7 +20,7 @@
     "st_confluencia": null
   },
   "_vol_extrema_SOLUSDT": false,
-  "_forming_SOLUSDT": "none",
+  "_forming_SOLUSDT": "long",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -60,7 +60,7 @@
     "st_confluencia": null
   },
   "_vol_extrema_DOGEUSDT": false,
-  "_forming_DOGEUSDT": "long",
+  "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
     "grade": "none",
@@ -189,7 +189,5 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-22"
+  "_consecutive_expired": 0
 }
