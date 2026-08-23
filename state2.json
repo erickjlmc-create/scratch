@@ -1,21 +1,18 @@
 {
-  "_trade_count": {
-    "2026-08-23": 2
-  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": true,
+  "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
   "_forming_ETHUSDT": "none",
-  "_b_1h_ETHUSDT": true,
+  "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -131,8 +128,8 @@
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -172,5 +169,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-23"
 }
