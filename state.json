@@ -10,7 +10,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ETHUSDT": false,
-  "_forming_ETHUSDT": "long",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -149,11 +148,25 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_WLDUSDT": false,
+  "_vol_extrema_WLDUSDT": true,
+  "_trade_count": {
+    "2026-08-23": 1
+  },
+  "_trade_WLDUSDT": {
+    "entry": 0.4058,
+    "sl": 0.3968,
+    "tp1": 0.4192,
+    "tp2": 0.4282,
+    "tp3": 0.4416,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": false,
+  "_b_1h_WLDUSDT": true,
   "WLDUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -187,9 +200,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-23"
+  "_consecutive_expired": 0
 }
