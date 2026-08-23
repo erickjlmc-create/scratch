@@ -125,13 +125,11 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-08-23": 1
-  },
   "_atr_extreme_INJUSDT": false,
-  "_b_1h_INJUSDT": true,
+  "_forming_INJUSDT": "none",
+  "_b_1h_INJUSDT": false,
   "INJUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -173,5 +171,6 @@
     "st_direction": "bear"
   },
   "_consecutive_expired": 0,
-  "_open_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-23"
 }
