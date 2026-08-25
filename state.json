@@ -29,7 +29,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_BNBUSDT": false,
+  "_vol_extrema_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -49,7 +49,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_XRPUSDT": false,
+  "_vol_extrema_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
@@ -189,7 +189,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-25"
+  "_consecutive_expired": 0
 }
