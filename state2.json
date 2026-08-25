@@ -171,5 +171,6 @@
     "st_direction": "bear"
   },
   "_consecutive_expired": 0,
-  "_close_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-25"
 }
