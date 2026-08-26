@@ -37,7 +37,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
   "_vol_extrema_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
@@ -190,5 +190,6 @@
     "st_confluencia": "bear"
   },
   "_consecutive_expired": 0,
-  "_close_sent": true
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-26"
 }
