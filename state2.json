@@ -6,9 +6,10 @@
     "st_direction": "bear"
   },
   "_forming_ETHUSDT": "none",
+  "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -18,9 +19,8 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
-  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -136,7 +136,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ZECUSDT": true,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
@@ -153,7 +152,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-28"
+  "_consecutive_expired": 0
 }
