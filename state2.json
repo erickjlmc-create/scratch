@@ -1,15 +1,13 @@
 {
-  "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
   "_atr_extreme_ETHUSDT": false,
-  "_forming_ETHUSDT": "long",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -18,7 +16,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_SOLUSDT": false,
-  "_forming_SOLUSDT": "long",
+  "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -26,6 +24,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -34,7 +33,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_ADAUSDT": true,
   "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
@@ -61,11 +59,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-08-30": 2
-  },
   "_forming_AVAXUSDT": "none",
-  "_b_1h_AVAXUSDT": true,
   "AVAXUSDT": {
     "grade": "B",
     "blocked": false,
@@ -125,11 +119,15 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-08-30": 4
+  },
+  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
-  "_b_1h_INJUSDT": false,
+  "_b_1h_INJUSDT": true,
   "INJUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -142,12 +140,11 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_TIAUSDT": true,
   "_forming_TIAUSDT": "none",
-  "_b_1h_TIAUSDT": false,
+  "_b_1h_TIAUSDT": true,
   "TIAUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -155,12 +152,11 @@
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -169,5 +165,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 1
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-08-30"
 }
