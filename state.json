@@ -190,6 +190,5 @@
     "st_confluencia": null
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-08-30"
+  "_close_sent": true
 }
