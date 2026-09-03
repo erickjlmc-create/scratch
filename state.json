@@ -10,7 +10,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ETHUSDT": false,
-  "_forming_ETHUSDT": "long",
+  "_forming_ETHUSDT": "none",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -20,7 +20,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_SOLUSDT": false,
-  "_forming_SOLUSDT": "long",
+  "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -190,6 +190,5 @@
     "st_confluencia": null
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-03"
+  "_close_sent": true
 }
