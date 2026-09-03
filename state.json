@@ -1,30 +1,20 @@
 {
-  "_vol_extrema_BTCUSDT": false,
-  "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": false,
-  "BTCUSDT": {
-    "grade": "none",
-    "blocked": false,
-    "stc_warn": false,
-    "st_direction": "bull",
-    "st_confluencia": "bull"
-  },
-  "_vol_extrema_ETHUSDT": false,
+  "_vol_extrema_ETHUSDT": true,
   "_forming_ETHUSDT": "none",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_SOLUSDT": false,
+  "_vol_extrema_SOLUSDT": true,
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
@@ -39,62 +29,87 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_ADAUSDT": false,
+  "_vol_extrema_ADAUSDT": true,
   "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_XRPUSDT": false,
+  "_vol_extrema_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_DOGEUSDT": false,
+  "_vol_extrema_DOGEUSDT": true,
   "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_AVAXUSDT": false,
+  "_vol_extrema_AVAXUSDT": true,
+  "_trade_count": {
+    "2026-09-03": 3
+  },
+  "_trade_AVAXUSDT": {
+    "entry": 7.405,
+    "sl": 7.3101,
+    "tp1": 7.5473,
+    "tp2": 7.6422,
+    "tp3": 7.7845,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_AVAXUSDT": "none",
-  "_b_1h_AVAXUSDT": false,
+  "_b_1h_AVAXUSDT": true,
   "AVAXUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_LINKUSDT": false,
+  "_vol_extrema_LINKUSDT": true,
+  "_trade_LINKUSDT": {
+    "entry": 11.683,
+    "sl": 11.4631,
+    "tp1": 12.0128,
+    "tp2": 12.2327,
+    "tp3": 12.5625,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_LINKUSDT": "none",
-  "_b_1h_LINKUSDT": false,
+  "_b_1h_LINKUSDT": true,
   "LINKUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_DOTUSDT": false,
+  "_vol_extrema_DOTUSDT": true,
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
@@ -169,11 +184,22 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_vol_extrema_ZECUSDT": false,
+  "_vol_extrema_ZECUSDT": true,
+  "_trade_ZECUSDT": {
+    "entry": 867.659973,
+    "sl": 847.1617,
+    "tp1": 898.4074,
+    "tp2": 918.9056,
+    "tp3": 949.653,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_ZECUSDT": "none",
-  "_b_1h_ZECUSDT": false,
+  "_b_1h_ZECUSDT": true,
   "ZECUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -189,7 +215,5 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-03"
+  "_consecutive_expired": 0
 }
