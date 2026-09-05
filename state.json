@@ -57,7 +57,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
-    "st_confluencia": "bull"
+    "st_confluencia": null
   },
   "_vol_extrema_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
@@ -100,24 +100,10 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_NEARUSDT": false,
-  "_trade_count": {
-    "2026-09-05": 1
-  },
-  "_trade_NEARUSDT": {
-    "entry": 2.2342,
-    "sl": 2.2209,
-    "tp1": 2.2541,
-    "tp2": 2.2674,
-    "tp3": 2.2874,
-    "direction": "long",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
-    "grade": "App",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -203,5 +189,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-05"
 }
