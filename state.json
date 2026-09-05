@@ -1,6 +1,5 @@
 {
   "_vol_extrema_BTCUSDT": false,
-  "_forming_BTCUSDT": "long",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -50,7 +49,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_XRPUSDT": false,
-  "_forming_XRPUSDT": "none",
+  "_forming_XRPUSDT": "long",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -189,5 +188,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-05"
 }
