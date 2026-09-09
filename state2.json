@@ -1,4 +1,5 @@
 {
+  "_atr_extreme_BTCUSDT": true,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
@@ -95,6 +96,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_OPUSDT": false,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
@@ -113,7 +115,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "none",
+  "_forming_RENDERUSDT": "long",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -132,8 +134,9 @@
   },
   "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
+  "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -156,13 +159,18 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-09-09": 1
+  },
   "_forming_XMRUSDT": "none",
-  "_b_1h_XMRUSDT": false,
+  "_b_1h_XMRUSDT": true,
   "XMRUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-09"
 }
