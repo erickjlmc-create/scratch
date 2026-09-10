@@ -1,10 +1,10 @@
 {
-  "_vol_extrema_BTCUSDT": false,
+  "_vol_extrema_BTCUSDT": true,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
@@ -19,37 +19,61 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_SOLUSDT": false,
+  "_vol_extrema_SOLUSDT": true,
+  "_trade_count": {
+    "2026-09-10": 4
+  },
+  "_trade_SOLUSDT": {
+    "entry": 100.050003,
+    "sl": 101.9093,
+    "tp1": 97.2611,
+    "tp2": 95.4018,
+    "tp3": 92.6128,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "none",
+    "grade": "App",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_BNBUSDT": false,
+  "_vol_extrema_BNBUSDT": true,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "short",
-  "_b_1h_ADAUSDT": false,
+  "_vol_extrema_ADAUSDT": true,
+  "_trade_ADAUSDT": {
+    "entry": 0.2117,
+    "sl": 0.2111,
+    "tp1": 0.2108,
+    "tp2": 0.2102,
+    "tp3": 0.2093,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
+  "_b_1h_ADAUSDT": true,
   "ADAUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_vol_extrema_XRPUSDT": false,
+  "_vol_extrema_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
@@ -59,32 +83,54 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_DOGEUSDT": false,
+  "_vol_extrema_DOGEUSDT": true,
+  "_trade_DOGEUSDT": {
+    "entry": 0.08469,
+    "sl": 0.0857,
+    "tp1": 0.0832,
+    "tp2": 0.0822,
+    "tp3": 0.0807,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
-    "grade": "none",
+    "grade": "App",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_AVAXUSDT": false,
+  "_vol_extrema_AVAXUSDT": true,
+  "_trade_AVAXUSDT": {
+    "entry": 7.659,
+    "sl": 7.8036,
+    "tp1": 7.4422,
+    "tp2": 7.2976,
+    "tp3": 7.0808,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "none",
+    "grade": "App",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_LINKUSDT": false,
+  "_vol_extrema_LINKUSDT": true,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
@@ -109,7 +155,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_OPUSDT": false,
+  "_vol_extrema_OPUSDT": true,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
@@ -119,7 +165,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_ATOMUSDT": false,
+  "_vol_extrema_ATOMUSDT": true,
   "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
@@ -149,8 +195,8 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_WLDUSDT": false,
-  "_forming_WLDUSDT": "short",
+  "_vol_extrema_WLDUSDT": true,
+  "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -169,7 +215,7 @@
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_vol_extrema_ZECUSDT": false,
+  "_vol_extrema_ZECUSDT": true,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
@@ -189,5 +235,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-10"
 }
