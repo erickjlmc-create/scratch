@@ -1,9 +1,11 @@
 {
+  "_trade_count": {
+    "2026-09-11": 2
+  },
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -32,9 +34,8 @@
     "st_direction": "bear"
   },
   "_forming_ADAUSDT": "none",
-  "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -58,8 +59,8 @@
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -91,8 +92,8 @@
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -154,5 +155,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-11"
 }
