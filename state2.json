@@ -1,14 +1,14 @@
 {
   "_atr_extreme_BTCUSDT": false,
+  "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_ETHUSDT": false,
-  "_forming_ETHUSDT": "long",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -62,7 +62,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "none",
+  "_forming_AVAXUSDT": "short",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -107,6 +107,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_ATOMUSDT": false,
+  "_forming_ATOMUSDT": "short",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -124,7 +125,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_INJUSDT": false,
-  "_forming_INJUSDT": "short",
+  "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -168,7 +169,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-12"
+  "_consecutive_expired": 0
 }
