@@ -29,7 +29,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_BNBUSDT": true,
+  "_vol_extrema_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -40,11 +40,11 @@
     "st_confluencia": null
   },
   "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "short",
+  "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": null
@@ -67,14 +67,14 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
-    "st_confluencia": "bull"
+    "st_confluencia": null
   },
-  "_vol_extrema_AVAXUSDT": false,
+  "_vol_extrema_AVAXUSDT": true,
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
@@ -140,10 +140,24 @@
     "st_confluencia": null
   },
   "_vol_extrema_INJUSDT": false,
+  "_trade_count": {
+    "2026-09-12": 1
+  },
+  "_trade_INJUSDT": {
+    "entry": 5.988,
+    "sl": 5.9071,
+    "tp1": 6.1094,
+    "tp2": 6.1903,
+    "tp3": 6.3117,
+    "direction": "long",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
-    "grade": "none",
+    "grade": "Ap",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
@@ -157,7 +171,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
-    "st_confluencia": "bull"
+    "st_confluencia": null
   },
   "_vol_extrema_TIAUSDT": false,
   "_forming_TIAUSDT": "none",
@@ -189,5 +203,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-12"
 }
