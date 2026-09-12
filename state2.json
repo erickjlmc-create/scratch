@@ -63,7 +63,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "none",
+  "_forming_AVAXUSDT": "short",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
