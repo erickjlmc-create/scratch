@@ -20,7 +20,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_SOLUSDT": false,
-  "_forming_SOLUSDT": "none",
+  "_forming_SOLUSDT": "short",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -30,6 +30,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_BNBUSDT": false,
+  "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -109,7 +110,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "long",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -169,7 +169,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ZECUSDT": false,
-  "_forming_ZECUSDT": "none",
+  "_forming_ZECUSDT": "short",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -190,7 +190,7 @@
     "tp2_hit": true,
     "tp3_hit": false
   },
-  "_forming_XMRUSDT": "none",
+  "_forming_XMRUSDT": "short",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -199,7 +199,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-15"
+  "_consecutive_expired": 0
 }
