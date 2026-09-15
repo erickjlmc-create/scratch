@@ -8,7 +8,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ETHUSDT": false,
-  "_forming_ETHUSDT": "none",
   "ETHUSDT": {
     "grade": "B",
     "blocked": false,
@@ -16,6 +15,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_SOLUSDT": false,
+  "_forming_SOLUSDT": "none",
   "SOLUSDT": {
     "grade": "B",
     "blocked": false,
@@ -88,7 +88,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_forming_OPUSDT": "long",
+  "_atr_extreme_OPUSDT": true,
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -114,7 +114,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_INJUSDT": false,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -133,6 +132,7 @@
     "st_direction": "bear"
   },
   "_forming_TIAUSDT": "none",
+  "_b_1h_TIAUSDT": true,
   "TIAUSDT": {
     "grade": "B",
     "blocked": false,
@@ -140,12 +140,14 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ZECUSDT": false,
+  "_forming_ZECUSDT": "none",
   "ZECUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -154,7 +156,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-15"
+  "_consecutive_expired": 0
 }
