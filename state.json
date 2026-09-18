@@ -1,10 +1,10 @@
 {
-  "_vol_extrema_BTCUSDT": false,
+  "_vol_extrema_BTCUSDT": true,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
@@ -19,12 +19,12 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_SOLUSDT": false,
+  "_vol_extrema_SOLUSDT": true,
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
@@ -49,12 +49,12 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_XRPUSDT": false,
+  "_vol_extrema_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull",
     "st_confluencia": "bull"
@@ -110,7 +110,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "none",
+  "_forming_OPUSDT": "long",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -120,7 +120,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ATOMUSDT": false,
-  "_forming_ATOMUSDT": "long",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -130,7 +129,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "long",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -160,7 +158,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_TIAUSDT": false,
-  "_forming_TIAUSDT": "long",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "none",
@@ -169,7 +166,7 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_vol_extrema_ZECUSDT": false,
+  "_vol_extrema_ZECUSDT": true,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
@@ -197,10 +194,8 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear",
-    "st_confluencia": null
+    "st_direction": "bull",
+    "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-18"
+  "_consecutive_expired": 0
 }
