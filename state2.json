@@ -15,7 +15,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
@@ -24,8 +24,9 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
+  "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
@@ -43,14 +44,13 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
@@ -76,8 +76,9 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
+  "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
@@ -102,7 +103,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "_atr_extreme_ATOMUSDT": false,
   "_forming_ATOMUSDT": "none",
@@ -120,7 +121,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "_atr_extreme_INJUSDT": false,
   "_forming_INJUSDT": "none",
@@ -129,8 +130,9 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
+  "_atr_extreme_WLDUSDT": true,
   "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
@@ -164,7 +166,9 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-09-22"
 }
