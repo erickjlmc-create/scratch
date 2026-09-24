@@ -71,6 +71,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_LINKUSDT": true,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
@@ -156,7 +157,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XMRUSDT": true,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
@@ -165,7 +165,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-24"
+  "_consecutive_expired": 0
 }
