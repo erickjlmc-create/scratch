@@ -26,12 +26,14 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_trade_count": {
+    "2026-09-29": 2
+  },
   "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
-  "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -53,9 +55,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-09-29": 1
-  },
   "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
   "DOGEUSDT": {
@@ -64,6 +63,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
@@ -143,6 +143,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_TIAUSDT": true,
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
@@ -168,7 +169,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-09-29"
+  "_consecutive_expired": 0
 }
