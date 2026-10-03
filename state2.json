@@ -1,4 +1,5 @@
 {
+  "_open_sent": true,
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
@@ -80,12 +81,8 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-10-03": 1
-  },
   "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
-  "_b_1h_DOTUSDT": true,
   "DOTUSDT": {
     "grade": "B",
     "blocked": false,
@@ -173,7 +170,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-03"
+  "_consecutive_expired": 0
 }
