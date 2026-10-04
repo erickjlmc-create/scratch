@@ -10,6 +10,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ETHUSDT": false,
+  "_forming_ETHUSDT": "none",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -29,7 +30,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_BNBUSDT": false,
-  "_forming_BNBUSDT": "none",
+  "_forming_BNBUSDT": "long",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -69,7 +70,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "long",
+  "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -188,5 +189,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-04"
 }
