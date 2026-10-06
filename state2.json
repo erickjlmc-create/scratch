@@ -9,6 +9,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_ETHUSDT": false,
+  "_forming_ETHUSDT": "none",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -23,7 +24,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
@@ -61,8 +62,8 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_AVAXUSDT": true,
   "_forming_AVAXUSDT": "none",
+  "_b_1h_AVAXUSDT": true,
   "AVAXUSDT": {
     "grade": "B",
     "blocked": false,
@@ -115,9 +116,10 @@
     "st_direction": "bear"
   },
   "_forming_RENDERUSDT": "none",
+  "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -147,14 +149,11 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-10-06": 2
-  },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
-  "_b_1h_ZECUSDT": true,
+  "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -168,7 +167,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-06"
+  "_consecutive_expired": 1
 }
