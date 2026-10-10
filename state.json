@@ -179,10 +179,7 @@
     "st_direction": "bull",
     "st_confluencia": null
   },
-  "_vol_extrema_XMRUSDT": false,
-  "_trade_count": {
-    "2026-10-10": 1
-  },
+  "_vol_extrema_XMRUSDT": true,
   "_trade_XMRUSDT": {
     "entry": 524.198792,
     "sl": 526.4861,
@@ -194,8 +191,6 @@
     "tp2_hit": false,
     "tp3_hit": false
   },
-  "_forming_XMRUSDT": "none",
-  "_b_1h_XMRUSDT": true,
   "XMRUSDT": {
     "grade": "B",
     "blocked": false,
@@ -203,7 +198,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-10"
+  "_consecutive_expired": 0
 }
