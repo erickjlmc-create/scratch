@@ -1,5 +1,4 @@
 {
-  "_open_sent": true,
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
@@ -19,7 +18,6 @@
     "st_direction": "bull"
   },
   "_atr_extreme_SOLUSDT": false,
-  "_forming_SOLUSDT": "short",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -73,7 +71,6 @@
     "st_direction": "bull"
   },
   "_atr_extreme_LINKUSDT": false,
-  "_forming_LINKUSDT": "long",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -126,11 +123,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-10-10": 1
-  },
   "_forming_INJUSDT": "none",
-  "_b_1h_INJUSDT": true,
   "INJUSDT": {
     "grade": "B",
     "blocked": false,
@@ -173,7 +166,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-10"
+  "_consecutive_expired": 0
 }
