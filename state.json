@@ -80,7 +80,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_LINKUSDT": false,
-  "_forming_LINKUSDT": "short",
+  "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -170,7 +170,7 @@
     "st_confluencia": null
   },
   "_vol_extrema_ZECUSDT": false,
-  "_forming_ZECUSDT": "short",
+  "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -190,6 +190,5 @@
     "st_confluencia": null
   },
   "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-14"
+  "_close_sent": true
 }
