@@ -1,9 +1,11 @@
 {
+  "_trade_count": {
+    "2026-10-15": 11
+  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -25,7 +27,6 @@
     "st_direction": "bull"
   },
   "_atr_extreme_BNBUSDT": false,
-  "_forming_BNBUSDT": "long",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -71,9 +72,10 @@
   },
   "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
+  "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -94,12 +96,8 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-10-15": 10
-  },
   "_atr_extreme_OPUSDT": false,
   "_forming_OPUSDT": "none",
-  "_b_1h_OPUSDT": true,
   "OPUSDT": {
     "grade": "B",
     "blocked": false,
@@ -115,15 +113,15 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_RENDERUSDT": true,
   "_forming_RENDERUSDT": "none",
-  "_b_1h_RENDERUSDT": true,
+  "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -132,16 +130,13 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_WLDUSDT": true,
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": true,
   "WLDUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_TIAUSDT": true,
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
@@ -150,6 +145,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_ZECUSDT": true,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
@@ -158,7 +154,8 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_forming_XMRUSDT": "short",
+  "_atr_extreme_XMRUSDT": false,
+  "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -166,5 +163,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 1
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-15"
 }
