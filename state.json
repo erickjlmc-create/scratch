@@ -6,8 +6,8 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear",
-    "st_confluencia": "bear"
+    "st_direction": "bull",
+    "st_confluencia": null
   },
   "_vol_extrema_ETHUSDT": false,
   "_forming_ETHUSDT": "none",
@@ -30,7 +30,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_BNBUSDT": false,
-  "_forming_BNBUSDT": "short",
+  "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -40,7 +40,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "short",
+  "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -50,7 +50,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_XRPUSDT": false,
-  "_forming_XRPUSDT": "short",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -80,7 +79,6 @@
     "st_confluencia": null
   },
   "_vol_extrema_LINKUSDT": false,
-  "_forming_LINKUSDT": "short",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -106,8 +104,8 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear",
-    "st_confluencia": "bear"
+    "st_direction": "bull",
+    "st_confluencia": null
   },
   "_vol_extrema_OPUSDT": false,
   "_forming_OPUSDT": "none",
@@ -120,7 +118,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ATOMUSDT": false,
-  "_forming_ATOMUSDT": "short",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -136,11 +133,11 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear",
-    "st_confluencia": "bear"
+    "st_direction": "bull",
+    "st_confluencia": null
   },
   "_vol_extrema_INJUSDT": false,
-  "_forming_INJUSDT": "short",
+  "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -180,7 +177,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_XMRUSDT": false,
-  "_forming_XMRUSDT": "short",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -189,7 +185,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-15"
+  "_consecutive_expired": 0
 }
