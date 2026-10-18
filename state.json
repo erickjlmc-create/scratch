@@ -99,11 +99,25 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_NEARUSDT": false,
+  "_vol_extrema_NEARUSDT": true,
+  "_trade_count": {
+    "2026-10-18": 1
+  },
+  "_trade_NEARUSDT": {
+    "entry": 4.7051,
+    "sl": 4.7612,
+    "tp1": 4.6209,
+    "tp2": 4.5648,
+    "tp3": 4.4806,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
-    "grade": "none",
+    "grade": "prec",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -160,7 +174,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_WLDUSDT": false,
+  "_vol_extrema_WLDUSDT": true,
   "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
@@ -170,7 +184,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_TIAUSDT": false,
+  "_vol_extrema_TIAUSDT": true,
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
@@ -200,7 +214,5 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-18"
+  "_consecutive_expired": 0
 }
