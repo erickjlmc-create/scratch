@@ -1,7 +1,4 @@
 {
-  "_trade_count": {
-    "2026-10-18": 1
-  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "BTCUSDT": {
@@ -101,7 +98,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_OPUSDT": false,
-  "_forming_OPUSDT": "short",
+  "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -110,7 +107,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ATOMUSDT": false,
-  "_forming_ATOMUSDT": "short",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -128,7 +124,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_INJUSDT": false,
-  "_forming_INJUSDT": "short",
+  "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
     "grade": "none",
@@ -155,7 +151,6 @@
     "st_direction": "bull"
   },
   "_atr_extreme_ZECUSDT": false,
-  "_forming_ZECUSDT": "short",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -172,7 +167,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-18"
+  "_consecutive_expired": 0
 }
