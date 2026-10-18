@@ -1,8 +1,5 @@
 {
-  "_trade_count": {
-    "2026-10-18": 10
-  },
-  "_atr_extreme_BTCUSDT": false,
+  "_atr_extreme_BTCUSDT": true,
   "_forming_BTCUSDT": "none",
   "BTCUSDT": {
     "grade": "B",
@@ -10,30 +7,30 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ETHUSDT": false,
+  "_trade_count": {
+    "2026-10-18": 13
+  },
   "_forming_ETHUSDT": "none",
-  "_b_1h_ETHUSDT": false,
+  "_b_1h_ETHUSDT": true,
   "ETHUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": true,
   "SOLUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
-  "_b_1h_BNBUSDT": false,
+  "_b_1h_BNBUSDT": true,
   "BNBUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -48,16 +45,13 @@
   },
   "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": true,
   "XRPUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
-  "_b_1h_DOGEUSDT": true,
   "DOGEUSDT": {
     "grade": "B",
     "blocked": false,
@@ -66,16 +60,13 @@
   },
   "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
-  "_b_1h_AVAXUSDT": true,
   "AVAXUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
-  "_b_1h_LINKUSDT": true,
   "LINKUSDT": {
     "grade": "B",
     "blocked": false,
@@ -84,9 +75,8 @@
   },
   "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
-  "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -154,7 +144,6 @@
   },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
-  "_b_1h_ZECUSDT": true,
   "ZECUSDT": {
     "grade": "B",
     "blocked": false,
@@ -170,5 +159,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 1
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-18"
 }
