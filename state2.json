@@ -17,13 +17,14 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_BNBUSDT": false,
   "_forming_BNBUSDT": "none",
@@ -32,7 +33,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
@@ -59,7 +60,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
@@ -70,24 +71,25 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_LINKUSDT": true,
+  "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
-  "_atr_extreme_DOTUSDT": true,
+  "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
+  "_atr_extreme_NEARUSDT": false,
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
@@ -105,7 +107,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ATOMUSDT": true,
+  "_atr_extreme_ATOMUSDT": false,
   "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
@@ -132,7 +134,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_WLDUSDT": true,
+  "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
@@ -150,24 +152,22 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
-  "_atr_extreme_XMRUSDT": false,
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-20"
+  "_consecutive_expired": 0
 }
