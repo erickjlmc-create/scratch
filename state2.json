@@ -1,9 +1,5 @@
 {
-  "_trade_count": {
-    "2026-10-21": 10
-  },
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": true,
   "BTCUSDT": {
     "grade": "B",
     "blocked": false,
@@ -41,7 +37,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
   "XRPUSDT": {
     "grade": "B",
@@ -58,7 +53,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "none",
+  "_forming_AVAXUSDT": "long",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -75,14 +70,14 @@
   },
   "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
+  "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
   "_forming_NEARUSDT": "none",
-  "_b_1h_NEARUSDT": true,
   "NEARUSDT": {
     "grade": "B",
     "blocked": false,
@@ -90,7 +85,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_OPUSDT": false,
-  "_forming_OPUSDT": "none",
+  "_forming_OPUSDT": "long",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -99,7 +94,6 @@
     "st_direction": "bull"
   },
   "_atr_extreme_ATOMUSDT": false,
-  "_forming_ATOMUSDT": "long",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -160,5 +154,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-21"
 }
