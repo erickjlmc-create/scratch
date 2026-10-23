@@ -142,7 +142,7 @@
     "tp2_hit": false,
     "tp3_hit": false
   },
-  "_forming_ATOMUSDT": "long",
+  "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -211,5 +211,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-23"
 }
