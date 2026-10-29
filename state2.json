@@ -45,7 +45,7 @@
     "st_direction": "bull"
   },
   "_atr_extreme_XRPUSDT": false,
-  "_forming_XRPUSDT": "none",
+  "_forming_XRPUSDT": "short",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -127,10 +127,10 @@
   },
   "_atr_extreme_INJUSDT": false,
   "_forming_INJUSDT": "none",
-  "_b_1h_INJUSDT": true,
+  "_b_1h_INJUSDT": false,
   "INJUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -154,8 +154,9 @@
   },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
+  "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -169,7 +170,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-29"
+  "_consecutive_expired": 1
 }
