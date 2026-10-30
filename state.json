@@ -10,7 +10,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ETHUSDT": false,
-  "_forming_ETHUSDT": "none",
+  "_forming_ETHUSDT": "short",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -30,6 +30,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_BNBUSDT": false,
+  "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -49,7 +50,6 @@
     "st_confluencia": null
   },
   "_vol_extrema_XRPUSDT": false,
-  "_forming_XRPUSDT": "short",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -190,7 +190,7 @@
     "tp2_hit": false,
     "tp3_hit": false
   },
-  "_forming_XMRUSDT": "none",
+  "_forming_XMRUSDT": "short",
   "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
     "grade": "none",
@@ -199,5 +199,7 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-10-30"
 }
