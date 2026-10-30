@@ -120,17 +120,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ATOMUSDT": false,
-  "_trade_ATOMUSDT": {
-    "entry": 1.6775,
-    "sl": 1.7233,
-    "tp1": 1.6088,
-    "tp2": 1.563,
-    "tp3": 1.4942,
-    "direction": "short",
-    "tp1_hit": true,
-    "tp2_hit": true,
-    "tp3_hit": false
-  },
   "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
@@ -211,7 +200,5 @@
     "st_direction": "bear",
     "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-10-30"
+  "_consecutive_expired": 0
 }
