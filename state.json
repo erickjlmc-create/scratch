@@ -50,6 +50,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_XRPUSDT": false,
+  "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -86,10 +87,9 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
   "_vol_extrema_DOTUSDT": false,
-  "_forming_DOTUSDT": "short",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -109,6 +109,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_OPUSDT": false,
+  "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -118,6 +119,7 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_ATOMUSDT": false,
+  "_forming_ATOMUSDT": "none",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -147,7 +149,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_WLDUSDT": false,
-  "_forming_WLDUSDT": "short",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -167,7 +168,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ZECUSDT": false,
-  "_forming_ZECUSDT": "short",
+  "_forming_ZECUSDT": "none",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -186,7 +187,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-01"
+  "_consecutive_expired": 0
 }
