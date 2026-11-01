@@ -1,6 +1,6 @@
 {
   "_atr_extreme_BTCUSDT": false,
-  "_forming_BTCUSDT": "long",
+  "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -9,7 +9,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ETHUSDT": false,
-  "_forming_ETHUSDT": "long",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -35,7 +34,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ADAUSDT": false,
-  "_forming_ADAUSDT": "short",
+  "_forming_ADAUSDT": "none",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -44,7 +43,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_XRPUSDT": false,
-  "_forming_XRPUSDT": "short",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -80,7 +78,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_DOTUSDT": false,
-  "_forming_DOTUSDT": "none",
+  "_forming_DOTUSDT": "short",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -98,7 +96,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_OPUSDT": false,
-  "_forming_OPUSDT": "long",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -106,7 +103,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_forming_ATOMUSDT": "short",
   "_b_1h_ATOMUSDT": false,
   "ATOMUSDT": {
     "grade": "none",
@@ -114,7 +110,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_RENDERUSDT": true,
   "_forming_RENDERUSDT": "none",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
@@ -132,7 +127,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
@@ -151,7 +145,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ZECUSDT": false,
-  "_forming_ZECUSDT": "none",
+  "_forming_ZECUSDT": "short",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -168,7 +162,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-01"
+  "_consecutive_expired": 0
 }
