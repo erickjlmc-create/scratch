@@ -30,7 +30,6 @@
     "st_confluencia": "bull"
   },
   "_vol_extrema_BNBUSDT": false,
-  "_forming_BNBUSDT": "short",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -47,7 +46,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull",
-    "st_confluencia": "bull"
+    "st_confluencia": null
   },
   "_vol_extrema_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
@@ -80,7 +79,6 @@
     "st_confluencia": null
   },
   "_vol_extrema_LINKUSDT": false,
-  "_forming_LINKUSDT": "short",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -90,7 +88,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOTUSDT": false,
-  "_forming_DOTUSDT": "short",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -100,7 +97,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_NEARUSDT": false,
-  "_forming_NEARUSDT": "short",
+  "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
     "grade": "none",
@@ -110,7 +107,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "short",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -130,7 +126,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "short",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -150,6 +145,7 @@
     "st_confluencia": null
   },
   "_vol_extrema_WLDUSDT": false,
+  "_forming_WLDUSDT": "short",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -159,7 +155,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_TIAUSDT": false,
-  "_forming_TIAUSDT": "short",
+  "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "none",
@@ -188,7 +184,5 @@
     "st_direction": "bull",
     "st_confluencia": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-03"
+  "_consecutive_expired": 0
 }
