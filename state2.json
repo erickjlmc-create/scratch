@@ -1,5 +1,4 @@
 {
-  "_open_sent": true,
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
@@ -45,12 +44,14 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-11-03": 2
+  },
   "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -62,9 +63,6 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
-  },
-  "_trade_count": {
-    "2026-11-03": 1
   },
   "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
@@ -172,5 +170,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-03"
 }
