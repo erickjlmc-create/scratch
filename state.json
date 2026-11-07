@@ -30,7 +30,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_BNBUSDT": false,
-  "_forming_BNBUSDT": "short",
+  "_forming_BNBUSDT": "none",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -60,7 +60,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOGEUSDT": false,
-  "_forming_DOGEUSDT": "short",
+  "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
     "grade": "none",
@@ -70,7 +70,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_AVAXUSDT": false,
-  "_forming_AVAXUSDT": "short",
+  "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
     "grade": "none",
@@ -80,7 +80,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_LINKUSDT": false,
-  "_forming_LINKUSDT": "short",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -110,7 +109,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "short",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -150,7 +148,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_WLDUSDT": false,
-  "_forming_WLDUSDT": "short",
+  "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -179,31 +177,15 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_XMRUSDT": true,
-  "_trade_count": {
-    "2026-11-07": 1
-  },
-  "_trade_XMRUSDT": {
-    "entry": 610.299377,
-    "sl": 611.4894,
-    "tp1": 608.5144,
-    "tp2": 607.3244,
-    "tp3": 605.5394,
-    "direction": "short",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_vol_extrema_XMRUSDT": false,
   "_forming_XMRUSDT": "none",
-  "_b_1h_XMRUSDT": true,
+  "_b_1h_XMRUSDT": false,
   "XMRUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-07"
+  "_consecutive_expired": 1
 }
