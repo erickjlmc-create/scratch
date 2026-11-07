@@ -60,7 +60,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOGEUSDT": false,
-  "_forming_DOGEUSDT": "short",
+  "_forming_DOGEUSDT": "none",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
     "grade": "none",
@@ -179,17 +179,29 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_XMRUSDT": false,
+  "_vol_extrema_XMRUSDT": true,
+  "_trade_count": {
+    "2026-11-07": 1
+  },
+  "_trade_XMRUSDT": {
+    "entry": 610.717529,
+    "sl": 611.6944,
+    "tp1": 609.2522,
+    "tp2": 608.2753,
+    "tp3": 606.81,
+    "direction": "short",
+    "tp1_hit": false,
+    "tp2_hit": false,
+    "tp3_hit": false
+  },
   "_forming_XMRUSDT": "none",
-  "_b_1h_XMRUSDT": false,
+  "_b_1h_XMRUSDT": true,
   "XMRUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-07"
+  "_consecutive_expired": 0
 }
