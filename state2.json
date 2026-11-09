@@ -62,7 +62,6 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_atr_extreme_AVAXUSDT": true,
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
@@ -70,9 +69,6 @@
     "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
-  },
-  "_trade_count": {
-    "2026-11-09": 3
   },
   "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
@@ -86,8 +82,8 @@
   "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -171,5 +167,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-09"
 }
