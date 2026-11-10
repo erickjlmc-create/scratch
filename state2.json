@@ -1,28 +1,29 @@
 {
+  "_trade_count": {
+    "2026-11-10": 8
+  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
-  "_b_1h_BTCUSDT": false,
+  "_b_1h_BTCUSDT": true,
   "BTCUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_ETHUSDT": true,
   "_forming_ETHUSDT": "none",
-  "_b_1h_ETHUSDT": false,
+  "_b_1h_ETHUSDT": true,
   "ETHUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": false,
+  "_b_1h_SOLUSDT": true,
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -37,27 +38,27 @@
   },
   "_atr_extreme_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
-  "_b_1h_ADAUSDT": false,
+  "_b_1h_ADAUSDT": true,
   "ADAUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_XRPUSDT": false,
   "_forming_XRPUSDT": "none",
-  "_b_1h_XRPUSDT": false,
+  "_b_1h_XRPUSDT": true,
   "XRPUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
-  "_b_1h_DOGEUSDT": false,
+  "_b_1h_DOGEUSDT": true,
   "DOGEUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -73,10 +74,10 @@
   },
   "_atr_extreme_LINKUSDT": false,
   "_forming_LINKUSDT": "none",
-  "_b_1h_LINKUSDT": false,
+  "_b_1h_LINKUSDT": true,
   "LINKUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -123,7 +124,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bull"
+    "st_direction": "bear"
   },
   "_atr_extreme_INJUSDT": false,
   "_forming_INJUSDT": "none",
@@ -136,9 +137,9 @@
   },
   "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": false,
+  "_b_1h_WLDUSDT": true,
   "WLDUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
@@ -147,8 +148,8 @@
   "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -170,7 +171,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-10"
+  "_consecutive_expired": 0
 }
