@@ -1,4 +1,5 @@
 {
+  "_open_sent": true,
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
@@ -12,22 +13,22 @@
   "_forming_ETHUSDT": "none",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": true,
+  "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_BNBUSDT": false,
-  "_forming_BNBUSDT": "none",
+  "_forming_BNBUSDT": "short",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -170,7 +171,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-10"
+  "_consecutive_expired": 1
 }
