@@ -153,7 +153,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 3,
-  "_circuit_breaker_sent": true,
-  "_close_sent": true
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-10"
 }
