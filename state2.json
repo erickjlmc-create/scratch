@@ -17,11 +17,13 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
+  "_trade_count": {
+    "2026-11-11": 6
+  },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
-  "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "none",
+    "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
@@ -35,14 +37,12 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_trade_count": {
-    "2026-11-11": 3
-  },
   "_atr_extreme_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
+  "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -95,17 +95,16 @@
   "_forming_NEARUSDT": "none",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
-    "grade": "none",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
   "_atr_extreme_OPUSDT": false,
   "_forming_OPUSDT": "none",
-  "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -134,14 +133,13 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
-  "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -161,7 +159,7 @@
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
-    "st_direction": "bear"
+    "st_direction": "bull"
   },
   "_forming_XMRUSDT": "none",
   "_b_1h_XMRUSDT": false,
@@ -171,5 +169,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 1
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-11"
 }
