@@ -1,4 +1,5 @@
 {
+  "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
@@ -16,6 +17,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
@@ -34,6 +36,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ADAUSDT": false,
+  "_forming_ADAUSDT": "short",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -41,7 +44,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_XRPUSDT": true,
   "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
@@ -51,18 +53,19 @@
     "st_direction": "bear"
   },
   "_atr_extreme_DOGEUSDT": false,
+  "_forming_DOGEUSDT": "short",
+  "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_AVAXUSDT": true,
   "_forming_AVAXUSDT": "none",
   "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -75,6 +78,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_DOTUSDT": false,
+  "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -82,7 +86,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_forming_NEARUSDT": "short",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
     "grade": "none",
@@ -91,6 +94,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_OPUSDT": false,
+  "_forming_OPUSDT": "short",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -108,6 +112,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_RENDERUSDT": false,
+  "_forming_RENDERUSDT": "short",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -115,7 +120,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_atr_extreme_INJUSDT": true,
   "_forming_INJUSDT": "none",
   "_b_1h_INJUSDT": false,
   "INJUSDT": {
@@ -143,6 +147,7 @@
     "st_direction": "bear"
   },
   "_atr_extreme_ZECUSDT": false,
+  "_forming_ZECUSDT": "short",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -159,6 +164,7 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 2,
-  "_circuit_breaker_sent": true
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-13"
 }
