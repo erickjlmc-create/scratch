@@ -40,7 +40,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ADAUSDT": false,
-  "_forming_ADAUSDT": "short",
   "_b_1h_ADAUSDT": false,
   "ADAUSDT": {
     "grade": "none",
@@ -60,7 +59,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOGEUSDT": false,
-  "_forming_DOGEUSDT": "short",
   "_b_1h_DOGEUSDT": false,
   "DOGEUSDT": {
     "grade": "none",
@@ -80,7 +78,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_LINKUSDT": false,
-  "_forming_LINKUSDT": "short",
+  "_forming_LINKUSDT": "none",
   "_b_1h_LINKUSDT": false,
   "LINKUSDT": {
     "grade": "none",
@@ -90,7 +88,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_DOTUSDT": false,
-  "_forming_DOTUSDT": "short",
+  "_forming_DOTUSDT": "none",
   "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
     "grade": "none",
@@ -100,17 +98,16 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_NEARUSDT": false,
-  "_forming_NEARUSDT": "none",
+  "_forming_NEARUSDT": "short",
   "_b_1h_NEARUSDT": false,
   "NEARUSDT": {
     "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
   "_vol_extrema_OPUSDT": false,
-  "_forming_OPUSDT": "short",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
     "grade": "none",
@@ -127,10 +124,9 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
   "_vol_extrema_RENDERUSDT": false,
-  "_forming_RENDERUSDT": "short",
   "_b_1h_RENDERUSDT": false,
   "RENDERUSDT": {
     "grade": "none",
@@ -160,7 +156,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_TIAUSDT": false,
-  "_forming_TIAUSDT": "short",
+  "_forming_TIAUSDT": "none",
   "_b_1h_TIAUSDT": false,
   "TIAUSDT": {
     "grade": "none",
@@ -170,7 +166,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ZECUSDT": false,
-  "_forming_ZECUSDT": "short",
   "_b_1h_ZECUSDT": false,
   "ZECUSDT": {
     "grade": "none",
@@ -189,7 +184,5 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-13"
+  "_consecutive_expired": 0
 }
