@@ -1,7 +1,4 @@
 {
-  "_trade_count": {
-    "2026-11-21": 1
-  },
   "_atr_extreme_BTCUSDT": false,
   "_forming_BTCUSDT": "none",
   "BTCUSDT": {
@@ -22,8 +19,8 @@
   "_forming_SOLUSDT": "none",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "none",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -170,7 +167,5 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-21"
+  "_consecutive_expired": 0
 }
