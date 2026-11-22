@@ -115,9 +115,6 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-11-22": 13
-  },
   "_atr_extreme_RENDERUSDT": false,
   "_forming_RENDERUSDT": "none",
   "RENDERUSDT": {
@@ -137,9 +134,10 @@
   },
   "_atr_extreme_WLDUSDT": false,
   "_forming_WLDUSDT": "none",
+  "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bull"
   },
@@ -170,5 +168,7 @@
     "stc_warn": false,
     "st_direction": "bull"
   },
-  "_consecutive_expired": 1
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-22"
 }
