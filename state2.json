@@ -19,6 +19,7 @@
   },
   "_atr_extreme_SOLUSDT": false,
   "_forming_SOLUSDT": "none",
+  "_b_1h_SOLUSDT": true,
   "SOLUSDT": {
     "grade": "B",
     "blocked": false,
@@ -36,6 +37,7 @@
   },
   "_atr_extreme_ADAUSDT": false,
   "_forming_ADAUSDT": "none",
+  "_b_1h_ADAUSDT": true,
   "ADAUSDT": {
     "grade": "B",
     "blocked": false,
@@ -53,26 +55,23 @@
   },
   "_atr_extreme_DOGEUSDT": false,
   "_forming_DOGEUSDT": "none",
+  "_b_1h_DOGEUSDT": true,
   "DOGEUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_trade_count": {
-    "2026-11-24": 11
-  },
   "_atr_extreme_AVAXUSDT": false,
   "_forming_AVAXUSDT": "none",
-  "_b_1h_AVAXUSDT": true,
+  "_b_1h_AVAXUSDT": false,
   "AVAXUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_LINKUSDT": false,
-  "_b_1h_LINKUSDT": true,
   "LINKUSDT": {
     "grade": "B",
     "blocked": false,
@@ -81,16 +80,15 @@
   },
   "_atr_extreme_DOTUSDT": false,
   "_forming_DOTUSDT": "none",
-  "_b_1h_DOTUSDT": true,
+  "_b_1h_DOTUSDT": false,
   "DOTUSDT": {
-    "grade": "B",
-    "blocked": false,
+    "grade": "blocked",
+    "blocked": true,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_NEARUSDT": false,
   "_forming_NEARUSDT": "none",
-  "_b_1h_NEARUSDT": true,
   "NEARUSDT": {
     "grade": "B",
     "blocked": false,
@@ -98,7 +96,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_OPUSDT": false,
-  "_b_1h_OPUSDT": true,
   "OPUSDT": {
     "grade": "B",
     "blocked": false,
@@ -124,8 +121,6 @@
     "st_direction": "bear"
   },
   "_atr_extreme_INJUSDT": false,
-  "_forming_INJUSDT": "none",
-  "_b_1h_INJUSDT": true,
   "INJUSDT": {
     "grade": "B",
     "blocked": false,
@@ -133,27 +128,31 @@
     "st_direction": "bear"
   },
   "_atr_extreme_WLDUSDT": false,
+  "_forming_WLDUSDT": "none",
+  "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
-    "grade": "B",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
   "_atr_extreme_TIAUSDT": false,
   "_forming_TIAUSDT": "none",
-  "_b_1h_TIAUSDT": true,
   "TIAUSDT": {
     "grade": "B",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
+  "_trade_count": {
+    "2026-11-24": 12
+  },
   "_atr_extreme_ZECUSDT": false,
   "_forming_ZECUSDT": "none",
-  "_b_1h_ZECUSDT": false,
+  "_b_1h_ZECUSDT": true,
   "ZECUSDT": {
-    "grade": "blocked",
-    "blocked": true,
+    "grade": "B",
+    "blocked": false,
     "stc_warn": false,
     "st_direction": "bear"
   },
@@ -166,7 +165,5 @@
     "stc_warn": false,
     "st_direction": "bear"
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-24"
+  "_consecutive_expired": 1
 }
