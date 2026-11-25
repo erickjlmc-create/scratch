@@ -1,6 +1,6 @@
 {
   "_vol_extrema_BTCUSDT": false,
-  "_forming_BTCUSDT": "none",
+  "_forming_BTCUSDT": "short",
   "_b_1h_BTCUSDT": false,
   "BTCUSDT": {
     "grade": "none",
@@ -10,7 +10,6 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_ETHUSDT": false,
-  "_forming_ETHUSDT": "short",
   "_b_1h_ETHUSDT": false,
   "ETHUSDT": {
     "grade": "none",
@@ -20,6 +19,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_SOLUSDT": false,
+  "_forming_SOLUSDT": "short",
   "_b_1h_SOLUSDT": false,
   "SOLUSDT": {
     "grade": "none",
@@ -29,7 +29,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_BNBUSDT": false,
-  "_forming_BNBUSDT": "none",
+  "_forming_BNBUSDT": "short",
   "_b_1h_BNBUSDT": false,
   "BNBUSDT": {
     "grade": "none",
@@ -49,6 +49,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_XRPUSDT": false,
+  "_forming_XRPUSDT": "none",
   "_b_1h_XRPUSDT": false,
   "XRPUSDT": {
     "grade": "none",
@@ -148,7 +149,7 @@
     "st_confluencia": "bear"
   },
   "_vol_extrema_WLDUSDT": false,
-  "_forming_WLDUSDT": "short",
+  "_forming_WLDUSDT": "none",
   "_b_1h_WLDUSDT": false,
   "WLDUSDT": {
     "grade": "none",
@@ -185,9 +186,7 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": "bear"
+    "st_confluencia": null
   },
-  "_consecutive_expired": 0,
-  "_circuit_breaker_sent": false,
-  "_circuit_breaker_date": "2026-11-25"
+  "_consecutive_expired": 0
 }
