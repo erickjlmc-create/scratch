@@ -109,25 +109,11 @@
     "st_direction": "bear",
     "st_confluencia": "bear"
   },
-  "_vol_extrema_OPUSDT": true,
-  "_trade_count": {
-    "2026-11-25": 1
-  },
-  "_trade_OPUSDT": {
-    "entry": 0.06632,
-    "sl": 0.0676,
-    "tp1": 0.0643,
-    "tp2": 0.063,
-    "tp3": 0.061,
-    "direction": "short",
-    "tp1_hit": false,
-    "tp2_hit": false,
-    "tp3_hit": false
-  },
+  "_vol_extrema_OPUSDT": false,
   "_forming_OPUSDT": "none",
   "_b_1h_OPUSDT": false,
   "OPUSDT": {
-    "grade": "App",
+    "grade": "none",
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
@@ -201,7 +187,9 @@
     "blocked": false,
     "stc_warn": false,
     "st_direction": "bear",
-    "st_confluencia": null
+    "st_confluencia": "bear"
   },
-  "_consecutive_expired": 0
+  "_consecutive_expired": 0,
+  "_circuit_breaker_sent": false,
+  "_circuit_breaker_date": "2026-11-25"
 }
